@@ -5,6 +5,7 @@ import { useTheme, IconButton } from "react-native-paper";
 import { ThemeInterface } from "../styles/theme";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
+import TypeWriter from "react-native-typewriter";
 
 const Welcome3 = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -59,7 +60,21 @@ const Welcome3 = ({ navigation }: any) => {
           size={35}
           onPress={() => console.log("Pressed")}
         />
-        <StyledText style={{ fontSize: 20 }}>Finish</StyledText>
+        <StyledText style={{ fontSize: 15 }}>
+          {" "}
+          <TypeWriter
+            typing={1}
+            maxDelay={50}
+            numberOfLines={1}
+            style={{
+              textAlign: "right",
+              width: "100%",
+              paddingLeft: 2.5,
+            }}
+          >
+            Finish
+          </TypeWriter>
+        </StyledText>
       </StyledView>
     </StyledView>
   );

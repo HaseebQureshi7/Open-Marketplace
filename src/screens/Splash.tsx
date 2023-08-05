@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { screenHeight, screenWidth } from "../utils/Dimensions";
 import { IconButton, Text, useTheme } from "react-native-paper";
 import { ThemeInterface } from "../styles/theme";
+import TypeWriter from "react-native-typewriter";
 
 import {
   PanGestureHandler,
@@ -18,11 +19,14 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import StyledView from "../styles/styledComponents/StyledView";
+import StyledText from "../styles/styledComponents/StyledText";
 
 const Splash = ({ navigation }: any) => {
   const backgroundColor = "white";
-  const imageSize = screenWidth > screenHeight ? (screenWidth / 100) * 20  : (screenWidth / 100) * 65;
-
+  const imageSize =
+    screenWidth > screenHeight
+      ? (screenWidth / 100) * 20
+      : (screenWidth / 100) * 65;
 
   const theme = useTheme<ThemeInterface>();
 
@@ -84,14 +88,25 @@ const Splash = ({ navigation }: any) => {
             size={30}
             iconColor={theme.colors.text}
           />
-          <Text
+          <StyledText
             style={{
               color: theme.colors.text,
-              fontFamily: theme.fonts.regular,
+              fontSize:15
             }}
           >
-            Pull up
-          </Text>
+            <TypeWriter
+              typing={1}
+              maxDelay={50}
+              numberOfLines={1}
+              style={{
+                textAlign: "right",
+                width: "100%",
+                paddingLeft: 2.5,
+              }}
+            >
+              Pull up
+            </TypeWriter>
+          </StyledText>
         </Animated.View>
       </PanGestureHandler>
     </StyledView>

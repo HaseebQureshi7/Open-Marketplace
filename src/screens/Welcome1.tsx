@@ -6,10 +6,14 @@ import { IconButton, Text, useTheme } from "react-native-paper";
 import { ThemeInterface } from "../styles/theme";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
+import TypeWriter from "react-native-typewriter";
 
 const Welcome1 = ({ navigation }: any) => {
   const backgroundColor = "white";
-  const imageSize = screenWidth > screenHeight ? (screenWidth / 100) * 20  : (screenWidth / 100) * 45;
+  const imageSize =
+    screenWidth > screenHeight
+      ? (screenWidth / 100) * 20
+      : (screenWidth / 100) * 45;
 
   const theme = useTheme<ThemeInterface>();
 
@@ -22,7 +26,11 @@ const Welcome1 = ({ navigation }: any) => {
     >
       <StatusBar backgroundColor={backgroundColor} />
       <StyledView
-        style={{}}
+        style={{
+          width: "100%",
+          paddingVertical: 50,
+          backgroundColor: "white",
+        }}
       >
         <StyledText
           style={{
@@ -32,7 +40,8 @@ const Welcome1 = ({ navigation }: any) => {
             fontSize: 30,
           }}
         >
-          New Phone ?
+
+            New Phone ?
         </StyledText>
         <Image
           style={{ width: imageSize, height: imageSize }}
@@ -54,7 +63,20 @@ const Welcome1 = ({ navigation }: any) => {
           iconColor={theme.colors.text}
           size={35}
         />
-        <StyledText style={{ fontSize: 20 }}>Touch this</StyledText>
+        <StyledText style={{ fontSize: 15 }}>
+        <TypeWriter
+            typing={1}
+            maxDelay={50}
+            numberOfLines={1}
+            style={{
+              textAlign: "right",
+              width: "100%",
+              paddingLeft: 2.5,
+            }}
+          >
+          Touch this
+          </TypeWriter>
+          </StyledText>
       </StyledView>
     </StyledView>
   );
