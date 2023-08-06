@@ -4,7 +4,7 @@ import StyledText from "../../styles/styledComponents/StyledText";
 import { screenHeight, screenWidth } from "../../utils/Dimensions";
 import { StatusBar } from "expo-status-bar";
 import { ThemeInterface } from "../../styles/theme";
-import { Button, TextInput, useTheme } from "react-native-paper";
+import { TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import StyledButton from "../../styles/styledComponents/StyledButton";
@@ -65,7 +65,12 @@ const SellerSignup = ({ navigation }: any) => {
         >
           {/* NAME */}
           <TextInput
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             left={
               <TextInput.Icon
                 style={{ paddingTop: 10 }}
@@ -79,7 +84,12 @@ const SellerSignup = ({ navigation }: any) => {
           />
           {/* EMAIL */}
           <TextInput
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             inputMode="email"
             left={
               <TextInput.Icon
@@ -99,7 +109,12 @@ const SellerSignup = ({ navigation }: any) => {
             inputMode="numeric"
             value={phone}
             mode="outlined"
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             onChangeText={(text) => setPhone(text)}
           />
           {/* LOCATION */}
@@ -110,7 +125,12 @@ const SellerSignup = ({ navigation }: any) => {
             label="Location"
             value={location}
             mode="outlined"
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             onChangeText={(text) => setLocation(text)}
           />
           {/* PASSWORDS */}
@@ -122,7 +142,12 @@ const SellerSignup = ({ navigation }: any) => {
             }}
           >
             <TextInput
-              style={{ width: "47.5%", height: 60 }}
+              style={{ width: "47.5%", height: 60, backgroundColor }}
+              outlineStyle={{
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: theme.colors.disabled,
+              }}
               left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
               label="Password"
               value={password}
@@ -131,9 +156,14 @@ const SellerSignup = ({ navigation }: any) => {
               onChangeText={(text) => setPassword(text)}
             />
             <TextInput
-              left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
-              style={{ width: "47.5%", height: 60 }}
-              label="Confirm Pass"
+              // left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
+              style={{ width: "47.5%", height: 60, backgroundColor }}
+              outlineStyle={{
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: theme.colors.disabled,
+              }}
+              label="Confirm Password"
               value={confirmPass}
               secureTextEntry
               mode="outlined"
@@ -148,7 +178,12 @@ const SellerSignup = ({ navigation }: any) => {
             numberOfLines={5}
             value={description}
             mode="outlined"
-            style={{ width: "100%" }}
+            style={{ width: "100%", backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             onChangeText={(text) => setDescription(text)}
           />
         </StyledView>

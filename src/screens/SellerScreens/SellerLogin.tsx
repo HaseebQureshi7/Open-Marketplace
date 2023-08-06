@@ -60,7 +60,12 @@ const SellerLogin = ({ navigation }: any) => {
           style={{ width: "100%", alignItems: "flex-start", gap: 15 }}
         >
           <TextInput
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             inputMode="email"
             left={
               <TextInput.Icon
@@ -76,11 +81,16 @@ const SellerLogin = ({ navigation }: any) => {
           />
           <TextInput
             left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             label="Password"
             value={password}
             secureTextEntry
             mode="outlined"
-            style={{ width: "100%", height: 60 }}
+            style={{ width: "100%", height: 60, backgroundColor }}
             onChangeText={(text) => setPassword(text)}
           />
         </StyledView>
@@ -90,7 +100,7 @@ const SellerLogin = ({ navigation }: any) => {
         >
           <StyledButton
             style={{ borderColor: theme.colors.primary }}
-            mode="outlined"
+            mode="contained"
             onPress={() => console.log("first")}
           >
             Login
