@@ -14,27 +14,40 @@ import { StatusBarHeight } from "./src/utils/StatusbarHeight";
 import { useFonts } from "expo-font";
 import * as SplashLoading from "expo-splash-screen";
 import { theme } from "./src/styles/theme";
+import StartAs from "./src/screens/StartAs";
+import SellerLogin from "./src/screens/SellerScreens/SellerLogin";
+import SellerSignup from "./src/screens/SellerScreens/SellerSignup";
 
 export default function App() {
   const Stack = createStackNavigator();
 
-  const MoveInFromBottom = {
-    gestureEnabled: true,
+  // const MoveInFromCenterFromBottom = {
+  //   gestureEnabled: true,
+  //   headerShown: false,
+  //   cardStyleInterpolator: ({ current, layouts }: any) => {
+  //     return {
+  //       cardStyle: {
+  //         transform: [
+  //           {
+  //             translateY: current.progress.interpolate({
+  //               inputRange: [0, 1],
+  //               outputRange: [layouts.screen.height, 0],
+  //             }),
+  //           },
+  //         ],
+  //       },
+  //     };
+  //   },
+  // };
+
+  const MoveInFromCenterFromBottom = {
+    ...TransitionPresets.RevealFromBottomAndroid, // Apply default slide animation
     headerShown: false,
-    cardStyleInterpolator: ({ current, layouts }: any) => {
-      return {
-        cardStyle: {
-          transform: [
-            {
-              translateY: current.progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [layouts.screen.height, 0],
-              }),
-            },
-          ],
-        },
-      };
-    },
+  };
+
+  const MoveInFromCenter = {
+    ...TransitionPresets.ScaleFromCenterAndroid, // Apply default slide animation
+    headerShown: false,
   };
 
   const SlideFromRight = {
@@ -59,26 +72,51 @@ export default function App() {
     <PaperProvider theme={theme}>
       <View style={{ flex: 1, paddingTop: StatusBarHeight }}>
         <NavigationContainer>
+          {/* OPEN ROUTES */}
           <Stack.Navigator screenOptions={SlideFromRight}>
             <Stack.Screen
               name="splash"
               component={Splash}
-              options={MoveInFromBottom}
+              options={MoveInFromCenterFromBottom}
             />
             <Stack.Screen
               name="welcome1"
               component={Welcome1}
-              options={MoveInFromBottom}
+              options={MoveInFromCenterFromBottom}
             />
             <Stack.Screen
               name="welcome2"
               component={Welcome2}
-              options={SlideFromRight}
+              options={MoveInFromCenterFromBottom}
             />
             <Stack.Screen
               name="welcome3"
               component={Welcome3}
+              options={MoveInFromCenterFromBottom}
+            />
+            <Stack.Screen
+              name="startAs"
+              component={StartAs}
+              options={MoveInFromCenterFromBottom}
+            />
+
+            {/* SELLER ROUTES */}
+            <Stack.Screen
+              name="sellerLogin"
+              component={SellerLogin}
+              options={MoveInFromCenter}
+            />
+            <Stack.Screen
+              name="sellerSignup"
+              component={SellerSignup}
               options={SlideFromRight}
+            />
+
+            {/* CUSTOMER ROUTES */}
+            <Stack.Screen
+              name="customerLogin"
+              component={StartAs}
+              options={MoveInFromCenter}
             />
           </Stack.Navigator>
         </NavigationContainer>

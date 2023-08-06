@@ -6,6 +6,7 @@ import { ThemeInterface } from "../styles/theme";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
 import TypeWriter from "react-native-typewriter";
+// import { FontAwesome5 } from '@expo/vector-icons';
 
 const Welcome3 = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -23,7 +24,7 @@ const Welcome3 = ({ navigation }: any) => {
         backgroundColor,
       }}
     >
-      <StatusBar backgroundColor={backgroundColor} />
+      <StatusBar animated={true} backgroundColor={backgroundColor} />
       <StyledView
         style={{
           width: "100%",
@@ -53,12 +54,15 @@ const Welcome3 = ({ navigation }: any) => {
         }}
       >
         <IconButton
-          icon="chevron-right"
+          icon="check"
+          // icon={() => (
+          //   <FontAwesome5 name="check" size={24} color="black" />
+          // )}
           mode="outlined"
           style={{ borderWidth: 3, borderColor: theme.colors.text }}
           iconColor={theme.colors.text}
           size={35}
-          onPress={() => console.log("Pressed")}
+          onPress={() => navigation.navigate("startAs")}
         />
         <StyledText style={{ fontSize: 15 }}>
           {" "}

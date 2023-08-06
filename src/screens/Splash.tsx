@@ -63,7 +63,7 @@ const Splash = ({ navigation }: any) => {
         backgroundColor,
       }}
     >
-      <StatusBar backgroundColor={backgroundColor} />
+      <StatusBar animated={true} backgroundColor={backgroundColor} />
       <Image
         style={{
           width: imageSize,

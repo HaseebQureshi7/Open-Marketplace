@@ -24,7 +24,7 @@ const Welcome1 = ({ navigation }: any) => {
         backgroundColor,
       }}
     >
-      <StatusBar backgroundColor={backgroundColor} />
+      <StatusBar animated={true} backgroundColor={backgroundColor} />
       <StyledView
         style={{
           width: "100%",
@@ -57,7 +57,7 @@ const Welcome1 = ({ navigation }: any) => {
       >
         <IconButton
           onPress={() => navigation.navigate("welcome2")}
-          icon="chevron-right"
+          icon="chevron-up"
           mode="outlined"
           style={{ borderWidth: 3, borderColor: theme.colors.text }}
           iconColor={theme.colors.text}
