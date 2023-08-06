@@ -17,6 +17,9 @@ import { theme } from "./src/styles/theme";
 import StartAs from "./src/screens/StartAs";
 import SellerLogin from "./src/screens/SellerScreens/SellerLogin";
 import SellerSignup from "./src/screens/SellerScreens/SellerSignup";
+import SkipLogin from "./src/screens/CustomerScreens/SkipLogin";
+import CustomerLogin from "./src/screens/CustomerScreens/CustomerLogin";
+import CustomerSignup from "./src/screens/CustomerScreens/CustomerSignup";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -114,9 +117,19 @@ export default function App() {
 
             {/* CUSTOMER ROUTES */}
             <Stack.Screen
-              name="customerLogin"
-              component={StartAs}
+              name="skipLogin"
+              component={SkipLogin}
               options={MoveInFromCenter}
+            />
+            <Stack.Screen
+              name="customerLogin"
+              component={CustomerLogin}
+              options={SlideFromRight}
+            />
+            <Stack.Screen
+              name="customerSignup"
+              component={CustomerSignup}
+              options={SlideFromRight}
             />
           </Stack.Navigator>
         </NavigationContainer>

@@ -98,7 +98,7 @@ const StartAs = ({navigation}:any) => {
 
         {/* Buyer Tab */}
         <Pressable
-          onPress={() => navigation.navigate("buyerLogin")}
+          onPress={() => navigation.navigate("skipLogin")}
           style={{
             width: "100%",
             justifyContent: "center",
