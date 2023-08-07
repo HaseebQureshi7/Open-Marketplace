@@ -8,6 +8,9 @@ import { TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import StyledButton from "../../styles/styledComponents/StyledButton";
+import { Picker } from "@react-native-picker/picker";
+import { Districts } from "../../utils/Districts";
+import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const SellerSignup = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -21,7 +24,8 @@ const SellerSignup = ({ navigation }: any) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [location, setLocation] = React.useState("Srinagar");
   const [description, setDescription] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPass, setConfirmPass] = React.useState("");
@@ -106,7 +110,7 @@ const SellerSignup = ({ navigation }: any) => {
           <TextInput
             left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"phone"} />}
             label="Phone"
-            inputMode="numeric"
+            inputMode="tel"
             value={phone}
             mode="outlined"
             style={{ width: "100%", height: 60, backgroundColor }}
@@ -117,13 +121,124 @@ const SellerSignup = ({ navigation }: any) => {
             }}
             onChangeText={(text) => setPhone(text)}
           />
+          {/* ADDRESS */}
+          <TextInput
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
+            numberOfLines={1}
+            inputMode="text"
+            left={
+              <TextInput.Icon
+                style={{ paddingTop: 10 }}
+                icon={() => (
+                  <Entypo
+                    name="address"
+                    size={24}
+                    color={theme.colors.placeholder}
+                  />
+                )}
+              />
+            }
+            label="Address (Street or Mohalla)"
+            value={address}
+            mode="outlined"
+            onChangeText={(text) => setAddress(text)}
+          />
           {/* LOCATION */}
+          <StyledView
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              height: 60,
+              borderWidth: 2,
+              paddingHorizontal: 10,
+              marginTop: 5,
+              borderRadius: 10,
+              borderColor: theme.colors.disabled,
+            }}
+          >
+            {/* <EvilIcons name="location" size={24}  /> */}
+            {/* <Entypo name="address" size={24} color="black" /> */}
+            <StyledView style={{ width: "10%" }}>
+              <Ionicons
+                name="location-sharp"
+                size={24}
+                color={theme.colors.placeholder}
+              />
+            </StyledView>
+            <Picker
+              mode="dialog"
+              style={{
+                borderWidth: 0,
+                width: "90%",
+                height: "100%",
+                padding: 15,
+              }}
+              selectedValue={location}
+              onValueChange={(itemValue: any) => {
+                setLocation(itemValue);
+              }}
+            >
+              {Districts?.map((districts) => {
+                return (
+                  <Picker.Item
+                    // style={{ color: theme.colors.placeholder }}
+                    key={districts}
+                    label={districts}
+                    value={districts}
+                  />
+                );
+              })}
+            </Picker>
+          </StyledView>
+          {/* PASSWORD */}
+          <TextInput
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
+            left={
+              <TextInput.Icon
+                style={{ paddingTop: 10 }}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="lastpass"
+                    size={24}
+                    color={theme.colors.placeholder}
+                  />
+                )}
+              />
+            }
+            label="Password"
+            value={password}
+            secureTextEntry
+            mode="outlined"
+            onChangeText={(text) => setPassword(text)}
+          />
+          {/* CONFIRM PASSWORD */}
           <TextInput
             left={
-              <TextInput.Icon style={{ paddingTop: 10 }} icon={"map-marker"} />
+              <TextInput.Icon
+                style={{ paddingTop: 10 }}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="lastpass"
+                    size={24}
+                    color={theme.colors.placeholder}
+                  />
+                )}
+              />
             }
-            label="Location"
-            value={location}
+            label="Confirm Password"
+            numberOfLines={1}
+            value={confirmPass}
             mode="outlined"
             style={{ width: "100%", height: 60, backgroundColor }}
             outlineStyle={{
@@ -131,45 +246,9 @@ const SellerSignup = ({ navigation }: any) => {
               borderWidth: 2,
               borderColor: theme.colors.disabled,
             }}
-            onChangeText={(text) => setLocation(text)}
+            secureTextEntry
+            onChangeText={(text) => setConfirmPass(text)}
           />
-          {/* PASSWORDS */}
-          <StyledView
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <TextInput
-              style={{ width: "47.5%", height: 60, backgroundColor }}
-              outlineStyle={{
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: theme.colors.disabled,
-              }}
-              left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
-              label="Password"
-              value={password}
-              secureTextEntry
-              mode="outlined"
-              onChangeText={(text) => setPassword(text)}
-            />
-            <TextInput
-              // left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}
-              style={{ width: "47.5%", height: 60, backgroundColor }}
-              outlineStyle={{
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: theme.colors.disabled,
-              }}
-              label="Confirm Password"
-              value={confirmPass}
-              secureTextEntry
-              mode="outlined"
-              onChangeText={(text) => setConfirmPass(text)}
-            />
-          </StyledView>
           {/* DESC */}
           <TextInput
             left={<TextInput.Icon icon={"file"} />}
@@ -186,13 +265,12 @@ const SellerSignup = ({ navigation }: any) => {
             }}
             onChangeText={(text) => setDescription(text)}
           />
-        {/* DISCLAIMER */}
-        <StyledText style={{color:theme.colors.primary}}>
-          By singing up ,you agree to our terms of service and acknowledge the
-          privacy policy.
-        </StyledText>
+          {/* DISCLAIMER */}
+          <StyledText style={{ color: theme.colors.primary }}>
+            By singing up ,you agree to our terms of service and acknowledge the
+            privacy policy.
+          </StyledText>
         </StyledView>
-
 
         {/* BUTTONS */}
         <StyledView
