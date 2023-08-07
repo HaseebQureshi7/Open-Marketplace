@@ -17,9 +17,10 @@ export interface ThemeInterface {
     onSurfaceVariant: string;
     notification: string;
     myOwnColor: string;
+    error: string;
   };
   fonts: {
-    regular: string;
+    bold: string;
     medium: string;
     light: string;
     thin: string;
@@ -50,6 +51,7 @@ export const theme: any = {
     onSurface: "#000000",
     notification: "#FF0266",
     myOwnColor: "#BADA55", // Custom color added
+    error: "red"
   },
   fonts: {
     ...DefaultTheme.fonts,

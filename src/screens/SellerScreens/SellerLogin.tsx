@@ -9,8 +9,10 @@ import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import { StatusBarHeight } from "../../utils/StatusbarHeight";
 import StyledButton from "./../../styles/styledComponents/StyledButton";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationProp } from "@react-navigation/native";
 
-const SellerLogin = ({ navigation }: any) => {
+const SellerLogin = ({ navigation }: {navigation : StackNavigationProp<any>}) => {
   const backgroundColor = "white";
   const imageSize =
     screenWidth > screenHeight
@@ -101,7 +103,12 @@ const SellerLogin = ({ navigation }: any) => {
           <StyledButton
             style={{ borderColor: theme.colors.primary }}
             mode="contained"
-            onPress={() => console.log("first")}
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "sellerStack" }],
+              })
+            }
           >
             Login
           </StyledButton>
