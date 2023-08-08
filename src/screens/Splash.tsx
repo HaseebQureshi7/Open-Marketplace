@@ -37,7 +37,7 @@ const Splash = ({ navigation }: any) => {
     onActive: (e) => {
       translateY.value = e.translationY;
       e.translationY < -200 ? runOnJS(navigation.navigate)("welcome1") : null;
-      console.log(Math.abs(Math.floor(translateY.value) / 250));
+      // console.log(Math.abs(Math.floor(translateY.value) / 250));
     },
     onEnd: () => {
       translateY.value = withSpring(1);
