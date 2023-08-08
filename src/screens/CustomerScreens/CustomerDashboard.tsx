@@ -14,9 +14,9 @@ import { ThemeInterface } from "../../styles/theme";
 import { TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { StatusBar } from "expo-status-bar";
-import { GetBusinessFromLS } from "../../utils/SaveUserToLS";
+import { GetBusinessFromLS, GetCustomerFromLS } from "../../utils/SaveUserToLS";
 
-const SellerDashboard = ({
+const CustomerDashboard = ({
   navigation,
 }: {
   navigation: DrawerNavigationProp<any>;
@@ -29,7 +29,7 @@ const SellerDashboard = ({
   const [userData, setUserData] = React.useState<any>();
 
   React.useEffect(() => {
-    GetBusinessFromLS().then((dat: any) => {
+    GetCustomerFromLS().then((dat: any) => {
       setUserData(dat);
     });
   }, []);
@@ -145,7 +145,7 @@ const SellerDashboard = ({
                 fontFamily: "InterBold",
               }}
             >
-              {userData ? userData?.name : "user-x"}
+              {userData ? " " + userData?.firstName : "user-x"}
             </TypeWriter>
           </StyledText>
         </View>
@@ -288,4 +288,4 @@ const SellerDashboard = ({
   );
 };
 
-export default SellerDashboard;
+export default CustomerDashboard;

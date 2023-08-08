@@ -14,6 +14,8 @@
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
+    "@tanstack/react-query": "^4.32.6",
+    "axios": "^1.4.0",
     "expo": "^49.0.6",
     "expo-font": "~11.4.0",
     "expo-splash-screen": "~0.20.5",
@@ -28,7 +30,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-typewriter": "^0.7.0",
     "react-native-vector-icons": "^10.0.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "@react-native-async-storage/async-storage": "1.18.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

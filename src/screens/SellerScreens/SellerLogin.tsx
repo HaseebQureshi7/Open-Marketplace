@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import StyledView from "../../styles/styledComponents/StyledView";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { screenHeight, screenWidth } from "../../utils/Dimensions";
@@ -11,8 +11,24 @@ import { StatusBarHeight } from "../../utils/StatusbarHeight";
 import StyledButton from "./../../styles/styledComponents/StyledButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationProp } from "@react-navigation/native";
+import { SnackStateTypes } from "../../types/SnackDataTypes";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useMutation } from "@tanstack/react-query";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
 
-const SellerLogin = ({ navigation }: {navigation : StackNavigationProp<any>}) => {
+interface loginDataTypes {
+  email: string;
+  password: string;
+}
+
+const SellerLogin = ({
+  navigation,
+}: {
+  navigation: StackNavigationProp<any>;
+}) => {
   const backgroundColor = "white";
   const imageSize =
     screenWidth > screenHeight
@@ -23,6 +39,48 @@ const SellerLogin = ({ navigation }: {navigation : StackNavigationProp<any>}) =>
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const { snackData, setSnackData }: SnackStateTypes =
+    useContext(SnackbarContext);
+
+  const loginQuery = (loginData: loginDataTypes) => {
+    return axios.post(baseUrl + "/business/login", loginData);
+  };
+
+  const { mutate, isLoading } = useMutation(loginQuery, {
+    onSuccess: (data) => {
+      SaveTokenToLS(data.data.token).then(() =>
+        SaveBusinessToLS(data.data.business).then(() => {
+          setSnackData({
+            open: true,
+            text: "Logged was Successfull",
+          });
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "sellerStack" }],
+          });
+        })
+      );
+      // GetCustomerFromLS().then((dat:any) => {
+      //   console.log(dat);
+      // })
+    },
+    onError: (e) => {
+      console.log("login failed !!!", e);
+    },
+  });
+
+  function HandleLogin() {
+    if (password.length >= 1) {
+      const loginData: loginDataTypes = {
+        email,
+        password,
+      };
+      mutate(loginData);
+    } else {
+      console.log("no");
+    }
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor }}>
@@ -103,12 +161,8 @@ const SellerLogin = ({ navigation }: {navigation : StackNavigationProp<any>}) =>
           <StyledButton
             style={{ borderColor: theme.colors.primary }}
             mode="contained"
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "sellerStack" }],
-              })
-            }
+            loading={isLoading}
+            onPress={() => HandleLogin()}
           >
             Login
           </StyledButton>

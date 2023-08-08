@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import StyledView from "../../styles/styledComponents/StyledView";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { screenHeight, screenWidth } from "../../utils/Dimensions";
 import { StatusBar } from "expo-status-bar";
 import { ThemeInterface } from "../../styles/theme";
-import { TextInput, useTheme } from "react-native-paper";
+import { Snackbar, TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import { StatusBarHeight } from "../../utils/StatusbarHeight";
 import StyledButton from "./../../styles/styledComponents/StyledButton";
+import { baseUrl } from "../../utils/localENV";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { GetCustomerFromLS, SaveCustomerToLS } from "../../utils/SaveUserToLS";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import { SnackStateTypes } from "../../types/SnackDataTypes";
+import { CommonActions } from "@react-navigation/native";
 
-const CustomerLogin = ({ navigation }: any) => {
+interface loginDataTypes {
+  email: string;
+  password: string;
+}
+
+const CustomerLogin = ({
+  navigation,
+}: {
+  navigation: StackNavigationProp<any>;
+}) => {
   const backgroundColor = "white";
   const imageSize =
     screenWidth > screenHeight
@@ -21,6 +39,50 @@ const CustomerLogin = ({ navigation }: any) => {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const { snackData, setSnackData }: SnackStateTypes =
+    useContext(SnackbarContext);
+
+  const loginQuery = (loginData: loginDataTypes) => {
+    return axios.post(baseUrl + "/customer/login", loginData);
+  };
+
+  const { mutate, isLoading } = useMutation(loginQuery, {
+    onSuccess: (data) => {
+      SaveTokenToLS(data.data.token).then(() =>
+        SaveCustomerToLS(data.data.customer).then(() => {
+          setSnackData({
+            open: true,
+            text: "Logged was Successfull",
+          });
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "customerStack" }],
+            })
+          );
+        })
+      );
+      // GetCustomerFromLS().then((dat:any) => {
+      //   console.log(dat);
+      // })
+    },
+    onError: (e) => {
+      console.log("login failed !!!", e);
+    },
+  });
+
+  function HandleLogin() {
+    if (password.length >= 1) {
+      const loginData: loginDataTypes = {
+        email,
+        password,
+      };
+      mutate(loginData);
+    } else {
+      console.log("no");
+    }
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor }}>
@@ -101,7 +163,8 @@ const CustomerLogin = ({ navigation }: any) => {
           <StyledButton
             style={{ borderColor: theme.colors.primary }}
             mode="contained"
-            onPress={() => console.log("first")}
+            loading={isLoading}
+            onPress={() => HandleLogin()}
           >
             Login
           </StyledButton>
