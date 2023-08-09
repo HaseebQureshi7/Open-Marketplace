@@ -1,21 +1,22 @@
-import * as React from "react";
-import { Divider, Drawer, useTheme } from "react-native-paper";
-import { AntDesign, Entypo } from "@expo/vector-icons";
-import { ThemeInterface } from "../styles/theme";
 import {
-  MaterialIcons,
+  Entypo,
+  Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
-import StyledText from "../styles/styledComponents/StyledText";
-import { Ionicons } from "@expo/vector-icons";
-import StyledView from "../styles/styledComponents/StyledView";
-import StyledButton from "../styles/styledComponents/StyledButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SnackbarContext } from "../context/SnackbarContext";
-import { SnackStateTypes } from "../types/SnackDataTypes";
 import { CommonActions } from "@react-navigation/native";
+import * as React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { Divider, Drawer, useTheme } from "react-native-paper";
+import { SnackbarContext } from "../context/SnackbarContext";
+import { UserDataContext } from "../context/UserDataContext";
+import StyledButton from "../styles/styledComponents/StyledButton";
+import StyledText from "../styles/styledComponents/StyledText";
+import StyledView from "../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../styles/theme";
+import { SnackStateTypes } from "../types/SnackDataTypes";
 
 const NavDrawer = ({ navigation }: any) => {
   const theme = useTheme<ThemeInterface>();
@@ -23,17 +24,21 @@ const NavDrawer = ({ navigation }: any) => {
   const { snackData, setSnackData }: SnackStateTypes =
     React.useContext(SnackbarContext);
 
-    async function Logout() {
-      await AsyncStorage.clear();
-      navigation.dispatch(CommonActions.reset({
+  const { userData, setUserData }: any = React.useContext(UserDataContext);
+
+  async function Logout() {
+    await AsyncStorage.clear();
+    navigation.dispatch(
+      CommonActions.reset({
         index: 0,
-        routes: [{ name: 'splash' }],
-      }));
-      setSnackData({
-        open: true,
-        text: "Logout was successful",
-      });
-    }
+        routes: [{ name: "splash" }],
+      })
+    );
+    setSnackData({
+      open: true,
+      text: "Logout was successful",
+    });
+  }
 
   return (
     <StyledView
@@ -96,7 +101,9 @@ const NavDrawer = ({ navigation }: any) => {
             fontFamily: "InterBold",
           }}
         >
-          Trends Fashion
+          {userData?.name
+            ? userData?.name
+            : userData?.firstName + " " + userData?.lastName}
         </Text>
       </View>
 

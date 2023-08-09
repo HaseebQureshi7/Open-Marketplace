@@ -10,6 +10,9 @@ import { SnackbarContext } from "./src/context/SnackbarContext";
 import React from "react";
 import { snackDataTypes } from "./src/types/SnackDataTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserDataContext } from "./src/context/UserDataContext";
+import { GetUserType } from "./src/utils/GetUserType";
+import { GetBusinessFromLS, GetCustomerFromLS } from "./src/utils/SaveUserToLS";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,6 +27,18 @@ export default function App() {
     open: false,
   });
 
+  const [userData, setUserData] = React.useState<any>();
+
+  React.useEffect(() => {
+    GetUserType().then((res) =>
+      res === "Business"
+        ? GetBusinessFromLS().then((res) => setUserData(res))
+        : res === "Customer"
+        ? GetCustomerFromLS().then((res) => setUserData(res))
+        : null
+    );
+  }, []);
+
   if (fontsLoaded) {
     SplashLoading.hideAsync();
   }
@@ -33,33 +48,35 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SnackbarContext.Provider value={{ snackData, setSnackData }}>
-        <PaperProvider theme={theme}>
-          <SafeAreaView style={{ flex: 1 }}>
-            <MainStack />
-            <Snackbar
-              style={{ backgroundColor: "#070707", marginBottom: 10 }}
-              visible={snackData.open}
-              duration={4000}
-              onDismiss={() =>
-                setSnackData({
-                  open: false,
-                })
-              }
-              action={{
-                label: "Dismiss",
-                onPress: () => {
+      <UserDataContext.Provider value={{ userData, setUserData }}>
+        <SnackbarContext.Provider value={{ snackData, setSnackData }}>
+          <PaperProvider theme={theme}>
+            <SafeAreaView style={{ flex: 1 }}>
+              <MainStack />
+              <Snackbar
+                style={{ backgroundColor: "#070707", marginBottom: 10 }}
+                visible={snackData.open}
+                duration={4000}
+                onDismiss={() =>
                   setSnackData({
                     open: false,
-                  });
-                },
-              }}
-            >
-              {snackData.text}
-            </Snackbar>
-          </SafeAreaView>
-        </PaperProvider>
-      </SnackbarContext.Provider>
+                  })
+                }
+                action={{
+                  label: "Dismiss",
+                  onPress: () => {
+                    setSnackData({
+                      open: false,
+                    });
+                  },
+                }}
+              >
+                {snackData.text}
+              </Snackbar>
+            </SafeAreaView>
+          </PaperProvider>
+        </SnackbarContext.Provider>
+      </UserDataContext.Provider>
     </QueryClientProvider>
   );
 }

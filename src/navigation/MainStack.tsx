@@ -20,6 +20,7 @@ import NavDrawer from "./NavDrawer";
 import CustomerDashboard from "../screens/CustomerScreens/CustomerDashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+import { GetUserType } from "../utils/GetUserType";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -27,19 +28,18 @@ const MainStack = () => {
 
   const [user, setUser] = React.useState("no-user");
 
-  (async () => {
-    const ds = await AsyncStorage.getAllKeys();
-    if (ds.includes("business")) {
-      setUser("Business");
-      console.log("Business Login");
-    } else if (ds.includes("customer")) {
-      setUser("Customer");
-      console.log("Customer Login");
-    } else {
-      setUser("no-user");
-      console.log("No User");
-    }
-  })();
+  GetUserType().then((res) =>
+    res === "Business"
+      ? setUser("Business")
+      : res === "Customer"
+      ? setUser("Customer")
+      : setUser("no-user")
+  );
+
+  // TEST
+  // React.useEffect(() => {
+  //   console.log("main stack ran !!!")
+  // }, [user])
 
   const MoveInFromCenterFromBottom = {
     ...TransitionPresets.RevealFromBottomAndroid, // Apply default slide animation

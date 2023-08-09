@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
-import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
 import { TextInput, useTheme } from "react-native-paper";
