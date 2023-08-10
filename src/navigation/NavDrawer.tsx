@@ -2,13 +2,18 @@ import {
   Entypo,
   Ionicons,
   MaterialCommunityIcons,
+  AntDesign,
   MaterialIcons,
   SimpleLineIcons,
+  Foundation,
+  FontAwesome5,
+  Fontisto,
+  FontAwesome,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import * as React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Divider, Drawer, useTheme } from "react-native-paper";
 import { SnackbarContext } from "../context/SnackbarContext";
 import { UserDataContext } from "../context/UserDataContext";
@@ -41,6 +46,89 @@ const NavDrawer = ({ navigation }: any) => {
     });
   }
 
+  const sidebarMenu = [
+    {
+      icon: (
+        <AntDesign
+          name="profile"
+          style={{}}
+          size={22.5}
+          color={theme.colors.placeholder}
+        />
+      ),
+      title: "Profile",
+    },
+    {
+      icon: (
+        <AntDesign
+          name="profile"
+          style={{}}
+          size={22.5}
+          color={theme.colors.placeholder}
+        />
+      ),
+      title: "New Orders",
+    },
+    {
+      icon: (
+        <AntDesign
+          name="profile"
+          style={{}}
+          size={22.5}
+          color={theme.colors.placeholder}
+        />
+      ),
+      title: "Add Product",
+    },
+    {
+      icon: (
+        <AntDesign
+          name="profile"
+          style={{}}
+          size={22.5}
+          color={theme.colors.placeholder}
+        />
+      ),
+      title: "Total Sales",
+    },
+  ];
+
+  const SidebarItem = ({ icon, title }: any) => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingVertical: 20,
+        }}
+      >
+        <StyledView
+          style={{
+            width: "75%",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+          }}
+        >
+          {icon}
+          <StyledText
+            style={{ fontSize: 17.5, color: theme.colors.placeholder }}
+          >
+            {title}
+          </StyledText>
+        </StyledView>
+        <Entypo
+          name="chevron-right"
+          size={17.5}
+          color={theme.colors.placeholder}
+        />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <StyledView
       style={{
@@ -49,32 +137,23 @@ const NavDrawer = ({ navigation }: any) => {
         alignItems: "flex-start",
       }}
     >
-      {/* CLOSE */}
-      <TouchableOpacity
-        onPress={() => navigation.closeDrawer()}
+      {/* LOGO */}
+      <View
         style={{
+          width: "100%",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-start",
-          // backgroundColor:'red',
-          flexDirection: "row",
-          marginLeft: "auto",
-          paddingRight: 20,
-          gap: 25,
-          marginVertical: 25,
+          marginVertical: 30,
+          paddingHorizontal: 15,
         }}
       >
-        {/* <StyledText style={{fontSize:20, color:theme.colors.placeholder}}>Close</StyledText> */}
-        <Entypo
-          name="cross"
-          style={{
-            padding: 10,
-            borderRadius: 5,
-            backgroundColor: theme.colors.background,
-          }}
-          size={25}
-          color={theme.colors.text}
+        {/* LOGO HORIZONTAL */}
+        <Image
+          style={{ width: 135, aspectRatio: 4 }}
+          source={require("../../assets/images/logo-horizontal.png")}
         />
-      </TouchableOpacity>
+      </View>
 
       {/* USER */}
       <View
@@ -84,96 +163,304 @@ const NavDrawer = ({ navigation }: any) => {
           alignItems: "flex-start",
           justifyContent: "space-between",
           marginBottom: 20,
-          paddingLeft: 20,
+          gap: 5,
+          paddingLeft: 40,
         }}
       >
         <StyledText
           style={{
-            fontSize: 15,
+            fontSize: 12.5,
             fontFamily: "InterMedium",
             color: theme.colors.placeholder,
           }}
         >
-          Logged in as
+          {userData?.id ? "Logged in as" : "Not logged in"}
         </StyledText>
-        <Text
-          style={{
-            fontSize: 25,
-            fontFamily: "InterBold",
-          }}
-        >
-          {userData?.name
-            ? userData?.name
-            : userData?.firstName + " " + userData?.lastName}
-        </Text>
+        {/* USER LOGIN INFO */}
+        {userData?.name ? (
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 10,
+            }}
+          >
+            <Foundation
+              name="torso-business"
+              size={30}
+              color={theme.colors.text}
+            />
+            {/* <Fontisto name="person" size={25} color="black" /> */}
+            <StyledText
+              style={{
+                fontSize: 20,
+              }}
+            >
+              {userData?.name
+                ? userData?.name
+                : userData?.firstName + " " + userData?.lastName}
+            </StyledText>
+          </View>
+        ) : userData?.firstName ? (
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 10,
+            }}
+          >
+            {/* <Foundation name="torso-business" size={30} color={theme.colors.text} /> */}
+            <Fontisto name="person" size={25} color="black" />
+            <StyledText
+              style={{
+                fontSize: 20,
+              }}
+            >
+              {userData?.name
+                ? userData?.name
+                : userData?.firstName + " " + userData?.lastName}
+            </StyledText>
+          </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 10,
+            }}
+          >
+            <Fontisto name="person" size={25} color="black" />
+            <StyledText
+              style={{
+                fontSize: 20,
+              }}
+            >
+              No Login
+            </StyledText>
+          </View>
+        )}
       </View>
 
       {/* CUSTOMER TABS */}
-      <Drawer.Section
-        showDivider={false}
-        style={{ width: "100%", gap: 5, paddingLeft: 30 }}
-      >
-        <Drawer.Item
-          style={{
-            width: "75%",
-            borderRadius: 5,
-            transform: [{ scale: 1.25 }],
-          }}
-          icon={() => (
-            <MaterialCommunityIcons
-              name="account-circle-outline"
-              size={20}
-              color={theme.colors.primary}
-            />
-          )}
-          label="Profile"
-          onPress={() => console.log("first")}
-        />
-        <Divider style={{ width: "75%" }} />
-        <Drawer.Item
-          style={{
-            width: "75%",
-            borderRadius: 5,
-            transform: [{ scale: 1.25 }],
-          }}
-          icon={() => (
-            <SimpleLineIcons name="bag" size={20} color={theme.colors.accent} />
-          )}
-          label="Orders"
-          onPress={() => console.log("first")}
-        />
-        <Divider style={{ width: "75%" }} />
-        <Drawer.Item
-          style={{
-            width: "75%",
-            borderRadius: 5,
-            transform: [{ scale: 1.25 }],
-          }}
-          icon={() => (
-            <Ionicons
-              name="heart-outline"
-              size={20}
-              color={theme.colors.error}
-            />
-          )}
-          label="Wishlist"
-          onPress={() => console.log("first")}
-        />
-        <Divider style={{ width: "75%" }} />
-      </Drawer.Section>
+      {userData?.firstName && (
+        <Drawer.Section
+          showDivider={false}
+          style={{ width: "100%", gap: 5, paddingLeft: 30 }}
+        >
+          {/* PROFILE */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <Ionicons
+                name="person-circle"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Manage Profile"
+            onPress={() => console.log("first")}
+          />
+          {/* ADD PRODS */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <Ionicons
+                name="ios-add-circle-sharp"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Add Products"
+            onPress={() => console.log("first")}
+          />
+          {/* NEW ORDERS */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <MaterialIcons
+                name="new-releases"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="New Orders"
+            onPress={() => console.log("first")}
+          />
+          {/* TOTAL SALES */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <SimpleLineIcons
+                name="calculator"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Total Sales"
+            onPress={() => console.log("first")}
+          />
+        </Drawer.Section>
+      )}
+
+      {/* ACTIONS HEADER */}
+      {/* <StyledText style={{ fontSize: 17.5, marginLeft:40, color: theme.colors.placeholder }}>
+        ACTION MENU
+      </StyledText> */}
+
+      {/* SELLER TABS */}
+      {userData?.name && (
+        <Drawer.Section
+          showDivider={false}
+          style={{ width: "100%", gap: 5, paddingLeft: 30 }}
+        >
+          {/* PROFILE */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <Ionicons
+                name="person-circle"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Manage Profile"
+            onPress={() => console.log("first")}
+          />
+          {/* ADD PRODS */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <Ionicons
+                name="ios-add-circle-sharp"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Add Products"
+            onPress={() => console.log("first")}
+          />
+          {/* NEW ORDERS */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <MaterialIcons
+                name="new-releases"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="New Orders"
+            onPress={() => console.log("first")}
+          />
+          {/* TOTAL SALES */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <SimpleLineIcons
+                name="calculator"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Total Sales"
+            onPress={() => console.log("first")}
+          />
+        </Drawer.Section>
+      )}
 
       {/* TAB LOGOUT*/}
       <StyledButton
         rippleColor={"white"}
         onPress={() => Logout()}
         style={{
+          width:"75%",
+          marginLeft:40,
           marginTop: "auto",
-          backgroundColor: theme.colors.error,
-          borderRadius: 0,
+          borderRadius: 5,
           marginBottom: 25,
         }}
+        buttonColor="red"
         mode="contained"
         icon={() => <MaterialIcons name="logout" size={25} color={"white"} />}
+        textColor="white"
       >
         Logout
       </StyledButton>

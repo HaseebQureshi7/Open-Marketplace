@@ -11,7 +11,7 @@ import SkipLogin from "../screens/CustomerScreens/SkipLogin";
 import SellerLogin from "../screens/SellerScreens/SellerLogin";
 import SellerSignup from "../screens/SellerScreens/SellerSignup";
 import Splash from "../screens/Splash";
-import StartAs from "../screens/StartAs";
+import StartAs from "../screens/StartAs"; 
 import Welcome1 from "../screens/Welcome1";
 import Welcome2 from "../screens/Welcome2";
 import Welcome3 from "../screens/Welcome3";
@@ -60,7 +60,7 @@ const MainStack = () => {
   return (
     <NavigationContainer>
       {/* OPEN ROUTES */}
-      <Stack.Navigator screenOptions={SlideFromRight}>
+      <Stack.Navigator screenOptions={SlideFromRight}> 
         {user === "no-user" && (
           <Stack.Group>
             <Stack.Screen
