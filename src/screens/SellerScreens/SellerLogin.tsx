@@ -11,13 +11,13 @@ import { StatusBarHeight } from "../../utils/StatusbarHeight";
 import StyledButton from "./../../styles/styledComponents/StyledButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationProp } from "@react-navigation/native";
-import { SnackStateTypes } from "../../types/SnackDataTypes";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useMutation } from "@tanstack/react-query";
 import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
 import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
+import { SnackStateProps } from "../../../src/types/SnackbarTypes";
 
 interface loginDataTypes {
   email: string;
@@ -40,7 +40,7 @@ const SellerLogin = ({
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { snackData, setSnackData }: SnackStateTypes =
+  const { snackData, setSnackData }: SnackStateProps =
     useContext(SnackbarContext);
 
   const loginQuery = (loginData: loginDataTypes) => {
@@ -53,7 +53,8 @@ const SellerLogin = ({
         SaveBusinessToLS(data.data.business).then(() => {
           setSnackData({
             open: true,
-            text: "Logged was Successfull",
+            severity: "Success",
+            text: "Login was successful!",
           });
           navigation.reset({
             index: 0,
@@ -66,7 +67,11 @@ const SellerLogin = ({
       // })
     },
     onError: (e) => {
-      console.log("login failed !!!", e);
+      setSnackData({
+        open: true,
+        severity: "Error",
+        text: "Invalid Email or Password!",
+      });
     },
   });
 
@@ -78,7 +83,11 @@ const SellerLogin = ({
       };
       mutate(loginData);
     } else {
-      console.log("no");
+      setSnackData({
+        open: true,
+        severity: "Warning",
+        text: "Provide both email & password",
+      });
     }
   }
 
@@ -162,7 +171,7 @@ const SellerLogin = ({
             style={{ borderColor: theme.colors.primary }}
             mode="contained"
             loading={isLoading}
-            onPress={() => HandleLogin()}
+            onPress={() => !isLoading && HandleLogin()}
           >
             Login
           </StyledButton>

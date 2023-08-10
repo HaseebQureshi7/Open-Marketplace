@@ -16,12 +16,12 @@ import StyledButton from "../styles/styledComponents/StyledButton";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
 import { ThemeInterface } from "../styles/theme";
-import { SnackStateTypes } from "../types/SnackDataTypes";
+import { SnackbarTypes, SnackStateProps } from "../types/SnackbarTypes";
 
 const NavDrawer = ({ navigation }: any) => {
   const theme = useTheme<ThemeInterface>();
 
-  const { snackData, setSnackData }: SnackStateTypes =
+  const { snackData, setSnackData }: SnackStateProps =
     React.useContext(SnackbarContext);
 
   const { userData, setUserData }: any = React.useContext(UserDataContext);
@@ -36,6 +36,7 @@ const NavDrawer = ({ navigation }: any) => {
     );
     setSnackData({
       open: true,
+      severity: "Info",
       text: "Logout was successful",
     });
   }
