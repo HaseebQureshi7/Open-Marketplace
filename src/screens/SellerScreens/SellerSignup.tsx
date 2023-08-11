@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import StyledView from "../../styles/styledComponents/StyledView";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { screenHeight, screenWidth } from "../../utils/Dimensions";
 import { StatusBar } from "expo-status-bar";
 import { ThemeInterface } from "../../styles/theme";
 import { TextInput, useTheme } from "react-native-paper";
+import { Image } from "react-native";
 import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import StyledButton from "../../styles/styledComponents/StyledButton";
 import { Picker } from "@react-native-picker/picker";
 import { Districts } from "../../utils/Districts";
-import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  Entypo,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useMutation } from "@tanstack/react-query";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import { SnackStateProps } from "../../types/SnackbarTypes";
+import { Pressable } from "react-native";
+import { RequestImage } from "../../utils/RequestImage";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const SellerSignup = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -21,14 +37,107 @@ const SellerSignup = ({ navigation }: any) => {
 
   const theme = useTheme<ThemeInterface>();
 
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [location, setLocation] = React.useState("Srinagar");
-  const [description, setDescription] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPass, setConfirmPass] = React.useState("");
+  interface signupDataTypes {
+    name: string;
+    email: string;
+    phone: number;
+    profilePicture: string;
+    address: string;
+    location: string;
+    description: string;
+    password: string;
+  }
+
+  const [name, setName] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [phone, setPhone] = React.useState<number | any>();
+  const [profilePicture, setProfilePicture] = React.useState<string>("");
+  const [address, setAddress] = React.useState<string>("");
+  const [location, setLocation] = React.useState<string>("Srinagar");
+  const [description, setDescription] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [confirmPass, setConfirmPass] = React.useState<string>("");
+
+  const { snackData, setSnackData }: SnackStateProps =
+    useContext(SnackbarContext);
+
+  const {userData, setUserData}: any = useContext(UserDataContext)
+
+  const UpdateImage = () => {
+    RequestImage().then((res: any) => {
+      setProfilePicture(res);
+    });
+  };
+
+  const signupQuery = (signupData: signupDataTypes) => {
+    return axios.post(baseUrl + "/business/signup", signupData);
+  };
+
+  const { mutate, isLoading } = useMutation(signupQuery, {
+    onSuccess: (data: any) => {
+      SaveTokenToLS(data.data.token).then(() =>
+        SaveBusinessToLS(data.data.business).then(() => {
+          setUserData(data.data.business)
+          setSnackData({
+            open: true,
+            severity: "Success",
+            text: "Login was successful!",
+          });
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "sellerStack" }],
+          });
+        })
+      );
+    },
+    onError: (e) => {
+      setSnackData({
+        open: true,
+        severity: "Error",
+        text: "Invalid Email or Password!",
+      });
+    },
+  });
+
+  function HandleSignup() {
+    if (
+      name.length > 3 &&
+      email.includes("@") &&
+      phone.length > 7 &&
+      profilePicture &&
+      address.length > 4 &&
+      location.length > 4 &&
+      description.length > 4 &&
+      password.length >= 3
+    ) {
+      if (password === confirmPass) {
+        const signupData: signupDataTypes = {
+          name,
+          email,
+          phone,
+          profilePicture,
+          address,
+          location,
+          description,
+          password,
+        };
+        mutate(signupData);
+        console.log(signupData);
+      } else {
+        setSnackData({
+          open: true,
+          severity: "Warning",
+          text: "Passwords do not match!",
+        });
+      }
+    } else {
+      setSnackData({
+        open: true,
+        severity: "Warning",
+        text: "Please provide all details!",
+      });
+    }
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor }}>
@@ -67,6 +176,113 @@ const SellerSignup = ({ navigation }: any) => {
         <StyledView
           style={{ width: "100%", alignItems: "flex-start", gap: 15 }}
         >
+          {/* DP SECTION */}
+          <StyledView
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              marginBottom: 15,
+            }}
+          >
+            {/* IMAGE */}
+            <Pressable
+              style={{
+                // width: "40%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => UpdateImage()}
+            >
+              <MaterialCommunityIcons
+                style={{
+                  position: "absolute",
+                  zIndex: 1,
+                  opacity: profilePicture ? 0 : 1,
+                }}
+                name="image-edit-outline"
+                size={50}
+                color="black"
+              />
+              <Image
+                style={{
+                  opacity: profilePicture ? 1 : 0.4,
+                  width: 100,
+                  height: 100,
+                  borderRadius: 10,
+                }}
+                source={
+                  profilePicture
+                    ? { uri: "data:image/png;base64," + profilePicture }
+                    : require("../../../assets/images/storeplaceholder.jpg")
+                }
+              />
+            </Pressable>
+
+            {/* IMAGE TEXT */}
+            <StyledView
+              style={{ width: "60%", alignItems: "flex-start", gap: 10 }}
+            >
+              {/* IMAGE HEADER TEXT */}
+              <StyledText style={{ fontSize: 25 }}>
+                Upload a Profile Picture
+              </StyledText>
+              <StyledView>
+                {/* IMAGE BOTTOM TEXT --> SUCCESS */}
+                {profilePicture && (
+                  <StyledView
+                    style={{
+                      width: "100%",
+                      flexDirection: "row",
+                      gap: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <StyledText
+                      style={{
+                        fontSize: 15,
+                        color: theme.colors.success,
+                      }}
+                    >
+                      Store Picture Set
+                    </StyledText>
+                    <MaterialCommunityIcons
+                      name="sticker-check-outline"
+                      size={15}
+                      color={theme.colors.success}
+                    />
+                  </StyledView>
+                )}
+                {/* IMAGE BOTTOM TEXT --> FAILURE */}
+                {!profilePicture && (
+                  <StyledView
+                    style={{
+                      width: "100%",
+                      flexDirection: "row",
+                      gap: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <StyledText
+                      style={{
+                        fontSize: 15,
+                        color: theme.colors.error,
+                      }}
+                    >
+                      No Store Picture
+                    </StyledText>
+                    <MaterialIcons
+                      name="error-outline"
+                      size={15}
+                      color={theme.colors.error}
+                    />
+                  </StyledView>
+                )}
+              </StyledView>
+            </StyledView>
+          </StyledView>
+
           {/* NAME */}
           <TextInput
             style={{ width: "100%", height: 60, backgroundColor }}
@@ -276,7 +492,11 @@ const SellerSignup = ({ navigation }: any) => {
         <StyledView
           style={{ width: "100%", alignItems: "flex-start", gap: 15 }}
         >
-          <StyledButton mode="contained" onPress={() => console.log("first")}>
+          <StyledButton
+            loading={isLoading}
+            mode="contained"
+            onPress={() => HandleSignup()}
+          >
             Sign up
           </StyledButton>
         </StyledView>

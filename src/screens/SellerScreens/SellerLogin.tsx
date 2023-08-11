@@ -18,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
 import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
 import { SnackStateProps } from "../../../src/types/SnackbarTypes";
+import { UserDataContext } from "../../context/UserDataContext";
 
 interface loginDataTypes {
   email: string;
@@ -43,6 +44,8 @@ const SellerLogin = ({
   const { snackData, setSnackData }: SnackStateProps =
     useContext(SnackbarContext);
 
+  const { userData, setUserData }: any = useContext(UserDataContext);
+
   const loginQuery = (loginData: loginDataTypes) => {
     return axios.post(baseUrl + "/business/login", loginData);
   };
@@ -51,6 +54,7 @@ const SellerLogin = ({
     onSuccess: (data) => {
       SaveTokenToLS(data.data.token).then(() =>
         SaveBusinessToLS(data.data.business).then(() => {
+          setUserData(data.data.business);
           setSnackData({
             open: true,
             severity: "Success",
@@ -129,24 +133,23 @@ const SellerLogin = ({
           style={{ width: "100%", alignItems: "flex-start", gap: 15 }}
         >
           <TextInput
-            style={{ width: "100%", height: 60, backgroundColor }}
-            outlineStyle={{
-              borderRadius: 10,
-              borderWidth: 2,
-              borderColor: theme.colors.disabled,
-            }}
-            inputMode="email"
             left={
               <TextInput.Icon
                 style={{ paddingTop: 10 }}
                 icon={"email-outline"}
               />
             }
-            // right={<TextInput.Affix text="/100" />}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
             label="Email Address"
             value={email}
+            // inputMode="email" // Disabled Cursor !!!
             mode="outlined"
             onChangeText={(text) => setEmail(text)}
+            style={{ width: "100%", height: 60, backgroundColor }}
           />
           <TextInput
             left={<TextInput.Icon style={{ paddingTop: 10 }} icon={"eye"} />}

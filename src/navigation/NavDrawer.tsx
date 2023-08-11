@@ -42,7 +42,7 @@ const NavDrawer = ({ navigation }: any) => {
     setSnackData({
       open: true,
       severity: "Info",
-      text: "Logout was successful",
+      text: "Logged out!",
     });
   }
 
@@ -451,8 +451,8 @@ const NavDrawer = ({ navigation }: any) => {
         rippleColor={"white"}
         onPress={() => Logout()}
         style={{
-          width:"75%",
-          marginLeft:40,
+          width: "75%",
+          marginLeft: 40,
           marginTop: "auto",
           borderRadius: 5,
           marginBottom: 25,

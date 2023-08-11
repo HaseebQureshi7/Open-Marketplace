@@ -31,7 +31,9 @@
     "react-native-typewriter": "^0.7.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.19.6",
-    "@react-native-async-storage/async-storage": "1.18.2"
+    "@react-native-async-storage/async-storage": "1.18.2",
+    "expo-image-picker": "~14.3.2",
+    "expo-image-manipulator": "~11.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

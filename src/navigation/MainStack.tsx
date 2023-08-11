@@ -116,7 +116,7 @@ const MainStack = () => {
               options={SlideFromRight}
             />
           </Stack.Group>
-        )}
+        )} 
         {/* RESTRICTED SELLER ROUTES */}
         {user === "Business" && (
           <Stack.Screen name="sellerStack" options={SlideFromRight}>
