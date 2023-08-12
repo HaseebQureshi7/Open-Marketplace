@@ -19,6 +19,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     InterMedium: require("./assets/fonts/Inter-Regular.ttf"),
     InterBold: require("./assets/fonts/Inter-SemiBold.ttf"),
+    InterLight: require("./assets/fonts/Inter-Light.ttf"),
   });
 
   const queryClient = new QueryClient();

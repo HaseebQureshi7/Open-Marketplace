@@ -47,9 +47,9 @@ export const theme: any = {
     background: "#F6F6F6",
     onSurfaceVariant: "#727272", // Effects Input labels
     surface: "#FFFFFF",
-    text: "#333333",
+    text: "#1D1E20",
     disabled: "#AFAFAF",
-    placeholder: "#727272",
+    placeholder: "#8F959E",
     backdrop: "#000000",
     onSurface: "#000000",
     notification: "#FF0266",
@@ -64,7 +64,7 @@ export const theme: any = {
     bold: "InterBold",
     medium: "InterMedium",
     light: "InterMedium",
-    thin: "InterMedium",
+    thin: "InterLight",
   },
   animation: {
     ...DefaultTheme.animation,
