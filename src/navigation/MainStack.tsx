@@ -11,7 +11,7 @@ import SkipLogin from "../screens/CustomerScreens/SkipLogin";
 import SellerLogin from "../screens/SellerScreens/SellerLogin";
 import SellerSignup from "../screens/SellerScreens/SellerSignup";
 import Splash from "../screens/Splash";
-import StartAs from "../screens/StartAs"; 
+import StartAs from "../screens/StartAs";
 import Welcome1 from "../screens/Welcome1";
 import Welcome2 from "../screens/Welcome2";
 import Welcome3 from "../screens/Welcome3";
@@ -21,6 +21,7 @@ import CustomerDashboard from "../screens/CustomerScreens/CustomerDashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { GetUserType } from "../utils/GetUserType";
+import AddProducts from "../screens/SellerScreens/AddProducts";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -60,7 +61,7 @@ const MainStack = () => {
   return (
     <NavigationContainer>
       {/* OPEN ROUTES */}
-      <Stack.Navigator screenOptions={SlideFromRight}> 
+      <Stack.Navigator screenOptions={SlideFromRight}>
         {user === "no-user" && (
           <Stack.Group>
             <Stack.Screen
@@ -116,7 +117,7 @@ const MainStack = () => {
               options={SlideFromRight}
             />
           </Stack.Group>
-        )} 
+        )}
         {/* RESTRICTED SELLER ROUTES */}
         {user === "Business" && (
           <Stack.Screen name="sellerStack" options={SlideFromRight}>
@@ -125,9 +126,22 @@ const MainStack = () => {
                 drawerContent={NavDrawer}
                 screenOptions={{ headerShown: false, drawerType: "slide" }}
               >
-                <Drawer.Group>
-                  <Drawer.Screen name="dashboard" component={SellerDashboard} />
-                </Drawer.Group>
+                <Drawer.Screen name="mainThread">
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="dashboard"
+                        component={SellerDashboard}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="addProducts"
+                        component={AddProducts}
+                        options={SlideFromRight}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Drawer.Screen>
               </Drawer.Navigator>
             )}
           </Stack.Screen>
@@ -140,12 +154,17 @@ const MainStack = () => {
                 drawerContent={NavDrawer}
                 screenOptions={{ headerShown: false, drawerType: "slide" }}
               >
-                <Drawer.Group>
-                  <Drawer.Screen
-                    name="dashboard"
-                    component={CustomerDashboard}
-                  />
-                </Drawer.Group>
+                <Drawer.Screen name="mainThread">
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="dashboard"
+                        component={CustomerDashboard}
+                        options={SlideFromRight}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Drawer.Screen>
               </Drawer.Navigator>
             )}
           </Stack.Screen>

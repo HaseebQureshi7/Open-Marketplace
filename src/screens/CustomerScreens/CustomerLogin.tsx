@@ -16,8 +16,8 @@ import { GetCustomerFromLS, SaveCustomerToLS } from "../../utils/SaveUserToLS";
 import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SnackbarContext } from "../../context/SnackbarContext";
-import { SnackStateTypes } from "../../types/SnackDataTypes";
 import { CommonActions } from "@react-navigation/native";
+import { SnackStateProps } from "../../types/SnackbarTypes";
 
 interface loginDataTypes {
   email: string;
@@ -40,7 +40,7 @@ const CustomerLogin = ({
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { snackData, setSnackData }: SnackStateTypes =
+  const { snackData, setSnackData }: SnackStateProps =
     useContext(SnackbarContext);
 
   const loginQuery = (loginData: loginDataTypes) => {
@@ -53,7 +53,8 @@ const CustomerLogin = ({
         SaveCustomerToLS(data.data.customer).then(() => {
           setSnackData({
             open: true,
-            text: "Logged was Successfull",
+            severity: "Success",
+            text: "Login was Successfull",
           });
           navigation.dispatch(
             CommonActions.reset({

@@ -81,7 +81,7 @@ const SellerSignup = ({ navigation }: any) => {
           setSnackData({
             open: true,
             severity: "Success",
-            text: "Login was successful!",
+            text: "Signup was successful!",
           });
           navigation.reset({
             index: 0,
@@ -94,7 +94,7 @@ const SellerSignup = ({ navigation }: any) => {
       setSnackData({
         open: true,
         severity: "Error",
-        text: "Invalid Email or Password!",
+        text: "Something went wrong!",
       });
     },
   });

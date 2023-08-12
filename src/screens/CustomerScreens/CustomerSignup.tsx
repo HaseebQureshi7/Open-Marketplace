@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import StyledView from "../../styles/styledComponents/StyledView";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { screenHeight, screenWidth } from "../../utils/Dimensions";
@@ -9,6 +9,14 @@ import TypeWriter from "react-native-typewriter";
 import { ScrollView } from "react-native-gesture-handler";
 import StyledButton from "../../styles/styledComponents/StyledButton";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useMutation } from "@tanstack/react-query";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { SaveCustomerToLS } from "../../utils/SaveUserToLS";
+import { UserDataContext } from "../../context/UserDataContext";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import { SnackStateProps } from "../../types/SnackbarTypes";
 
 const CustomerSignup = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -19,12 +27,99 @@ const CustomerSignup = ({ navigation }: any) => {
 
   const theme = useTheme<ThemeInterface>();
 
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPass, setConfirmPass] = React.useState("");
+  interface signupDataTypes {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: number;
+    password: string;
+  }
+
+  const [firstName, setFirstName] = React.useState<string>("");
+  const [lastName, setLastName] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [phone, setPhone] = React.useState<number | any>();
+  const [password, setPassword] = React.useState<string>("");
+  const [confirmPass, setConfirmPass] = React.useState<string>("");
+
+  const { snackData, setSnackData }: SnackStateProps =
+    useContext(SnackbarContext);
+
+  const { userData, setUserData }: any = useContext(UserDataContext);
+
+  const signupQuery = (signupData: signupDataTypes) => {
+    return axios.post(baseUrl + "/customer/signup", signupData);
+  };
+
+  const { mutate, isLoading } = useMutation(signupQuery, {
+    onSuccess: (data: any) => {
+      SaveTokenToLS(data.data.token).then(() =>
+        SaveCustomerToLS(data.data.customer).then(() => {
+          setUserData(data.data.customer);
+          setSnackData({
+            open: true,
+            severity: "Success",
+            text: "Signup was successful!",
+          });
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "customerStack" }],
+          });
+        })
+      );
+    },
+    onError: (e) => {
+      setSnackData({
+        open: true,
+        severity: "Error",
+        text: "Something went wrong!",
+      });
+    },
+  });
+
+  function HandleSignup() {
+    if (firstName.length > 3 && lastName.length > 3) {
+      if (email.includes("@")) {
+        if (phone.length > 7) {
+          if (password.length > 3 && password === confirmPass) {
+            const signupData: signupDataTypes = {
+              firstName,
+              lastName,
+              email,
+              phone,
+              password,
+            };
+            mutate(signupData);
+            console.log(signupData);
+          } else {
+            setSnackData({
+              open: true,
+              severity: "Warning",
+              text: "Passwords do not match!",
+            });
+          }
+        } else {
+          setSnackData({
+            open: true,
+            severity: "Warning",
+            text: "Invalid phone number!",
+          });
+        }
+      } else {
+        setSnackData({
+          open: true,
+          severity: "Warning",
+          text: "Provide a proper Email!",
+        });
+      }
+    } else {
+      setSnackData({
+        open: true,
+        severity: "Warning",
+        text: "Provide a proper first & last name!",
+      });
+    }
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor }}>
@@ -149,57 +244,57 @@ const CustomerSignup = ({ navigation }: any) => {
             onChangeText={(text) => setPhone(text)}
           />
           {/* PASSWORD */}
-            <TextInput
-              style={{ width: "100%", height: 60, backgroundColor }}
-              outlineStyle={{
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: theme.colors.disabled,
-              }}
-              left={
-                <TextInput.Icon
-                  style={{ paddingTop: 10 }}
-                  icon={() => (
-                    <MaterialCommunityIcons
-                      name="lastpass"
-                      size={24}
-                      color={theme.colors.placeholder}
-                    />
-                  )}
-                />
-              }
-              label="Password"
-              value={password}
-              secureTextEntry
-              mode="outlined"
-              onChangeText={(text) => setPassword(text)}
-            />
+          <TextInput
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
+            left={
+              <TextInput.Icon
+                style={{ paddingTop: 10 }}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="lastpass"
+                    size={24}
+                    color={theme.colors.placeholder}
+                  />
+                )}
+              />
+            }
+            label="Password"
+            value={password}
+            secureTextEntry
+            mode="outlined"
+            onChangeText={(text) => setPassword(text)}
+          />
           {/* CONFIRM PASSWORD */}
-            <TextInput
-              left={
-                <TextInput.Icon
-                  style={{ paddingTop: 10 }}
-                  icon={() => (
-                    <MaterialCommunityIcons
-                      name="lastpass"
-                      size={24}
-                      color={theme.colors.placeholder}
-                    />
-                  )}
-                />
-              }
-              style={{ width: "100%", height: 60, backgroundColor }}
-              outlineStyle={{
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: theme.colors.disabled,
-              }}
-              label="Confirm Password"
-              value={confirmPass}
-              secureTextEntry
-              mode="outlined"
-              onChangeText={(text) => setConfirmPass(text)}
-            />
+          <TextInput
+            left={
+              <TextInput.Icon
+                style={{ paddingTop: 10 }}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="lastpass"
+                    size={24}
+                    color={theme.colors.placeholder}
+                  />
+                )}
+              />
+            }
+            style={{ width: "100%", height: 60, backgroundColor }}
+            outlineStyle={{
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: theme.colors.disabled,
+            }}
+            label="Confirm Password"
+            value={confirmPass}
+            secureTextEntry
+            mode="outlined"
+            onChangeText={(text) => setConfirmPass(text)}
+          />
           {/* DISCLAIMER */}
           <StyledText style={{ color: theme.colors.primary }}>
             By singing up ,you agree to our terms of service and acknowledge the
@@ -211,7 +306,7 @@ const CustomerSignup = ({ navigation }: any) => {
         <StyledView
           style={{ width: "100%", alignItems: "flex-start", gap: 15 }}
         >
-          <StyledButton mode="contained" onPress={() => console.log("first")}>
+          <StyledButton mode="contained" onPress={() => HandleSignup()}>
             Sign up
           </StyledButton>
         </StyledView>

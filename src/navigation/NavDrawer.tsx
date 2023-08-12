@@ -93,42 +93,6 @@ const NavDrawer = ({ navigation }: any) => {
     },
   ];
 
-  const SidebarItem = ({ icon, title }: any) => {
-    return (
-      <TouchableOpacity
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingVertical: 20,
-        }}
-      >
-        <StyledView
-          style={{
-            width: "75%",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-          }}
-        >
-          {icon}
-          <StyledText
-            style={{ fontSize: 17.5, color: theme.colors.placeholder }}
-          >
-            {title}
-          </StyledText>
-        </StyledView>
-        <Entypo
-          name="chevron-right"
-          size={17.5}
-          color={theme.colors.placeholder}
-        />
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <StyledView
       style={{
@@ -253,6 +217,50 @@ const NavDrawer = ({ navigation }: any) => {
           showDivider={false}
           style={{ width: "100%", gap: 5, paddingLeft: 30 }}
         >
+          {/* ORDERS */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <AntDesign
+                name="shoppingcart"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Orders"
+            onPress={() => console.log("orders")}
+          />
+          {/* WISHLIST */}
+          <Drawer.Item
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              transform: [{ scale: 1.25 }],
+            }}
+            icon={() => (
+              <AntDesign
+                name="heart"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 5,
+                }}
+                size={12.5}
+                color={theme.colors.placeholder}
+              />
+            )}
+            label="Wishlist"
+            onPress={() => console.log("first")}
+          />
           {/* PROFILE */}
           <Drawer.Item
             style={{
@@ -272,74 +280,8 @@ const NavDrawer = ({ navigation }: any) => {
                 color={theme.colors.placeholder}
               />
             )}
-            label="Manage Profile"
-            onPress={() => console.log("first")}
-          />
-          {/* ADD PRODS */}
-          <Drawer.Item
-            style={{
-              width: "75%",
-              borderRadius: 5,
-              transform: [{ scale: 1.25 }],
-            }}
-            icon={() => (
-              <Ionicons
-                name="ios-add-circle-sharp"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="Add Products"
-            onPress={() => console.log("first")}
-          />
-          {/* NEW ORDERS */}
-          <Drawer.Item
-            style={{
-              width: "75%",
-              borderRadius: 5,
-              transform: [{ scale: 1.25 }],
-            }}
-            icon={() => (
-              <MaterialIcons
-                name="new-releases"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="New Orders"
-            onPress={() => console.log("first")}
-          />
-          {/* TOTAL SALES */}
-          <Drawer.Item
-            style={{
-              width: "75%",
-              borderRadius: 5,
-              transform: [{ scale: 1.25 }],
-            }}
-            icon={() => (
-              <SimpleLineIcons
-                name="calculator"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="Total Sales"
-            onPress={() => console.log("first")}
+            label="Profile"
+            onPress={() => console.log("profile")}
           />
         </Drawer.Section>
       )}
@@ -397,7 +339,7 @@ const NavDrawer = ({ navigation }: any) => {
               />
             )}
             label="Add Products"
-            onPress={() => console.log("first")}
+            onPress={() => navigation.navigate("addProducts")}
           />
           {/* NEW ORDERS */}
           <Drawer.Item
