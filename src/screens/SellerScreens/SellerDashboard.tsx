@@ -4,6 +4,8 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  Pressable,
+  Image,
 } from "react-native";
 import React from "react";
 import { isLoading } from "expo-font";
@@ -11,10 +13,14 @@ import StyledText from "../../styles/styledComponents/StyledText";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
-import { TextInput, useTheme } from "react-native-paper";
+import { ActivityIndicator, TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { StatusBar } from "expo-status-bar";
 import { GetBusinessFromLS } from "../../utils/SaveUserToLS";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useQuery } from "@tanstack/react-query";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const SellerDashboard = ({
   navigation,
@@ -26,13 +32,22 @@ const SellerDashboard = ({
   const backgroundColor = "white";
 
   const [search, setSearch] = React.useState<string>("");
-  const [userData, setUserData] = React.useState<any>();
+  const [businessProducts, setBusinessProducts] = React.useState<Array<any>>();
 
-  React.useEffect(() => {
-    GetBusinessFromLS().then((dat: any) => {
-      setUserData(dat);
-    });
-  }, []);
+  const { userData, setUserData }: any = React.useContext(UserDataContext);
+
+  const getAllProducts = (addProdData: any) => {
+    return axios.get(
+      baseUrl + `/product/getAllProductsOfBusiness/${userData?.id}`
+    );
+  };
+
+  const { isLoading } = useQuery(["All Business Products"], getAllProducts, {
+    onSuccess: (data) => {
+      // console.log(data.data);
+      setBusinessProducts(data.data);
+    },
+  });
 
   const brands: any = [
     "VRand-1",
@@ -207,7 +222,7 @@ const SellerDashboard = ({
             }}
           >
             <StyledText style={{ fontSize: 20, fontFamily: theme.fonts.bold }}>
-              Product Categories
+              Product Products
             </StyledText>
             <TouchableOpacity>
               <StyledText
@@ -255,7 +270,7 @@ const SellerDashboard = ({
             }}
           >
             <Text style={{ fontSize: 20, fontFamily: "InterBold" }}>
-              Your Products ({!isLoading ? data?.length : 0})
+              Your Products ({businessProducts?.length})
             </Text>
             <TouchableOpacity>
               <StyledText
@@ -279,9 +294,34 @@ const SellerDashboard = ({
               flexDirection: "row",
               flexWrap: "wrap",
               marginTop: 15,
+              marginBottom:25,
               gap: 15,
             }}
-          ></View>
+          >
+            {!isLoading ? (
+              businessProducts?.map((prod) => {
+                return (
+                  <Pressable
+                    style={{ alignItems: "flex-start", gap: 5 }}
+                    key={prod.id}
+                  >
+                    <Image
+                      style={{ width: 150, height: 150, borderRadius: 10 }}
+                      source={{
+                        uri: `http://192.168.29.117:5000${prod.productImage}`,
+                      }}
+                    />
+                    <StyledText>{prod.name}</StyledText>
+                    <StyledText style={{ fontSize: 10 }}>
+                      ₹ {prod.price}
+                    </StyledText>
+                  </Pressable>
+                );
+              })
+            ) : (
+              <ActivityIndicator size={75} />
+            )}
+          </View>
         </View>
       </View>
     </ScrollView>

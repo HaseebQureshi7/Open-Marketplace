@@ -14,6 +14,8 @@ import { GetUserType } from "./src/utils/GetUserType";
 import { GetBusinessFromLS, GetCustomerFromLS } from "./src/utils/SaveUserToLS";
 import { SnackbarTypes } from "./src/types/SnackbarTypes";
 import Snackbar from "./src/components/Snackbar";
+import { UserTokenContext } from "./src/context/UserTokenContext";
+import { GetTokenFromLS } from "./src/utils/AuthTokenHandler";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,6 +33,7 @@ export default function App() {
   });
 
   const [userData, setUserData] = React.useState<any>();
+  const [userToken, setUserToken] = React.useState<any>();
 
   React.useEffect(() => {
     GetUserType().then((res) =>
@@ -40,6 +43,7 @@ export default function App() {
         ? GetCustomerFromLS().then((res) => setUserData(res))
         : null
     );
+    GetTokenFromLS().then((res) => setUserToken(res));
   }, []);
 
   if (fontsLoaded) {
@@ -51,16 +55,18 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <UserDataContext.Provider value={{ userData, setUserData }}>
-        <SnackbarContext.Provider value={{ snackData, setSnackData }}>
-          <PaperProvider theme={theme}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <MainStack />
-              <Snackbar snackData={snackData} />
-            </SafeAreaView>
-          </PaperProvider>
-        </SnackbarContext.Provider>
-      </UserDataContext.Provider>
+      <UserTokenContext.Provider value={{ userToken, setUserToken }}>
+        <UserDataContext.Provider value={{ userData, setUserData }}>
+          <SnackbarContext.Provider value={{ snackData, setSnackData }}>
+            <PaperProvider theme={theme}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <MainStack />
+                <Snackbar snackData={snackData} />
+              </SafeAreaView>
+            </PaperProvider>
+          </SnackbarContext.Provider>
+        </UserDataContext.Provider>
+      </UserTokenContext.Provider>
     </QueryClientProvider>
   );
 }

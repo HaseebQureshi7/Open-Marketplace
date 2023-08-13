@@ -11,11 +11,5 @@ export async function SaveTokenToLS(token: string): Promise<void> {
 
 // Function to retrieve token from AsyncStorage
 export async function GetTokenFromLS(): Promise<string | null> {
-  try {
-    const token = await AsyncStorage.getItem('token');
-    return token;
-  } catch (error) {
-    console.error('Error retrieving token:', error);
-    return null;
-  }
+  return AsyncStorage.getItem('token').then((res:any) => {return res})
 }
