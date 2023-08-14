@@ -7,7 +7,7 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ import { StatusBar } from "expo-status-bar";
 import { GetBusinessFromLS } from "../../utils/SaveUserToLS";
 import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { UserDataContext } from "../../context/UserDataContext";
 
 const SellerDashboard = ({
@@ -32,7 +32,14 @@ const SellerDashboard = ({
   const backgroundColor = "white";
 
   const [search, setSearch] = React.useState<string>("");
-  const [businessProducts, setBusinessProducts] = React.useState<Array<any>>();
+  const [businessProducts, setBusinessProducts] = React.useState<Array<any>>(
+    []
+  );
+  const [businessProdCategoriesId, setBusinessProdCategoriesId] =
+    React.useState<Array<any>>([]);
+  const [businessProdCategories, setBusinessProdCategories] = React.useState<
+    Array<any>
+  >([]);
 
   const { userData, setUserData }: any = React.useContext(UserDataContext);
 
@@ -44,25 +51,37 @@ const SellerDashboard = ({
 
   const { isLoading } = useQuery(["All Business Products"], getAllProducts, {
     onSuccess: (data) => {
-      // console.log(data.data);
       setBusinessProducts(data.data);
+      // const filteredCat = data.data.filter((data:any) => setBusinessProdCategories((prevCat) => [...prevCat, data.category]))
+      const filteredCat = data.data.filter((data: any) => {
+        const tempSet = new Set();
+        tempSet.add(data.category);
+        setBusinessProdCategoriesId(() => [...tempSet]);
+      });
     },
   });
 
-  const brands: any = [
-    "VRand-1",
-    "xTract-2",
-    "fRe-3",
-    "B-4U",
-    5,
-    6,
-    7,
-    8,
-    9,
-    0,
-  ];
+  const getAllProductsCategories = (cats: any) => {
+    return axios.get(baseUrl + `/category/getCategoryById/${cats}`);
+  };
 
-  const data = [];
+  const fetchAllProdCats = useQueries({
+    queries: businessProdCategoriesId.map((cId: any) => {
+      return {
+        queryKey: ["Product category -", cId],
+        queryFn: () => getAllProductsCategories(cId),
+        onSuccess: (data: any) => {
+          setBusinessProdCategories((prevState) => {
+            // Check if the fetched data is already in the state to avoid duplication
+            if (prevState.some((item) => item.id === data.data.id)) {
+              return prevState;
+            }
+            return [...prevState, data.data];
+          });
+        },
+      };
+    }),
+  });
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -238,7 +257,7 @@ const SellerDashboard = ({
             </TouchableOpacity>
           </View>
           <FlatList
-            data={brands}
+            data={businessProdCategories}
             contentContainerStyle={{ gap: 15 }}
             renderItem={({ item }) => (
               <Text
@@ -249,10 +268,10 @@ const SellerDashboard = ({
                   backgroundColor: theme.colors.background,
                 }}
               >
-                {item}
+                {item.name}
               </Text>
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
@@ -294,7 +313,7 @@ const SellerDashboard = ({
               flexDirection: "row",
               flexWrap: "wrap",
               marginTop: 15,
-              marginBottom:25,
+              marginBottom: 25,
               gap: 15,
             }}
           >
