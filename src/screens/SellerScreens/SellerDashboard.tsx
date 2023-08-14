@@ -10,7 +10,7 @@ import {
 import React, { useEffect } from "react";
 import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
 import { ActivityIndicator, TextInput, useTheme } from "react-native-paper";
@@ -21,6 +21,14 @@ import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { UserDataContext } from "../../context/UserDataContext";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeOut,
+  Layout,
+  SlideInUp,
+} from "react-native-reanimated";
+import StyledView from "../../styles/styledComponents/StyledView";
 
 const SellerDashboard = ({
   navigation,
@@ -43,7 +51,7 @@ const SellerDashboard = ({
 
   const { userData, setUserData }: any = React.useContext(UserDataContext);
 
-  const getAllProducts = (addProdData: any) => {
+  const getAllProducts = () => {
     return axios.get(
       baseUrl + `/product/getAllProductsOfBusiness/${userData?.id}`
     );
@@ -95,7 +103,7 @@ const SellerDashboard = ({
       >
         <StatusBar animated={true} backgroundColor={backgroundColor} />
 
-        {/* Header */}
+        {/* TOP BAR */}
         <View
           style={{
             flexDirection: "row",
@@ -128,7 +136,7 @@ const SellerDashboard = ({
 
           {/* ADD PRODUCT */}
           <TouchableOpacity
-            onPress={() => navigation.closeDrawer()}
+            onPress={() => navigation.navigate("addProducts")}
             style={{
               alignItems: "flex-start",
               justifyContent: "flex-start",
@@ -241,7 +249,7 @@ const SellerDashboard = ({
             }}
           >
             <StyledText style={{ fontSize: 20, fontFamily: theme.fonts.bold }}>
-              Product Products
+              Product Categories ({businessProdCategories?.length})
             </StyledText>
             <TouchableOpacity>
               <StyledText
@@ -256,7 +264,31 @@ const SellerDashboard = ({
               </StyledText>
             </TouchableOpacity>
           </View>
-          <FlatList
+          {/* PROD CATS */}
+          <Animated.FlatList
+            entering={FadeIn}
+            ListEmptyComponent={
+              <StyledView
+                style={{
+                  flexDirection: "row",
+                  padding: 15,
+                  borderRadius: 5,
+                  gap: 10,
+                  backgroundColor: theme.colors.background,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "InterBold",
+                  }}
+                >
+                  Loading Categories ...
+                </Text>
+                <ActivityIndicator size={15} />
+              </StyledView>
+            }
+            exiting={FadeOut}
+            // layout={Layout.delay(250)}
             data={businessProdCategories}
             contentContainerStyle={{ gap: 15 }}
             renderItem={({ item }) => (
@@ -318,23 +350,52 @@ const SellerDashboard = ({
             }}
           >
             {!isLoading ? (
-              businessProducts?.map((prod) => {
+              businessProducts?.map((prod, index) => {
                 return (
-                  <Pressable
-                    style={{ alignItems: "flex-start", gap: 5 }}
+                  <Animated.View
                     key={prod.id}
+                    entering={FadeIn.delay(index * 100)}
+                    exiting={FadeOut}
+                    layout={Layout.delay(250)}
                   >
-                    <Image
-                      style={{ width: 150, height: 150, borderRadius: 10 }}
-                      source={{
-                        uri: `http://192.168.29.117:5000${prod.productImage}`,
-                      }}
-                    />
-                    <StyledText>{prod.name}</StyledText>
-                    <StyledText style={{ fontSize: 10 }}>
-                      ₹ {prod.price}
-                    </StyledText>
-                  </Pressable>
+                    <TouchableOpacity
+                      onPress={() => console.log("first")}
+                      style={{ alignItems: "flex-start", gap: 5 }}
+                    >
+                      <MaterialIcons
+                      style={{position:'absolute', zIndex:1, right:5, top:5}}
+                        // onPress={(e) => {
+                        //   HandleFavoritePress(e, data?.id);
+                        //   console.log("IDP -> ", data?.id);
+                        //   AddToWishlist(data?.id);
+                        // }}
+                        name={
+                          "favorite-border"
+                          // wishlist?.includes(data?.id)
+                          //   ? "favorite"
+                          //   : "favorite-border"
+                        }
+                        size={24}
+                        color={ "white"
+                          // wishlist?.includes(data?.id)
+                          //   ? AppColors.error
+                          //   : AppColors.bgLight
+                        }
+                        // color={AppColors.bgLight}
+                      />
+                      <Animated.Image
+                        exiting={FadeInDown}
+                        style={{ width: 150, height: 150, borderRadius: 10 }}
+                        source={{
+                          uri: baseUrl + prod.productImage,
+                        }}
+                      />
+                      <StyledText>{prod.name}</StyledText>
+                      <StyledText style={{ fontSize: 10 }}>
+                        ₹ {prod.price}
+                      </StyledText>
+                    </TouchableOpacity>
+                  </Animated.View>
                 );
               })
             ) : (
