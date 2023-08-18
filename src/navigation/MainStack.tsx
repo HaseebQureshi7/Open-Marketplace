@@ -24,6 +24,8 @@ import { GetUserType } from "../utils/GetUserType";
 import AddProducts from "../screens/SellerScreens/AddProducts";
 import ViewAllCategories from "../screens/SellerScreens/ViewAllCategories";
 import CategoryScreen from "../screens/SellerScreens/CategoryScreen";
+import ViewAllProducts from "../screens/SellerScreens/ViewAllProducts";
+import ProductScreen from "../screens/SellerScreens/ProductScreen";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -149,6 +151,16 @@ const MainStack = () => {
                       <Stack.Screen
                         name="categoryScreen"
                         component={CategoryScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="viewAllProducts"
+                        component={ViewAllProducts}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="productScreen"
+                        component={ProductScreen}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>

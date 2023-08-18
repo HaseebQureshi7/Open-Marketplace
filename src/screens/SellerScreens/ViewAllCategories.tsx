@@ -78,6 +78,7 @@ const ViewAllCategories = ({
           {categoriesDataProp?.map((cats: any) => {
             return (
               <TouchableOpacity
+                key={cats.id}
                 onPress={() =>
                   navigation.navigate("categoryScreen", { props: cats })
                 }

@@ -1,31 +1,23 @@
 import {
   View,
+  Text,
   ScrollView,
-  ActivityIndicator,
+  StatusBar,
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { StatusBar } from "expo-status-bar";
 import { useTheme } from "react-native-paper";
-import { ThemeInterface } from "../../styles/theme";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import BackButton from "../../components/BackButton";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import AddProductButton from "../../components/AddProductButton";
+import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
-import { useQuery } from "@tanstack/react-query";
 import StyledText from "../../styles/styledComponents/StyledText";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeOut,
-  Layout,
-} from "react-native-reanimated";
-import { MaterialIcons } from "@expo/vector-icons";
+import { ThemeInterface } from "../../styles/theme";
+import { baseUrl } from "../../utils/localENV";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import ProductCard from "../../components/ProductCard";
 
-const CategoryScreen = ({
+const ViewAllProducts = ({
   navigation,
   route,
 }: {
@@ -34,29 +26,9 @@ const CategoryScreen = ({
 }) => {
   const theme = useTheme<ThemeInterface>();
 
-  const categoryDataProp = route.params.props;
+  const allProducts = route.params.props;
 
   const backgroundColor = "white";
-
-  const getAllProductsByCategory = () => {
-    return axios.get(
-      baseUrl + `/category/getProductsByCategory/${categoryDataProp?.id}`
-    );
-  };
-
-  const { data: prodsInCat, isLoading } = useQuery(
-    ["All Products In Category"],
-    getAllProductsByCategory,
-    {
-      onSuccess: (data: any) => {
-        console.log(data.data);
-      },
-      select: (data: any) => {
-        return data.data;
-      },
-    }
-  );
-
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       {/* BODY CONTAINER */}
@@ -80,15 +52,18 @@ const CategoryScreen = ({
         >
           {/* BACK */}
           <BackButton />
+
+          {/* ADD PRODUCT */}
+          <AddProductButton />
         </View>
 
         {/* HEADER SECTION */}
         <HeaderSection
-          heading={`${categoryDataProp.name} (${prodsInCat?.length})`}
-          subHeading="All products under this category."
+          heading={`Your Products (${allProducts.length})`}
+          subHeading="All your added product are here"
         />
 
-        {/* PRODUCTS LIST IN CAT */}
+        {/* PRODUCT LIST */}
         <View
           style={{
             flex: 1,
@@ -101,17 +76,13 @@ const CategoryScreen = ({
             gap: 15,
           }}
         >
-          {!isLoading ? (
-            prodsInCat?.map((prod: any, index: number) => {
-              return <ProductCard prod={prod} index={index} key={prod.id} />;
-            })
-          ) : (
-            <ActivityIndicator size={75} />
-          )}
+          {allProducts?.map((prods: any, index: number) => {
+            return <ProductCard prod={prods} index={index} key={prods.id} />;
+          })}
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default CategoryScreen;
+export default ViewAllProducts;

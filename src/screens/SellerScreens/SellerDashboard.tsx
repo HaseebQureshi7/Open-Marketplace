@@ -30,6 +30,7 @@ import Animated, {
 } from "react-native-reanimated";
 import StyledView from "../../styles/styledComponents/StyledView";
 import AddProductButton from "../../components/AddProductButton";
+import ProductCard from "../../components/ProductCard";
 
 const SellerDashboard = ({
   navigation,
@@ -70,7 +71,8 @@ const SellerDashboard = ({
     },
   });
 
-  const getAllProductsCategories = (cats: any) => {setBusinessProdCategories
+  const getAllProductsCategories = (cats: any) => {
+    setBusinessProdCategories;
     return axios.get(baseUrl + `/category/getCategoryById/${cats}`);
   };
 
@@ -234,7 +236,11 @@ const SellerDashboard = ({
               Product Categories ({businessProdCategories?.length})
             </StyledText>
             <TouchableOpacity
-              onPress={() => navigation.navigate("viewAllCategories", {props: businessProdCategories})}
+              onPress={() =>
+                navigation.navigate("viewAllCategories", {
+                  props: businessProdCategories,
+                })
+              }
             >
               <StyledText
                 style={{
@@ -252,7 +258,7 @@ const SellerDashboard = ({
           <Animated.FlatList
             entering={FadeIn}
             ListEmptyComponent={
-              <StyledView
+              <TouchableOpacity
                 style={{
                   flexDirection: "row",
                   padding: 15,
@@ -269,23 +275,29 @@ const SellerDashboard = ({
                   Loading Categories ...
                 </Text>
                 <ActivityIndicator size={15} />
-              </StyledView>
+              </TouchableOpacity>
             }
             exiting={FadeOut}
             // layout={Layout.delay(250)}
             data={businessProdCategories}
             contentContainerStyle={{ gap: 15 }}
             renderItem={({ item }) => (
-              <Text
-                style={{
-                  padding: 15,
-                  borderRadius: 5,
-                  fontFamily: "InterBold",
-                  backgroundColor: theme.colors.background,
-                }}
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("categoryScreen", { props: item })
+                }
               >
-                {item.name}
-              </Text>
+                <Text
+                  style={{
+                    padding: 15,
+                    borderRadius: 5,
+                    fontFamily: "InterBold",
+                    backgroundColor: theme.colors.background,
+                  }}
+                >
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id.toString()}
             horizontal
@@ -307,7 +319,13 @@ const SellerDashboard = ({
             <Text style={{ fontSize: 20, fontFamily: "InterBold" }}>
               Your Products ({businessProducts?.length})
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("viewAllProducts", {
+                  props: businessProducts,
+                })
+              }
+            >
               <StyledText
                 style={{
                   fontSize: 12.5,
@@ -334,59 +352,8 @@ const SellerDashboard = ({
             }}
           >
             {!isLoading ? (
-              businessProducts?.map((prod, index) => {
-                return (
-                  <Animated.View
-                    key={prod.id}
-                    entering={FadeIn.delay(index * 100)}
-                    exiting={FadeOut}
-                    layout={Layout.delay(250)}
-                  >
-                    <TouchableOpacity
-                      onPress={() => console.log("first")}
-                      style={{ alignItems: "flex-start", gap: 5 }}
-                    >
-                      <MaterialIcons
-                        style={{
-                          position: "absolute",
-                          zIndex: 1,
-                          right: 5,
-                          top: 5,
-                        }}
-                        // onPress={(e) => {
-                        //   HandleFavoritePress(e, data?.id);
-                        //   console.log("IDP -> ", data?.id);
-                        //   AddToWishlist(data?.id);
-                        // }}
-                        name={
-                          "favorite-border"
-                          // wishlist?.includes(data?.id)
-                          //   ? "favorite"
-                          //   : "favorite-border"
-                        }
-                        size={24}
-                        color={
-                          "white"
-                          // wishlist?.includes(data?.id)
-                          //   ? AppColors.error
-                          //   : AppColors.bgLight
-                        }
-                        // color={AppColors.bgLight}
-                      />
-                      <Animated.Image
-                        exiting={FadeInDown}
-                        style={{ width: 150, height: 150, borderRadius: 10 }}
-                        source={{
-                          uri: baseUrl + prod.productImage,
-                        }}
-                      />
-                      <StyledText>{prod.name}</StyledText>
-                      <StyledText style={{ fontSize: 10 }}>
-                        ₹ {prod.price}
-                      </StyledText>
-                    </TouchableOpacity>
-                  </Animated.View>
-                );
+              businessProducts?.slice(0, 6)?.map((prod, index) => {
+                return <ProductCard prod={prod} index={index} key={prod.id} />;
               })
             ) : (
               <ActivityIndicator size={75} />
