@@ -29,6 +29,7 @@ import Animated, {
   SlideInUp,
 } from "react-native-reanimated";
 import StyledView from "../../styles/styledComponents/StyledView";
+import AddProductButton from "../../components/AddProductButton";
 
 const SellerDashboard = ({
   navigation,
@@ -69,7 +70,7 @@ const SellerDashboard = ({
     },
   });
 
-  const getAllProductsCategories = (cats: any) => {
+  const getAllProductsCategories = (cats: any) => {setBusinessProdCategories
     return axios.get(baseUrl + `/category/getCategoryById/${cats}`);
   };
 
@@ -135,26 +136,7 @@ const SellerDashboard = ({
           </TouchableOpacity>
 
           {/* ADD PRODUCT */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate("addProducts")}
-            style={{
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              // paddingLeft: 20,
-              marginTop: 10,
-            }}
-          >
-            <Ionicons
-              name="add"
-              style={{
-                padding: 12.5,
-                borderRadius: 5,
-                backgroundColor: theme.colors.background,
-              }}
-              size={25}
-              color={theme.colors.text}
-            />
-          </TouchableOpacity>
+          <AddProductButton />
         </View>
 
         {/* HEADER TEXT */}
@@ -251,7 +233,9 @@ const SellerDashboard = ({
             <StyledText style={{ fontSize: 20, fontFamily: theme.fonts.bold }}>
               Product Categories ({businessProdCategories?.length})
             </StyledText>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("viewAllCategories", {props: businessProdCategories})}
+            >
               <StyledText
                 style={{
                   fontSize: 12.5,
@@ -363,7 +347,12 @@ const SellerDashboard = ({
                       style={{ alignItems: "flex-start", gap: 5 }}
                     >
                       <MaterialIcons
-                      style={{position:'absolute', zIndex:1, right:5, top:5}}
+                        style={{
+                          position: "absolute",
+                          zIndex: 1,
+                          right: 5,
+                          top: 5,
+                        }}
                         // onPress={(e) => {
                         //   HandleFavoritePress(e, data?.id);
                         //   console.log("IDP -> ", data?.id);
@@ -376,7 +365,8 @@ const SellerDashboard = ({
                           //   : "favorite-border"
                         }
                         size={24}
-                        color={ "white"
+                        color={
+                          "white"
                           // wishlist?.includes(data?.id)
                           //   ? AppColors.error
                           //   : AppColors.bgLight

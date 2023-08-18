@@ -22,6 +22,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { GetUserType } from "../utils/GetUserType";
 import AddProducts from "../screens/SellerScreens/AddProducts";
+import ViewAllCategories from "../screens/SellerScreens/ViewAllCategories";
+import CategoryScreen from "../screens/SellerScreens/CategoryScreen";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -137,6 +139,16 @@ const MainStack = () => {
                       <Stack.Screen
                         name="addProducts"
                         component={AddProducts}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="viewAllCategories"
+                        component={ViewAllCategories}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="categoryScreen"
+                        component={CategoryScreen}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>
