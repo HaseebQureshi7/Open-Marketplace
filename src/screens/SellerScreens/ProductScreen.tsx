@@ -41,6 +41,7 @@ const ProductScreen = ({
           flex: 1,
           paddingHorizontal: 25,
           gap: 25,
+          marginBottom:50
         }}
       >
         <StatusBar animated={true} backgroundColor={backgroundColor} />

@@ -72,7 +72,7 @@ const AddProducts = ({
 
   const {} = useQuery(["All Categories"], getAllCategories, {
     onSuccess: (data) => {
-      console.log(data.data.length);
+      // console.log(data.data.length);
       setAllCategories(data.data);
     },
   });
