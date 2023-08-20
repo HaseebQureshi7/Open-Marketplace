@@ -44,7 +44,7 @@ export const theme: any = {
     ...DefaultTheme.colors,
     primary: "#6096B4",
     accent: "#6200EE",
-    background: "#F6F6F6",
+    background: "#F5F6FA",
     onSurfaceVariant: "#727272", // Effects Input labels
     surface: "#FFFFFF",
     text: "#1D1E20",

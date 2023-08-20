@@ -48,10 +48,10 @@ const MainStack = () => {
 
   const MoveInFromCenterFromBottom = {
     ...TransitionPresets.RevealFromBottomAndroid, // Apply default slide animation
-    headerShown: false,
+    headerShown: false, 
   };
 
-  const MoveInFromCenter = {
+  const MoveInFromCenter = { 
     ...TransitionPresets.ScaleFromCenterAndroid, // Apply default slide animation
     headerShown: false,
   };

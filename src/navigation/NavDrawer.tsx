@@ -13,7 +13,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import * as React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, Pressable, View } from "react-native";
 import { Divider, Drawer, useTheme } from "react-native-paper";
 import { SnackbarContext } from "../context/SnackbarContext";
 import { UserDataContext } from "../context/UserDataContext";
@@ -151,15 +151,15 @@ const NavDrawer = ({ navigation }: any) => {
               gap: 10,
             }}
           >
-            <Foundation
+            {/* <Foundation
               name="torso-business"
               size={30}
               color={theme.colors.text}
-            />
+            /> */}
             {/* <Fontisto name="person" size={25} color="black" /> */}
             <StyledText
               style={{
-                fontSize: 20,
+                fontSize: 25,
               }}
             >
               {userData?.name
@@ -178,10 +178,10 @@ const NavDrawer = ({ navigation }: any) => {
             }}
           >
             {/* <Foundation name="torso-business" size={30} color={theme.colors.text} /> */}
-            <Fontisto name="person" size={25} color="black" />
+            {/* <Fontisto name="person" size={25} color="black" /> */}
             <StyledText
               style={{
-                fontSize: 20,
+                fontSize: 25,
               }}
             >
               {userData?.name
@@ -199,10 +199,10 @@ const NavDrawer = ({ navigation }: any) => {
               gap: 10,
             }}
           >
-            <Fontisto name="person" size={25} color="black" />
+            {/* <Fontisto name="person" size={25} color="black" /> */}
             <StyledText
               style={{
-                fontSize: 20,
+                fontSize: 25,
               }}
             >
               No Login
@@ -295,96 +295,130 @@ const NavDrawer = ({ navigation }: any) => {
       {userData?.name && (
         <Drawer.Section
           showDivider={false}
-          style={{ width: "100%", gap: 5, paddingLeft: 30 }}
+          style={{ width: "100%", gap: 35, paddingLeft: 40 }}
         >
           {/* PROFILE */}
-          <Drawer.Item
+          <Pressable
+            onPress={() => console.log("Profile Nav")}
             style={{
               width: "75%",
               borderRadius: 5,
-              transform: [{ scale: 1.25 }],
+              flexDirection: "row",
+              gap: 15,
             }}
-            icon={() => (
-              <Ionicons
-                name="person-circle"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="Manage Profile"
-            onPress={() => console.log("first")}
-          />
+          >
+            <MaterialIcons
+              name="person-outline"
+              style={{
+                padding: 5,
+                backgroundColor: theme.colors.background,
+                borderRadius: 2.5,
+              }}
+              size={17.5}
+              color={theme.colors.placeholder}
+            />
+            <StyledText
+              style={{
+                fontFamily: theme.fonts.medium,
+                fontSize: 17.5,
+                color: theme.colors.placeholder,
+              }}
+            >
+              Profile
+            </StyledText>
+          </Pressable>
+
           {/* ADD PRODS */}
-          <Drawer.Item
-            style={{
-              width: "75%",
-              borderRadius: 5,
-              transform: [{ scale: 1.25 }],
-            }}
-            icon={() => (
-              <Ionicons
-                name="ios-add-circle-sharp"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="Add Products"
+          <Pressable
             onPress={() => navigation.navigate("addProducts")}
-          />
+            style={{
+              width: "75%",
+              borderRadius: 5,
+              flexDirection: "row",
+              gap: 15,
+            }}
+          >
+            <Ionicons
+              name="ios-add-circle-sharp"
+              style={{
+                padding: 5,
+                backgroundColor: theme.colors.background,
+                borderRadius: 2.5,
+              }}
+              size={17.5}
+              color={theme.colors.placeholder}
+            />
+            <StyledText
+              style={{
+                fontFamily: theme.fonts.medium,
+                fontSize: 17.5,
+                color: theme.colors.placeholder,
+              }}
+            >
+              Add Product
+            </StyledText>
+          </Pressable>
+
           {/* NEW ORDERS */}
-          <Drawer.Item
+          <Pressable
             style={{
               width: "75%",
               borderRadius: 5,
-              transform: [{ scale: 1.25 }],
+              flexDirection: "row",
+              gap: 15,
             }}
-            icon={() => (
-              <MaterialIcons
-                name="new-releases"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="New Orders"
-            onPress={() => console.log("first")}
-          />
+          >
+            <MaterialIcons
+              name="new-releases"
+              style={{
+                padding: 5,
+                backgroundColor: theme.colors.background,
+                borderRadius: 2.5,
+              }}
+              size={17.5}
+              color={theme.colors.placeholder}
+            />
+            <StyledText
+              style={{
+                fontFamily: theme.fonts.medium,
+                fontSize: 17.5,
+                color: theme.colors.placeholder,
+              }}
+            >
+              New Orders
+            </StyledText>
+          </Pressable>
+
           {/* TOTAL SALES */}
-          <Drawer.Item
+          <Pressable
             style={{
               width: "75%",
-              borderRadius: 5,
-              transform: [{ scale: 1.25 }],
+              borderRadius: 2.5,
+              flexDirection: "row",
+              gap: 15,
             }}
-            icon={() => (
-              <SimpleLineIcons
-                name="calculator"
-                style={{
-                  padding: 5,
-                  backgroundColor: theme.colors.background,
-                  borderRadius: 5,
-                }}
-                size={12.5}
-                color={theme.colors.placeholder}
-              />
-            )}
-            label="Total Sales"
             onPress={() => console.log("first")}
-          />
+          >
+            <SimpleLineIcons
+              name="calculator"
+              style={{
+                padding: 5,
+                backgroundColor: theme.colors.background,
+                borderRadius: 5,
+              }}
+              size={17.5}
+              color={theme.colors.placeholder}
+            />
+            <StyledText
+              style={{
+                fontFamily: theme.fonts.medium,
+                fontSize: 17.5,
+                color: theme.colors.placeholder,
+              }}
+            >
+              Total Sales
+            </StyledText>
+          </Pressable>
         </Drawer.Section>
       )}
 

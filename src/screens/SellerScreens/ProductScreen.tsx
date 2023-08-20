@@ -14,6 +14,8 @@ import { screenWidth } from "../../utils/Dimensions";
 import StyledText from "../../styles/styledComponents/StyledText";
 import axios from "axios";
 import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
+import StyledButton from "../../styles/styledComponents/StyledButton";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const ProductScreen = ({
   navigation,
@@ -27,6 +29,7 @@ const ProductScreen = ({
   const backgroundColor = "white";
 
   const [catName, setCatName] = React.useState();
+  const { userData, setUserData }: any = React.useContext(UserDataContext);
 
   React.useEffect(() => {
     axios
@@ -41,7 +44,7 @@ const ProductScreen = ({
           flex: 1,
           paddingHorizontal: 25,
           gap: 25,
-          marginBottom:50
+          marginBottom: 25,
         }}
       >
         <StatusBar animated={true} backgroundColor={backgroundColor} />
@@ -151,6 +154,22 @@ const ProductScreen = ({
 
         {/* OPTIONS */}
         <View style={{ gap: 10 }}>
+          {/* AVAILABLE UNITS */}
+          {userData?.name && (
+            <View
+              style={{
+                width: "100%",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <StyledText>Available Units</StyledText>
+              <StyledText style={{ fontSize: 15, color: theme.colors.text }}>
+                {product?.availableUnits} Units
+              </StyledText>
+            </View>
+          )}
           {/* DELIVERY RADIUS */}
           <View
             style={{
@@ -208,6 +227,45 @@ const ProductScreen = ({
             </StyledText>
           </View>
         </View>
+
+        {/* BUY NOW */}
+        {userData?.firstName ? (
+          <View
+            style={{
+              width: screenWidth,
+              alignSelf: "center",
+              marginTop: 25,
+              backgroundColor: theme.colors.accent,
+            }}
+          >
+            <StyledButton
+              onPress={() => console.log("buy")}
+              textColor={backgroundColor}
+              style={{ backgroundColor: theme.colors.accent }}
+              contentStyle={{ padding: 10 }}
+            >
+              Buy Now
+            </StyledButton>
+          </View>
+        ) : (
+          <View
+            style={{
+              width: screenWidth,
+              alignSelf: "center",
+              marginTop: 25,
+              backgroundColor: theme.colors.accent,
+            }}
+          >
+            <StyledButton
+              onPress={() => console.log("edit")}
+              textColor={backgroundColor}
+              style={{ backgroundColor: theme.colors.accent }}
+              contentStyle={{ padding: 10 }}
+            >
+              Make Changes
+            </StyledButton>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
