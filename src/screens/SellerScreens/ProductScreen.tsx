@@ -16,6 +16,7 @@ import axios from "axios";
 import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 import StyledButton from "../../styles/styledComponents/StyledButton";
 import { UserDataContext } from "../../context/UserDataContext";
+import ReturnProdCategory from "../../components/ReturnProdCategory";
 
 const ProductScreen = ({
   navigation,
@@ -28,14 +29,7 @@ const ProductScreen = ({
   const theme = useTheme<ThemeInterface>();
   const backgroundColor = "white";
 
-  const [catName, setCatName] = React.useState();
   const { userData, setUserData }: any = React.useContext(UserDataContext);
-
-  React.useEffect(() => {
-    axios
-      .get(baseUrl + `/category/getCategoryById/${product?.category}`)
-      .then((res) => setCatName(res.data.name));
-  }, []);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -114,7 +108,7 @@ const ProductScreen = ({
             }}
           >
             <StyledText style={{ color: theme.colors.placeholder }}>
-              {catName}
+              <ReturnProdCategory category={product?.category} />
             </StyledText>
             <StyledText style={{ fontSize: 25 }}>{product.name}</StyledText>
           </View>

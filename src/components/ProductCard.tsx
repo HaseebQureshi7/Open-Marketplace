@@ -12,6 +12,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { FormatPriceWithCommas } from "../utils/PriceFormatter";
+import ReturnProdCategory from "./ReturnProdCategory";
+import { ThemeInterface } from "../styles/theme";
+import { useTheme } from "react-native-paper";
 
 interface ProdCardTypes {
   prod: any;
@@ -20,6 +23,9 @@ interface ProdCardTypes {
 
 const ProductCard = ({ prod, index }: ProdCardTypes) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
+
+  const theme = useTheme<ThemeInterface>();
+
   return (
     <Animated.View
       key={prod.id}
@@ -66,7 +72,20 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
           }}
         />
         <StyledText>{prod.name}</StyledText>
-        <StyledText style={{ fontSize: 10 }}>₹ {FormatPriceWithCommas(prod.price)}</StyledText>
+        <View
+          style={{
+            flexDirection: "row",
+            width: 150,
+            justifyContent: "space-between",
+          }}
+        >
+          {/* <StyledText style={{ fontSize: 12.5, color:theme.colors.placeholder }}>
+            <ReturnProdCategory category={prod?.category} />
+          </StyledText> */}
+          <StyledText style={{ fontSize: 12.5 }}>
+            ₹ {FormatPriceWithCommas(prod.price)}
+          </StyledText>
+        </View>
       </TouchableOpacity>
     </Animated.View>
   );

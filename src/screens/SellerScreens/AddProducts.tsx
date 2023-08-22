@@ -368,9 +368,6 @@ const AddProducts = ({
 
                 if (selectedCategory) {
                   setCategoryId(selectedCategory.id);
-                  console.log(selectedCategory.id);
-                } else {
-                  console.log("Category not found");
                 }
               }}
             >
