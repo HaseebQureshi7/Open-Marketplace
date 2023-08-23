@@ -299,7 +299,7 @@ const NavDrawer = ({ navigation }: any) => {
         >
           {/* PROFILE */}
           <Pressable
-            onPress={() => console.log("Profile Nav")}
+            onPress={() => navigation.navigate("profileScreen")}
             style={{
               width: "75%",
               borderRadius: 5,
@@ -361,6 +361,7 @@ const NavDrawer = ({ navigation }: any) => {
 
           {/* NEW ORDERS */}
           <Pressable
+            onPress={() => navigation.navigate("newOrders")}
             style={{
               width: "75%",
               borderRadius: 5,
@@ -391,13 +392,13 @@ const NavDrawer = ({ navigation }: any) => {
 
           {/* TOTAL SALES */}
           <Pressable
+            onPress={() => navigation.navigate("totalSales")}
             style={{
               width: "75%",
               borderRadius: 2.5,
               flexDirection: "row",
               gap: 15,
             }}
-            onPress={() => console.log("first")}
           >
             <SimpleLineIcons
               name="calculator"

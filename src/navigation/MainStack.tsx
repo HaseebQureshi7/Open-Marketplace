@@ -26,6 +26,9 @@ import ViewAllCategories from "../screens/SellerScreens/ViewAllCategories";
 import CategoryScreen from "../screens/SellerScreens/CategoryScreen";
 import ViewAllProducts from "../screens/SellerScreens/ViewAllProducts";
 import ProductScreen from "../screens/SellerScreens/ProductScreen";
+import ProfileScreen from "../screens/SellerScreens/ProfileScreen";
+import NewOrders from "../screens/SellerScreens/NewOrders";
+import TotalSales from "../screens/SellerScreens/TotalSales";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -48,10 +51,10 @@ const MainStack = () => {
 
   const MoveInFromCenterFromBottom = {
     ...TransitionPresets.RevealFromBottomAndroid, // Apply default slide animation
-    headerShown: false, 
+    headerShown: false,
   };
 
-  const MoveInFromCenter = { 
+  const MoveInFromCenter = {
     ...TransitionPresets.ScaleFromCenterAndroid, // Apply default slide animation
     headerShown: false,
   };
@@ -161,6 +164,21 @@ const MainStack = () => {
                       <Stack.Screen
                         name="productScreen"
                         component={ProductScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="profileScreen"
+                        component={ProfileScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="newOrders"
+                        component={NewOrders}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="totalSales"
+                        component={TotalSales}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>
