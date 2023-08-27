@@ -29,6 +29,7 @@ import ProductScreen from "../screens/SellerScreens/ProductScreen";
 import ProfileScreen from "../screens/SellerScreens/ProfileScreen";
 import NewOrders from "../screens/SellerScreens/NewOrders";
 import TotalSales from "../screens/SellerScreens/TotalSales";
+import EditProduct from "../screens/SellerScreens/EditProduct";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -179,6 +180,11 @@ const MainStack = () => {
                       <Stack.Screen
                         name="totalSales"
                         component={TotalSales}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="editProduct"
+                        component={EditProduct}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>

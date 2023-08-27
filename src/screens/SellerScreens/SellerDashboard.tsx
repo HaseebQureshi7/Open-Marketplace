@@ -69,6 +69,8 @@ const SellerDashboard = ({
         setBusinessProdCategoriesId(() => [...tempSet]);
       });
     },
+    refetchInterval: 3000,
+    // refetchInterval: 10000,
   });
 
   const getAllProductsCategories = (cats: any) => {

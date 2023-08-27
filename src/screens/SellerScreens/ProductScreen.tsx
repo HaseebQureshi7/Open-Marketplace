@@ -57,7 +57,7 @@ const ProductScreen = ({
 
           {/* ADD PRODUCT */}
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("editProduct", { props: product })}
             style={{
               alignItems: "flex-start",
               justifyContent: "flex-start",
@@ -251,7 +251,9 @@ const ProductScreen = ({
             }}
           >
             <StyledButton
-              onPress={() => console.log("edit")}
+              onPress={() =>
+                navigation.navigate("editProduct", { props: product })
+              }
               textColor={backgroundColor}
               style={{ backgroundColor: theme.colors.accent }}
               contentStyle={{ padding: 10 }}
