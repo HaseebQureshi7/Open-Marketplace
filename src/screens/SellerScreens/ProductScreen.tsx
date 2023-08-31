@@ -56,26 +56,49 @@ const ProductScreen = ({
           <BackButton />
 
           {/* ADD PRODUCT */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate("editProduct", { props: product })}
-            style={{
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              // paddingLeft: 20,
-              marginTop: 10,
-            }}
-          >
-            <AntDesign
-              name="edit"
+          {userData?.name ? 
+            (<TouchableOpacity
+              onPress={() => navigation.navigate("editProduct", { props: product })}
               style={{
-                padding: 12.5,
-                borderRadius: 5,
-                backgroundColor: theme.colors.background,
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                // paddingLeft: 20,
+                marginTop: 10,
               }}
-              size={25}
-              color={theme.colors.placeholder}
-            />
-          </TouchableOpacity>
+            >
+              <AntDesign
+                name="edit"
+                style={{
+                  padding: 12.5,
+                  borderRadius: 5,
+                  backgroundColor: theme.colors.background,
+                }}
+                size={25}
+                color={theme.colors.placeholder}
+              />
+            </TouchableOpacity>)
+            : (<TouchableOpacity
+              // onPress={() => navigation.navigate("editProduct", { props: product })}
+              style={{
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                // paddingLeft: 20,
+                marginTop: 10,
+              }}
+            >
+              <AntDesign
+                name="heart"
+                style={{
+                  padding: 15,
+                  borderRadius: 5,
+                  backgroundColor: theme.colors.background,
+                }}
+                size={20}
+                color={theme.colors.placeholder}
+              />
+            </TouchableOpacity>)
+        }
+          
         </View>
 
         {/* IMAGE SECTION */}

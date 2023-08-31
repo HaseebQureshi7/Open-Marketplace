@@ -11,10 +11,15 @@ import StyledText from "../../styles/styledComponents/StyledText";
 import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
-import { TextInput, useTheme } from "react-native-paper";
+import { ActivityIndicator, TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { StatusBar } from "expo-status-bar";
 import { GetBusinessFromLS, GetCustomerFromLS } from "../../utils/SaveUserToLS";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useQuery } from "@tanstack/react-query";
+import ProductCard from "../../components/ProductCard";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 const CustomerDashboard = ({
   navigation,
@@ -27,6 +32,40 @@ const CustomerDashboard = ({
 
   const [search, setSearch] = React.useState<string>("");
   const [userData, setUserData] = React.useState<any>();
+  const [allProducts, setAllProducts] = React.useState<String[]>();
+  const [allProdCats, setAllProdCats] = React.useState<any[]>();
+
+
+  
+  const getAllProductCategories = () => {
+    return axios.get(
+      baseUrl + `/category/getAllCategories`
+    );
+  };
+
+  const { isLoading:loadingProdCats } = useQuery(["All Categories"], getAllProductCategories, {
+    onSuccess: (data) => {
+      setAllProdCats(data.data);
+      console.log(data.data.length)
+    },
+    // refetchInterval: 3000,
+    // refetchInterval: 10000,
+  });
+  
+  const getAllProducts = () => {
+    return axios.get(
+      baseUrl + `/product/getAllProducts`
+    );
+  };
+
+  const { isLoading } = useQuery(["All Products"], getAllProducts, {
+    onSuccess: (data) => {
+      setAllProducts(data.data);
+    },
+    refetchInterval: 3000,
+    // refetchInterval: 10000,
+  });
+
 
   React.useEffect(() => {
     GetCustomerFromLS().then((dat: any) => {
@@ -93,7 +132,7 @@ const CustomerDashboard = ({
           </TouchableOpacity>
 
           {/* ADD PRODUCT */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.closeDrawer()}
             style={{
               alignItems: "flex-start",
@@ -112,7 +151,7 @@ const CustomerDashboard = ({
               size={25}
               color={theme.colors.text}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* HEADER TEXT */}
@@ -209,7 +248,13 @@ const CustomerDashboard = ({
             <StyledText style={{ fontSize: 20, fontFamily: theme.fonts.bold }}>
               Product Categories
             </StyledText>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("viewAllCategories", {
+                  props: allProdCats,
+                })
+              }
+            >
               <StyledText
                 style={{
                   fontSize: 12.5,
@@ -222,22 +267,51 @@ const CustomerDashboard = ({
               </StyledText>
             </TouchableOpacity>
           </View>
-          <FlatList
-            data={brands}
-            contentContainerStyle={{ gap: 15 }}
-            renderItem={({ item }) => (
-              <Text
+          <Animated.FlatList
+            entering={FadeIn}
+            ListEmptyComponent={
+              <TouchableOpacity
                 style={{
+                  flexDirection: "row",
                   padding: 15,
                   borderRadius: 5,
-                  fontFamily: "InterBold",
+                  gap: 10,
                   backgroundColor: theme.colors.background,
                 }}
               >
-                {item}
-              </Text>
+                <Text
+                  style={{
+                    fontFamily: "InterBold",
+                  }}
+                >
+                  Loading Categories ...
+                </Text>
+                <ActivityIndicator size={15} />
+              </TouchableOpacity>
+            }
+            exiting={FadeOut}
+            // layout={Layout.delay(250)}
+            data={allProdCats}
+            contentContainerStyle={{ gap: 15 }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("categoryScreen", { props: item })
+                }
+              >
+                <Text
+                  style={{
+                    padding: 15,
+                    borderRadius: 5,
+                    fontFamily: "InterBold",
+                    backgroundColor: theme.colors.background,
+                  }}
+                >
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
@@ -255,9 +329,15 @@ const CustomerDashboard = ({
             }}
           >
             <Text style={{ fontSize: 20, fontFamily: "InterBold" }}>
-              Your Products ({!isLoading ? data?.length : 0})
+              Your Products ({allProducts?.length})
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("viewAllProducts", {
+                  props: allProducts,
+                })
+              }
+            >
               <StyledText
                 style={{
                   fontSize: 12.5,
@@ -279,9 +359,19 @@ const CustomerDashboard = ({
               flexDirection: "row",
               flexWrap: "wrap",
               marginTop: 15,
+              marginBottom: 25,
               gap: 15,
             }}
-          ></View>
+          >
+            {!isLoading ? (
+              allProducts?.slice(0, 6)?.map((prod, index) => {
+                // @ts-ignore
+                return <ProductCard prod={prod} index={index} key={prod?.id} />;
+              })
+            ) : (
+              <ActivityIndicator size={75} />
+            )}
+          </View>
         </View>
       </View>
     </ScrollView>

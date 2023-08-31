@@ -186,7 +186,7 @@ const NavDrawer = ({ navigation }: any) => {
             >
               {userData?.name
                 ? userData?.name
-                : userData?.firstName + " " + userData?.lastName}
+                : userData?.firstName + " " + userData?.lastName.slice(0,1)+"."}
             </StyledText>
           </View>
         ) : (
@@ -228,7 +228,7 @@ const NavDrawer = ({ navigation }: any) => {
               <AntDesign
                 name="shoppingcart"
                 style={{
-                  padding: 5,
+                  padding: 7.5,
                   backgroundColor: theme.colors.background,
                   borderRadius: 5,
                 }}
@@ -237,7 +237,7 @@ const NavDrawer = ({ navigation }: any) => {
               />
             )}
             label="Orders"
-            onPress={() => console.log("orders")}
+            onPress={() => navigation.navigate("placedOrders")}
           />
           {/* WISHLIST */}
           <Drawer.Item
@@ -250,7 +250,7 @@ const NavDrawer = ({ navigation }: any) => {
               <AntDesign
                 name="heart"
                 style={{
-                  padding: 5,
+                  padding: 7.5,
                   backgroundColor: theme.colors.background,
                   borderRadius: 5,
                 }}
@@ -272,7 +272,7 @@ const NavDrawer = ({ navigation }: any) => {
               <Ionicons
                 name="person-circle"
                 style={{
-                  padding: 5,
+                  padding: 7.5,
                   backgroundColor: theme.colors.background,
                   borderRadius: 5,
                 }}
@@ -281,7 +281,7 @@ const NavDrawer = ({ navigation }: any) => {
               />
             )}
             label="Profile"
-            onPress={() => console.log("profile")}
+            onPress={() => navigation.navigate("customerProfile")}
           />
         </Drawer.Section>
       )}

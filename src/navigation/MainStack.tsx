@@ -30,6 +30,8 @@ import ProfileScreen from "../screens/SellerScreens/ProfileScreen";
 import NewOrders from "../screens/SellerScreens/NewOrders";
 import TotalSales from "../screens/SellerScreens/TotalSales";
 import EditProduct from "../screens/SellerScreens/EditProduct";
+import CustomerProfile from "../screens/CustomerScreens/CustomerProfile";
+import PlacedOrders from "../screens/CustomerScreens/PlacedOrders";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -208,6 +210,36 @@ const MainStack = () => {
                       <Stack.Screen
                         name="dashboard"
                         component={CustomerDashboard}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="customerProfile"
+                        component={CustomerProfile}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="placedOrders"
+                        component={PlacedOrders}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="productScreen"
+                        component={ProductScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="categoryScreen"
+                        component={CategoryScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="viewAllCategories"
+                        component={ViewAllCategories}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="viewAllProducts"
+                        component={ViewAllProducts}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>

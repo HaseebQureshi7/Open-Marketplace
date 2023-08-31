@@ -8,7 +8,7 @@ import { ThemeInterface } from "../styles/theme";
 import StyledText from "../styles/styledComponents/StyledText";
 import TypeWriter from "react-native-typewriter";
 
-const StartAs = ({navigation}:any) => {
+const StartAs = ({ navigation }: any) => {
   const backgroundColor = "white";
   const imageSize =
     screenWidth > screenHeight
@@ -98,7 +98,7 @@ const StartAs = ({navigation}:any) => {
 
         {/* Buyer Tab */}
         <Pressable
-          onPress={() => navigation.navigate("skipLogin")}
+          onPress={() => navigation.navigate("customerLogin")}
           style={{
             width: "100%",
             justifyContent: "center",

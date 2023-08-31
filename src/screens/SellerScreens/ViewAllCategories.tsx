@@ -15,6 +15,7 @@ import { StackRouterOptions } from "@react-navigation/native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { baseUrl } from "../../utils/localENV";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const ViewAllCategories = ({
   navigation,
@@ -26,6 +27,8 @@ const ViewAllCategories = ({
   const theme = useTheme<ThemeInterface>();
 
   const categoriesDataProp = route.params.props;
+
+  const { userData }: any = React.useContext(UserDataContext);
 
   const backgroundColor = "white";
   return (
@@ -53,7 +56,7 @@ const ViewAllCategories = ({
           <BackButton />
 
           {/* ADD PRODUCT */}
-          <AddProductButton />
+          {userData?.name && <AddProductButton />}
         </View>
 
         {/* HEADER SECTION */}
