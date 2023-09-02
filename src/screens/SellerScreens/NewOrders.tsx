@@ -11,6 +11,12 @@ import HeaderSection from "../../components/HeaderSection";
 import { theme } from "../../styles/theme";
 import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import axios from "axios";
+import { baseUrl } from "../../utils/localENV";
+import { useQuery } from "@tanstack/react-query";
+import { UserDataContext } from "../../context/UserDataContext";
+import OrderedProduct from "../../components/OrderedProduct";
+import { ActivityIndicator } from "react-native-paper";
 
 const NewOrders = ({
   navigation,
@@ -20,6 +26,25 @@ const NewOrders = ({
   route: any;
 }) => {
   const backgroundColor = "white";
+
+  const [orders, setOrders] = React.useState<any>([]);
+
+  const { userData, setUserData }: any = React.useContext(UserDataContext);
+
+  const getAllProducts = () => {
+    return axios.get(
+      baseUrl + `/order/getAllOrdersForBusiness/${userData?.id}`
+    );
+  };
+
+  const { isLoading } = useQuery(["New Orders"], getAllProducts, {
+    onSuccess: (data) => {
+      setOrders(data.data);
+      // console.log(data.data);
+    },
+    refetchInterval: 5000,
+    // refetchInterval: 10000,
+  });
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -70,7 +95,39 @@ const NewOrders = ({
         </View>
 
         {/* HEADER TEXT - ADD PROD */}
-        <HeaderSection heading="Orders" subHeading="Track your orders here" />
+        <HeaderSection
+          heading="New Orders"
+          subHeading="Track your orders here"
+        />
+
+        <View>
+          {/* CARD */}
+          {!isLoading ? (
+            orders.length > 0 &&
+            orders.map((order: any) => {
+              return (
+                <View
+                  key={order.id}
+                  style={{
+                    // padding: 10,
+                    width: "100%",
+                    display: "flex",
+                    borderRadius: 5,
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    // backgroundColor: "snow",
+                    gap: 15,
+                  }}
+                >
+                  <OrderedProduct product={order} />
+                </View>
+              );
+            })
+          ) : (
+            <ActivityIndicator size={50} />
+          )}
+        </View>
       </View>
     </ScrollView>
   );

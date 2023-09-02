@@ -32,6 +32,9 @@ import TotalSales from "../screens/SellerScreens/TotalSales";
 import EditProduct from "../screens/SellerScreens/EditProduct";
 import CustomerProfile from "../screens/CustomerScreens/CustomerProfile";
 import PlacedOrders from "../screens/CustomerScreens/PlacedOrders";
+import DeliveryDetailsScreen from "../screens/CustomerScreens/DeliveryDetailsScreen";
+import CheckoutScreen from "../screens/CustomerScreens/CheckoutScreen";
+import OrderConfirmed from "../screens/CustomerScreens/OrderConfirmed";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -240,6 +243,21 @@ const MainStack = () => {
                       <Stack.Screen
                         name="viewAllProducts"
                         component={ViewAllProducts}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="deliveryDetailsScreen"
+                        component={DeliveryDetailsScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="checkoutScreen"
+                        component={CheckoutScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="orderConfirmed"
+                        component={OrderConfirmed}
                         options={SlideFromRight}
                       />
                     </Stack.Navigator>

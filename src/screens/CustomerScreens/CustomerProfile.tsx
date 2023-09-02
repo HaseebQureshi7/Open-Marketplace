@@ -2,7 +2,6 @@ import {
     View,
     Text,
     ScrollView,
-    StatusBar,
     TouchableOpacity,
     Image,
   } from "react-native";
@@ -19,6 +18,7 @@ import {
   import StyledButton from "../../styles/styledComponents/StyledButton";
   import { baseUrl } from "../../utils/localENV";
 import { FormatUserFriendlyTime } from "../../utils/DateFormatter";
+import { StatusBar } from "expo-status-bar";
   
   const CustomerProfile = ({
     navigation,

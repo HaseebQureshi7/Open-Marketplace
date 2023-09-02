@@ -1,4 +1,4 @@
-import { View, Image, StatusBar, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import AddProductButton from "../../components/AddProductButton";
@@ -17,6 +17,7 @@ import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 import StyledButton from "../../styles/styledComponents/StyledButton";
 import { UserDataContext } from "../../context/UserDataContext";
 import ReturnProdCategory from "../../components/ReturnProdCategory";
+import { StatusBar } from "expo-status-bar";
 
 const ProductScreen = ({
   navigation,
@@ -56,9 +57,11 @@ const ProductScreen = ({
           <BackButton />
 
           {/* ADD PRODUCT */}
-          {userData?.name ? 
-            (<TouchableOpacity
-              onPress={() => navigation.navigate("editProduct", { props: product })}
+          {userData?.name ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("editProduct", { props: product })
+              }
               style={{
                 alignItems: "flex-start",
                 justifyContent: "flex-start",
@@ -76,8 +79,9 @@ const ProductScreen = ({
                 size={25}
                 color={theme.colors.placeholder}
               />
-            </TouchableOpacity>)
-            : (<TouchableOpacity
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
               // onPress={() => navigation.navigate("editProduct", { props: product })}
               style={{
                 alignItems: "flex-start",
@@ -96,9 +100,8 @@ const ProductScreen = ({
                 size={20}
                 color={theme.colors.placeholder}
               />
-            </TouchableOpacity>)
-        }
-          
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* IMAGE SECTION */}
@@ -256,7 +259,11 @@ const ProductScreen = ({
             }}
           >
             <StyledButton
-              onPress={() => console.log("buy")}
+              onPress={() =>
+                navigation.navigate("deliveryDetailsScreen", {
+                  params: product,
+                })
+              }
               textColor={backgroundColor}
               style={{ backgroundColor: theme.colors.accent }}
               contentStyle={{ padding: 10 }}

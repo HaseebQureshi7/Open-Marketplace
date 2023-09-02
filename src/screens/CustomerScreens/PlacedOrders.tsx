@@ -2,8 +2,9 @@ import {
   View,
   Text,
   ScrollView,
-  StatusBar,
   TouchableOpacity,
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import BackButton from "../../components/BackButton";
@@ -11,6 +12,13 @@ import HeaderSection from "../../components/HeaderSection";
 import { theme } from "../../styles/theme";
 import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { StatusBar } from "expo-status-bar";
+import { useQuery } from "@tanstack/react-query";
+import { baseUrl } from "../../utils/localENV";
+import axios from "axios";
+import { UserDataContext } from "../../context/UserDataContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import OrderedProduct from "../../components/OrderedProduct";
 
 const PlacedOrders = ({
   navigation,
@@ -20,6 +28,25 @@ const PlacedOrders = ({
   route: any;
 }) => {
   const backgroundColor = "white";
+
+  const [orders, setOrders] = React.useState<any>([]);
+
+  const { userData, setUserData }: any = React.useContext(UserDataContext);
+
+  const getAllProducts = () => {
+    return axios.get(
+      baseUrl + `/order/getAllOrdersForCustomer/${userData?.id}`
+    );
+  };
+
+  const { isLoading } = useQuery(["All Ordered Product"], getAllProducts, {
+    onSuccess: (data) => {
+      setOrders(data.data);
+      // console.log(data.data);
+    },
+    refetchInterval: 5000,
+    // refetchInterval: 10000,
+  });
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -45,28 +72,6 @@ const PlacedOrders = ({
         >
           {/* BACK */}
           <BackButton />
-
-          {/* ADD PRODUCT */}
-          {/* <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                // paddingLeft: 20,
-                marginTop: 10,
-              }}
-            >
-              <AntDesign
-                name="edit"
-                style={{
-                  padding: 12.5,
-                  borderRadius: 5,
-                  backgroundColor: theme.colors.background,
-                }}
-                size={25}
-                color={theme.colors.placeholder}
-              />
-            </TouchableOpacity> */}
         </View>
 
         {/* HEADER TEXT - ADD PROD */}
@@ -74,6 +79,35 @@ const PlacedOrders = ({
           heading="Your Orders"
           subHeading="Track your orders here"
         />
+
+        <View>
+          {/* CARD */}
+          {!isLoading ? (
+            orders.length > 0 &&
+            orders.map((order: any) => {
+              return (
+                <View
+                  key={order.id}
+                  style={{
+                    // padding: 10,
+                    width: "100%",
+                    display: "flex",
+                    borderRadius: 5,
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    // backgroundColor: "snow",
+                    gap: 15,
+                  }}
+                >
+                  <OrderedProduct product={order} />
+                </View>
+              );
+            })
+          ) : (
+            <ActivityIndicator size={50} />
+          )}
+        </View>
       </View>
     </ScrollView>
   );
