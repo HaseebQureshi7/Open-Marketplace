@@ -100,11 +100,14 @@ const NewOrders = ({
           subHeading="Track your orders here"
         />
 
-        <View>
+        <View style={{
+          gap:25,
+          marginBottom:25
+        }}>
           {/* CARD */}
           {!isLoading ? (
             orders.length > 0 &&
-            orders.map((order: any) => {
+            orders.map((order: any, index: any) => {
               return (
                 <View
                   key={order.id}
@@ -120,7 +123,7 @@ const NewOrders = ({
                     gap: 15,
                   }}
                 >
-                  <OrderedProduct product={order} />
+                  <OrderedProduct product={order} index={index} />
                 </View>
               );
             })
