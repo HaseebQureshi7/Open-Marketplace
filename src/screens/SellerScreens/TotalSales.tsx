@@ -101,7 +101,10 @@ const TotalSales = ({
             Total Sales in {mSale?.month}
           </StyledText>
           <StyledText style={{ fontSize: 35, color: theme.colors.success }}>
-            ₹ {FormatPriceWithCommas(mSale?.totalSales)}
+            ₹{" "}
+            {FormatPriceWithCommas(mSale?.totalSales)
+              ? FormatPriceWithCommas(mSale?.totalSales)
+              : 0}
           </StyledText>
         </View>
 

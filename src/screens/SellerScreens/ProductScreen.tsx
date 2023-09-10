@@ -151,7 +151,7 @@ const ProductScreen = ({
             <StyledText style={{ color: theme.colors.placeholder }}>
               Price
             </StyledText>
-            <StyledText style={{ fontSize: 20 }}>
+            <StyledText style={{ fontSize: product.price > 100000 ? 15 : 20 }}>
               ₹ {FormatPriceWithCommas(product.price)}
             </StyledText>
           </View>

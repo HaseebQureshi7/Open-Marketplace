@@ -122,7 +122,7 @@ const SellerSignup = ({ navigation }: any) => {
           password,
         };
         mutate(signupData);
-        console.log(signupData);
+        // console.log(signupData);
       } else {
         setSnackData({
           open: true,

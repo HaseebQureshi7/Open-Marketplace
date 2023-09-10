@@ -35,12 +35,13 @@ const CategoryScreen = ({
   const theme = useTheme<ThemeInterface>();
 
   const categoryDataProp = route.params.props;
+  // console.log(categoryDataProp)
 
   const backgroundColor = "white";
 
   const getAllProductsByCategory = () => {
     return axios.get(
-      baseUrl + `/category/getProductsByCategory/${categoryDataProp?.id}`
+      baseUrl + `/product/getAllProductsInCategory/${categoryDataProp?.id}`
     );
   };
 
@@ -49,7 +50,7 @@ const CategoryScreen = ({
     getAllProductsByCategory,
     {
       onSuccess: (data: any) => {
-        console.log(data.data);
+        // console.log(data);
       },
       select: (data: any) => {
         return data.data;

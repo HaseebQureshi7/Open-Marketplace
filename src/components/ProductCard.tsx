@@ -28,6 +28,9 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
 
   return (
     <Animated.View
+    style={{
+      width:150
+    }}
       key={prod.id}
       entering={FadeIn.delay(index * 100)}
       exiting={FadeOut}
@@ -37,33 +40,6 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
         onPress={() => navigation.navigate("productScreen", { props: prod })}
         style={{ alignItems: "flex-start", gap: 5 }}
       >
-        <MaterialIcons
-          style={{
-            position: "absolute",
-            zIndex: 1,
-            right: 5,
-            top: 5,
-          }}
-          // onPress={(e) => {
-          //   HandleFavoritePress(e, data?.id);
-          //   console.log("IDP -> ", data?.id);
-          //   AddToWishlist(data?.id);
-          // }}
-          name={
-            "favorite-border"
-            // wishlist?.includes(data?.id)
-            //   ? "favorite"
-            //   : "favorite-border"
-          }
-          size={24}
-          color={
-            "white"
-            // wishlist?.includes(data?.id)
-            //   ? AppColors.error
-            //   : AppColors.bgLight
-          }
-          // color={AppColors.bgLight}
-        />
         <Animated.Image
           exiting={FadeInDown}
           style={{ width: 150, height: 150, borderRadius: 10 }}
@@ -71,7 +47,7 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
             uri: baseUrl + prod.productImage,
           }}
         />
-        <StyledText>{prod.name}</StyledText>
+        <StyledText style={{width:"90%"}}>{prod.name}</StyledText>
         <View
           style={{
             flexDirection: "row",

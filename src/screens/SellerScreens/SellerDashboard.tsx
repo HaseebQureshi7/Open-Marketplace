@@ -66,6 +66,7 @@ const SellerDashboard = ({
       const filteredCat = data.data.filter((data: any) => {
         const tempSet = new Set();
         tempSet.add(data.category);
+        // console.log("cat - ", data.category)
         setBusinessProdCategoriesId(() => [...tempSet]);
       });
     },
@@ -79,10 +80,11 @@ const SellerDashboard = ({
   };
 
   const fetchAllProdCats = useQueries({
-    queries: businessProdCategoriesId.map((cId: any) => {
+    queries: businessProducts.map((cId: any) => {
       return {
-        queryKey: ["Product category -", cId],
-        queryFn: () => getAllProductsCategories(cId),
+        queryKey: ["Product category -", cId.category],
+        queryFn: () => getAllProductsCategories(cId.category),
+        enabled: true, // Set enabled to true to enable the query by default
         onSuccess: (data: any) => {
           setBusinessProdCategories((prevState) => {
             // Check if the fetched data is already in the state to avoid duplication
@@ -274,9 +276,9 @@ const SellerDashboard = ({
                     fontFamily: "InterBold",
                   }}
                 >
-                  Loading Categories ...
+                  No Categories Present
                 </Text>
-                <ActivityIndicator size={15} />
+                {/* <ActivityIndicator size={15} /> */}
               </TouchableOpacity>
             }
             exiting={FadeOut}
