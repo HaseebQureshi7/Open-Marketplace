@@ -35,27 +35,25 @@ const CustomerDashboard = ({
   const [allProducts, setAllProducts] = React.useState<String[]>();
   const [allProdCats, setAllProdCats] = React.useState<any[]>();
 
-
-  
   const getAllProductCategories = () => {
-    return axios.get(
-      baseUrl + `/category/getAllCategories`
-    );
+    return axios.get(baseUrl + `/category/getAllCategories`);
   };
 
-  const { isLoading:loadingProdCats } = useQuery(["All Categories"], getAllProductCategories, {
-    onSuccess: (data) => {
-      setAllProdCats(data.data);
-      console.log(data.data.length)
-    },
-    // refetchInterval: 3000,
-    // refetchInterval: 10000,
-  });
-  
+  const { isLoading: loadingProdCats } = useQuery(
+    ["All Categories"],
+    getAllProductCategories,
+    {
+      onSuccess: (data) => {
+        setAllProdCats(data.data);
+        console.log(data.data.length);
+      },
+      // refetchInterval: 3000,
+      // refetchInterval: 10000,
+    }
+  );
+
   const getAllProducts = () => {
-    return axios.get(
-      baseUrl + `/product/getAllProducts`
-    );
+    return axios.get(baseUrl + `/product/getAllProducts`);
   };
 
   const { isLoading } = useQuery(["All Products"], getAllProducts, {
@@ -66,27 +64,11 @@ const CustomerDashboard = ({
     // refetchInterval: 10000,
   });
 
-
   React.useEffect(() => {
     GetCustomerFromLS().then((dat: any) => {
       setUserData(dat);
     });
   }, []);
-
-  const brands: any = [
-    "VRand-1",
-    "xTract-2",
-    "fRe-3",
-    "B-4U",
-    5,
-    6,
-    7,
-    8,
-    9,
-    0,
-  ];
-
-  const data = [];
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -329,7 +311,7 @@ const CustomerDashboard = ({
             }}
           >
             <Text style={{ fontSize: 20, fontFamily: "InterBold" }}>
-              Your Products ({allProducts?.length})
+              Newest Arrivals ({allProducts?.length})
             </Text>
             <TouchableOpacity
               onPress={() =>

@@ -15,7 +15,7 @@ import Animated, {
   Layout,
 } from "react-native-reanimated";
 import StyledButton from "../styles/styledComponents/StyledButton";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserDataContext } from "../context/UserDataContext";
 import { FormatPriceWithCommas } from "../utils/PriceFormatter";
 import { SnackStateProps } from "../types/SnackbarTypes";
@@ -69,10 +69,6 @@ const OrderedProduct = ({ product: order, index }: any) => {
     const MSData = {
       totalSales: prod?.price,
     };
-
-    // console.log(prod?.price);
-
-    // console.log(baseUrl + `/monthSales/editMonthSales/${userData?.id}`);
     return axios.put(
       baseUrl + `/monthSales/editMonthSales/${userData?.id}`,
       MSData
@@ -89,16 +85,36 @@ const OrderedProduct = ({ product: order, index }: any) => {
     },
   });
 
+  // UPDATE PROD ORDER STATUS
+  const changeProdStatus = () => {
+    const changePSData = {
+      orderStatus: "Complete",
+    };
+    // console.log(baseUrl + `/order/editOrder/${order?.id}`);
+    return axios.put(baseUrl + `/order/editOrder/${order?.id}`, changePSData);
+  };
+
+  const { mutate: changeProdStatusMutation } = useMutation(changeProdStatus, {
+    onSuccess: (data) => {
+      setMSale(data.data);
+      console.log("Order Status Details -> ", data.data);
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
   const theme = useTheme<ThemeInterface>();
 
   function HandleMarkComplete() {
     addToMonthMutation();
+    changeProdStatusMutation();
     setSnackData({
       open: true,
       severity: "Success",
       text: "Order Completed!",
     });
-    navigation.navigate("totalSales", {mSale});
+    navigation.navigate("totalSales", { mSale });
   }
 
   if (isLoading) {
@@ -176,11 +192,30 @@ const OrderedProduct = ({ product: order, index }: any) => {
                 width: "100%",
               }}
             >
-              <StyledText
-                style={{ fontSize: 12.5, color: theme.colors.warning }}
+              {/* DELIVERED */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                  justifyContent: "space-between",
+                  gap: 5,
+                }}
               >
-                {order?.orderStatus}
-              </StyledText>
+                {order?.orderStatus === "Complete" ? 
+                <Ionicons name="checkmark-done" size={17.5} color={theme.colors.success} />
+                : <MaterialCommunityIcons name="truck-delivery" size={17.5} color={theme.colors.warning} />}
+                <StyledText
+                  style={{
+                    fontSize: 12.5,
+                    color:
+                      order?.orderStatus === "Incomplete"
+                        ? theme.colors.warning
+                        : theme.colors.success,
+                  }}
+                >
+                  {order?.orderStatus === "Complete" ? "Delivered" : "Incomplete"}
+                </StyledText>
+              </View>
 
               <StyledText style={{ fontSize: 17.5 }}>
                 ₹ {FormatPriceWithCommas(prod?.price)}

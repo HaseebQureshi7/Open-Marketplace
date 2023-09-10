@@ -192,7 +192,7 @@ const TotalSales = ({
             </StyledText>
           </View>
           <StyledText style={{ fontSize: 10 }}>
-            Due less than ₹ 500 will not be charged to the seller.
+            Due amount less than ₹ 500 will not be charged to the seller.
           </StyledText>
         </View>
 
