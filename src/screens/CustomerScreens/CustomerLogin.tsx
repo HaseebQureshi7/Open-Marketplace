@@ -18,6 +18,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import { CommonActions } from "@react-navigation/native";
 import { SnackStateProps } from "../../types/SnackbarTypes";
+import { UserDataContext } from "../../context/UserDataContext";
 
 interface loginDataTypes {
   email: string;
@@ -37,6 +38,8 @@ const CustomerLogin = ({
 
   const theme = useTheme<ThemeInterface>();
 
+  const { userData, setUserData }: any = useContext(UserDataContext);
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -51,6 +54,7 @@ const CustomerLogin = ({
     onSuccess: (data) => {
       SaveTokenToLS(data.data.token).then(() =>
         SaveCustomerToLS(data.data.customer).then(() => {
+          setUserData(data.data.customer);
           setSnackData({
             open: true,
             severity: "Success",
@@ -68,8 +72,12 @@ const CustomerLogin = ({
       //   console.log(dat);
       // })
     },
-    onError: (e) => {
-      console.log("login failed !!!", e);
+    onError: () => {
+      setSnackData({
+        open: true,
+        severity: "Error",
+        text: "Invalid Email or Password!",
+      });
     },
   });
 

@@ -1,13 +1,13 @@
 import { View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import AddProductButton from "../../components/AddProductButton";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
 import { ScrollView } from "react-native-gesture-handler";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { ThemeInterface } from "../../styles/theme";
-import { Text, useTheme } from "react-native-paper";
+import { ActivityIndicator, Text, useTheme } from "react-native-paper";
 import Animated from "react-native-reanimated";
 import { baseUrl } from "../../utils/localENV";
 import { screenWidth } from "../../utils/Dimensions";
@@ -18,6 +18,9 @@ import StyledButton from "../../styles/styledComponents/StyledButton";
 import { UserDataContext } from "../../context/UserDataContext";
 import ReturnProdCategory from "../../components/ReturnProdCategory";
 import { StatusBar } from "expo-status-bar";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import { SnackStateProps } from "../../types/SnackbarTypes";
 
 const ProductScreen = ({
   navigation,
@@ -31,6 +34,36 @@ const ProductScreen = ({
   const backgroundColor = "white";
 
   const { userData, setUserData }: any = React.useContext(UserDataContext);
+
+  const queryClient = useQueryClient();
+
+  const { snackData, setSnackData }: SnackStateProps =
+    useContext(SnackbarContext);
+
+  const deleteProdQuery = () => {
+    return axios.delete(baseUrl + `/product/removeProduct/${product?.id}`);
+  };
+
+  const { mutate, isLoading } = useMutation(deleteProdQuery, {
+    onSuccess: () => {
+      setSnackData({
+        open: true,
+        severity: "Success",
+        text: "Product Removed!",
+      });
+      queryClient
+        .invalidateQueries(["All Business Products"])
+        .then(() => navigation.navigate("dashboard"))
+        .catch((e) => console.log(e));
+    },
+    onError: (e) => {
+      setSnackData({
+        open: true,
+        severity: "Error",
+        text: "Something went wrong!",
+      });
+    },
+  });
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
@@ -59,9 +92,7 @@ const ProductScreen = ({
           {/* ADD PRODUCT */}
           {userData?.name ? (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("editProduct", { props: product })
-              }
+              onPress={() => mutate()}
               style={{
                 alignItems: "flex-start",
                 justifyContent: "flex-start",
@@ -69,16 +100,31 @@ const ProductScreen = ({
                 marginTop: 10,
               }}
             >
-              <AntDesign
-                name="edit"
-                style={{
-                  padding: 12.5,
-                  borderRadius: 5,
-                  backgroundColor: theme.colors.background,
-                }}
-                size={25}
-                color={theme.colors.placeholder}
-              />
+              {!isLoading ? (
+                <MaterialIcons
+                  name="delete-outline"
+                  style={{
+                    padding: 12.5,
+                    borderRadius: 5,
+                    backgroundColor: theme.colors.error,
+                  }}
+                  size={25}
+                  color={theme.colors.background}
+                />
+              ) : (
+                <View
+                  style={{
+                    padding: 12.5,
+                    borderRadius: 5,
+                    backgroundColor: theme.colors.error,
+                  }}
+                >
+                  <ActivityIndicator
+                    color={theme.colors.background}
+                    size={25}
+                  />
+                </View>
+              )}
             </TouchableOpacity>
           ) : (
             <TouchableOpacity

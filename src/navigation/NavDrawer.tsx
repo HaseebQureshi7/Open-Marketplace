@@ -46,53 +46,6 @@ const NavDrawer = ({ navigation }: any) => {
     });
   }
 
-  const sidebarMenu = [
-    {
-      icon: (
-        <AntDesign
-          name="profile"
-          style={{}}
-          size={22.5}
-          color={theme.colors.placeholder}
-        />
-      ),
-      title: "Profile",
-    },
-    {
-      icon: (
-        <AntDesign
-          name="profile"
-          style={{}}
-          size={22.5}
-          color={theme.colors.placeholder}
-        />
-      ),
-      title: "New Orders",
-    },
-    {
-      icon: (
-        <AntDesign
-          name="profile"
-          style={{}}
-          size={22.5}
-          color={theme.colors.placeholder}
-        />
-      ),
-      title: "Add Product",
-    },
-    {
-      icon: (
-        <AntDesign
-          name="profile"
-          style={{}}
-          size={22.5}
-          color={theme.colors.placeholder}
-        />
-      ),
-      title: "Total Sales",
-    },
-  ];
-
   return (
     <StyledView
       style={{
@@ -186,7 +139,10 @@ const NavDrawer = ({ navigation }: any) => {
             >
               {userData?.name
                 ? userData?.name
-                : userData?.firstName + " " + userData?.lastName.slice(0,1)+"."}
+                : userData?.firstName +
+                  " " +
+                  userData?.lastName.slice(0, 1) +
+                  "."}
             </StyledText>
           </View>
         ) : (

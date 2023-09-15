@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
@@ -20,6 +14,7 @@ import { baseUrl } from "../../utils/localENV";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/ProductCard";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 
 const CustomerDashboard = ({
   navigation,
@@ -31,6 +26,7 @@ const CustomerDashboard = ({
   const backgroundColor = "white";
 
   const [search, setSearch] = React.useState<string>("");
+  const [searchResults, setSearchResults] = React.useState<Array<any>>([]);
   const [userData, setUserData] = React.useState<any>();
   const [allProducts, setAllProducts] = React.useState<String[]>();
   const [allProdCats, setAllProdCats] = React.useState<any[]>();
@@ -45,7 +41,7 @@ const CustomerDashboard = ({
     {
       onSuccess: (data) => {
         setAllProdCats(data.data);
-        console.log(data.data.length);
+        // console.log(data.data.length);
       },
       // refetchInterval: 3000,
       // refetchInterval: 10000,
@@ -63,6 +59,22 @@ const CustomerDashboard = ({
     refetchInterval: 3000,
     // refetchInterval: 10000,
   });
+
+  // SEARCH PRODS BY FILTERING THE ALREADY FETCHED ONES
+  const SearchProducts = () => {
+    if (search.length < 3) {
+      // console.log("before -> ", searchResults);
+      setSearchResults([]);
+      // console.log("after -> ", searchResults);
+    } else {
+      setSearchResults(
+        // @ts-ignore
+        allProducts?.filter((prod: any) =>
+          prod.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+  };
 
   React.useEffect(() => {
     GetCustomerFromLS().then((dat: any) => {
@@ -175,7 +187,7 @@ const CustomerDashboard = ({
         <View
           style={{
             width: "100%",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "center",
           }}
@@ -204,8 +216,64 @@ const CustomerDashboard = ({
             label="Search Products"
             value={search}
             mode="outlined"
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={(text) => {
+              setSearch(text);
+              SearchProducts();
+            }}
           />
+          <View style={{ width: "100%" }}>
+            {searchResults?.length > 0 && (
+              <Text style={{ color: theme.colors.placeholder, padding: 5 }}>
+                Results ({searchResults?.length})
+              </Text>
+            )}
+            {searchResults?.map((prod: any) => {
+              return (
+                <TouchableOpacity
+                  key={prod.id}
+                  onPress={() =>
+                    navigation.navigate("productScreen", { props: prod })
+                  }
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    backgroundColor: theme.colors.info,
+                    marginVertical: 5,
+                    padding: 5,
+                    gap: 10,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 2.5 }}
+                    source={{
+                      uri: baseUrl + prod.productImage,
+                    }}
+                  />
+                  <StyledText
+                    style={{
+                      fontSize: 15,
+                      width: "60%",
+                      color: theme.colors.background,
+                    }}
+                  >
+                    {prod.name}
+                  </StyledText>
+                  <StyledText
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: 5,
+                      color: theme.colors.background,
+                    }}
+                  >
+                    ₹ {FormatPriceWithCommas(prod.price)}
+                  </StyledText>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
 
         {/* BODY */}
