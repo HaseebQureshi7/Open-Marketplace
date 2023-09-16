@@ -46,6 +46,7 @@ import { SnackbarContext } from "../context/SnackbarContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+import Wishlist from "../screens/CustomerScreens/Wishlist";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -74,7 +75,6 @@ const MainStack = () => {
   const SlideFromRight = {
     ...TransitionPresets.SlideFromRightIOS, // Apply default slide animation
     headerShown: false,
-    // Add any other options specific to the custom screens
   };
 
   // NAV DRAWER MOVED INTO MAINSTACK DUE TO NAV DRAWER NOT UPDATING WITH THE DOM TREE
@@ -253,7 +253,7 @@ const MainStack = () => {
                 />
               )}
               label="Wishlist"
-              onPress={() => console.log("first")}
+              onPress={() => navigation.navigate("wishlist")}
             />
             {/* PROFILE */}
             <Dw.Item
@@ -601,6 +601,11 @@ const MainStack = () => {
                       <Stack.Screen
                         name="categoryScreen"
                         component={CategoryScreen}
+                        options={SlideFromRight}
+                      />
+                      <Stack.Screen
+                        name="wishlist"
+                        component={Wishlist}
                         options={SlideFromRight}
                       />
                       <Stack.Screen

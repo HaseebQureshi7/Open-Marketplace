@@ -21,6 +21,11 @@ import { StatusBar } from "expo-status-bar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import { SnackStateProps } from "../../types/SnackbarTypes";
+import {
+  AddToWishlist,
+  RemoveFromWishlist,
+} from "../../utils/WishlistFunction";
+import { WishlistContext } from "../../context/WishlistContext";
 
 const ProductScreen = ({
   navigation,
@@ -34,6 +39,37 @@ const ProductScreen = ({
   const backgroundColor = "white";
 
   const { userData, setUserData }: any = React.useContext(UserDataContext);
+  const { wishlistItems, setWishlistItems }: any =
+    React.useContext(WishlistContext);
+
+  function IsProductInWishlist(
+    wishlistItems: any[],
+    productId: string
+  ): boolean {
+    return wishlistItems.some((data: any) => data.id === productId);
+  }
+
+  function HandleAddToWishlist() {
+    AddToWishlist(product);
+    setWishlistItems((prevItems: any) => [...prevItems, product]);
+    setSnackData({
+      open: true,
+      severity: "Success",
+      text: "Added to Wishlist!",
+    });
+  }
+
+  function HandleRemoveFromWishlist() {
+    RemoveFromWishlist(product?.id);
+    setWishlistItems((prevItems: any) => {
+      return prevItems.filter((item: any) => item.id !== product?.id);
+    });
+    setSnackData({
+      open: true,
+      severity: "Info",
+      text: "Removed from Wishlist!",
+    });
+  }
 
   const queryClient = useQueryClient();
 
@@ -89,7 +125,7 @@ const ProductScreen = ({
           {/* BACK */}
           <BackButton />
 
-          {/* ADD PRODUCT */}
+          {/* DELETE PRODUCT / WISHLIST */}
           {userData?.name ? (
             <TouchableOpacity
               onPress={() => mutate()}
@@ -128,7 +164,11 @@ const ProductScreen = ({
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              // onPress={() => navigation.navigate("editProduct", { props: product })}
+              onPress={() => {
+                IsProductInWishlist(wishlistItems, product?.id)
+                  ? HandleRemoveFromWishlist()
+                  : HandleAddToWishlist();
+              }}
               style={{
                 alignItems: "flex-start",
                 justifyContent: "flex-start",
@@ -144,7 +184,11 @@ const ProductScreen = ({
                   backgroundColor: theme.colors.background,
                 }}
                 size={20}
-                color={theme.colors.placeholder}
+                color={
+                  IsProductInWishlist(wishlistItems, product?.id)
+                    ? theme.colors.notification
+                    : theme.colors.placeholder
+                }
               />
             </TouchableOpacity>
           )}

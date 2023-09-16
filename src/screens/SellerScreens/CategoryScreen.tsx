@@ -93,7 +93,7 @@ const CategoryScreen = ({
         <View
           style={{
             flex: 1,
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
             flexDirection: "row",
             flexWrap: "wrap",

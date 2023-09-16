@@ -13,8 +13,18 @@ import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/ProductCard";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  Layout,
+  SlideInDown,
+  SlideInLeft,
+  SlideInRight,
+  SlideInUp,
+  withSpring,
+} from "react-native-reanimated";
 import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
+import { screenWidth } from "../../utils/Dimensions";
 
 const CustomerDashboard = ({
   navigation,
@@ -221,9 +231,20 @@ const CustomerDashboard = ({
               SearchProducts();
             }}
           />
-          <View style={{ width: "100%" }}>
+          <Animated.View
+            entering={FadeIn}
+            exiting={FadeOut}
+            layout={Layout.delay(100)}
+            style={{ width: "100%" }}
+          >
             {searchResults?.length > 0 && (
-              <Text style={{ color: theme.colors.placeholder, padding: 5 }}>
+              <Text
+                style={{
+                  color: theme.colors.placeholder,
+                  padding: 5,
+                  marginTop: 5,
+                }}
+              >
                 Results ({searchResults?.length})
               </Text>
             )}
@@ -273,7 +294,7 @@ const CustomerDashboard = ({
                 </TouchableOpacity>
               );
             })}
-          </View>
+          </Animated.View>
         </View>
 
         {/* BODY */}
@@ -404,7 +425,7 @@ const CustomerDashboard = ({
           <View
             style={{
               flex: 1,
-              alignItems: "center",
+              alignItems: "flex-start",
               justifyContent: "space-between",
               flexDirection: "row",
               flexWrap: "wrap",
@@ -419,7 +440,40 @@ const CustomerDashboard = ({
                 return <ProductCard prod={prod} index={index} key={prod?.id} />;
               })
             ) : (
-              <ActivityIndicator size={75} />
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginBottom: 25,
+                  gap: 15,
+                }}
+              >
+                {Array.from({ length: 4 }).map((data, index) => {
+                  return (
+                    <Animated.View
+                      key={index}
+                      entering={FadeIn.delay(150 * index)}
+                      exiting={FadeOut}
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: (screenWidth / 100) * 40,
+                        height: (screenWidth / 100) * 40,
+                        borderRadius: 10,
+                        backgroundColor: theme.colors.placeholder,
+                      }}
+                    >
+                      <ActivityIndicator
+                        size={75}
+                        color={theme.colors.background}
+                      />
+                    </Animated.View>
+                  );
+                })}
+              </View>
             )}
           </View>
         </View>

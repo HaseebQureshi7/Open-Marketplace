@@ -16,6 +16,8 @@ import { SnackbarTypes } from "./src/types/SnackbarTypes";
 import Snackbar from "./src/components/Snackbar";
 import { UserTokenContext } from "./src/context/UserTokenContext";
 import { GetTokenFromLS } from "./src/utils/AuthTokenHandler";
+import { WishlistContext } from "./src/context/WishlistContext";
+import { GetWishlist } from "./src/utils/WishlistFunction";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -34,8 +36,11 @@ export default function App() {
 
   const [userData, setUserData] = React.useState<any>();
   const [userToken, setUserToken] = React.useState<any>();
+  const [wishlistItems, setWishlistItems] = React.useState<any>();
 
   React.useEffect(() => {
+    GetWishlist().then((res) => setWishlistItems(res));
+
     GetUserType().then((res) =>
       res === "Business"
         ? GetBusinessFromLS().then((res) => setUserData(res))
@@ -56,16 +61,18 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <UserTokenContext.Provider value={{ userToken, setUserToken }}>
-        <UserDataContext.Provider value={{ userData, setUserData }}>
-          <SnackbarContext.Provider value={{ snackData, setSnackData }}>
-            <PaperProvider theme={theme}>
-              <SafeAreaView style={{ flex: 1 }}>
-                <MainStack />
-                <Snackbar snackData={snackData} />
-              </SafeAreaView>
-            </PaperProvider>
-          </SnackbarContext.Provider>
-        </UserDataContext.Provider>
+        <WishlistContext.Provider value={{ wishlistItems, setWishlistItems }}>
+          <UserDataContext.Provider value={{ userData, setUserData }}>
+            <SnackbarContext.Provider value={{ snackData, setSnackData }}>
+              <PaperProvider theme={theme}>
+                <SafeAreaView style={{ flex: 1 }}>
+                  <MainStack />
+                  <Snackbar snackData={snackData} />
+                </SafeAreaView>
+              </PaperProvider>
+            </SnackbarContext.Provider>
+          </UserDataContext.Provider>
+        </WishlistContext.Provider>
       </UserTokenContext.Provider>
     </QueryClientProvider>
   );

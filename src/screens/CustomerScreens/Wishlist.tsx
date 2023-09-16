@@ -1,42 +1,30 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, StatusBar } from "react-native";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import Animated, { FadeInDown } from "react-native-reanimated";
-import AddProductButton from "../../components/AddProductButton";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import StyledText from "../../styles/styledComponents/StyledText";
 import { ThemeInterface } from "../../styles/theme";
-import { baseUrl } from "../../utils/localENV";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { GetWishlist } from "../../utils/WishlistFunction";
 import ProductCard from "../../components/ProductCard";
+import { WishlistContext } from "../../context/WishlistContext";
 
-const ViewAllProducts = ({
-  navigation,
-  route,
-}: {
-  navigation: DrawerNavigationProp<any>;
-  route: any;
-}) => {
+const Wishlist = () => {
   const theme = useTheme<ThemeInterface>();
 
-  const allProducts = route.params.props;
-
   const backgroundColor = "white";
+
+  const { wishlistItems, setWishlistItems }: any =
+    React.useContext(WishlistContext);
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
-      {/* BODY CONTAINER */}
       <View
         style={{
-          flex: 1,
-          paddingHorizontal: 25,
-          gap: 25,
+          width: "90%",
+          alignSelf: "center",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          gap: 40,
         }}
       >
         <StatusBar animated={true} backgroundColor={backgroundColor} />
@@ -52,20 +40,18 @@ const ViewAllProducts = ({
         >
           {/* BACK */}
           <BackButton />
-
-          {/* ADD PRODUCT */}
-          <AddProductButton />
         </View>
 
-        {/* HEADER SECTION */}
+        {/* HEADER TEXT - ADD PROD */}
         <HeaderSection
-          heading={`Your Products (${allProducts.length})`}
-          subHeading="All your added product are here"
+          heading={`Wishlist (${wishlistItems?.length})`}
+          subHeading="Stuff that make you feel special!"
         />
 
-        {/* PRODUCT LIST */}
+        {/* PRODUCTS LIST */}
         <View
           style={{
+            width: "100%",
             flex: 1,
             alignItems: "flex-start",
             justifyContent: "space-between",
@@ -76,8 +62,8 @@ const ViewAllProducts = ({
             gap: 15,
           }}
         >
-          {allProducts?.map((prods: any, index: number) => {
-            return <ProductCard prod={prods} index={index} key={prods.id} />;
+          {wishlistItems?.slice(0, 6)?.map((prod: any, index: number) => {
+            return <ProductCard prod={prod} index={index} key={prod.id} />;
           })}
         </View>
       </View>
@@ -85,4 +71,4 @@ const ViewAllProducts = ({
   );
 };
 
-export default ViewAllProducts;
+export default Wishlist;

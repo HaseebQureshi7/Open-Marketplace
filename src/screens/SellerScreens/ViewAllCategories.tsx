@@ -16,6 +16,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { baseUrl } from "../../utils/localENV";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserDataContext } from "../../context/UserDataContext";
+import { screenWidth } from "../../utils/Dimensions";
 
 const ViewAllCategories = ({
   navigation,
@@ -69,13 +70,13 @@ const ViewAllCategories = ({
         <View
           style={{
             flex: 1,
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
             flexDirection: "row",
             flexWrap: "wrap",
             marginTop: 15,
             marginBottom: 25,
-            gap: 15,
+            gap: 20,
           }}
         >
           {categoriesDataProp?.map((cats: any) => {
@@ -86,6 +87,7 @@ const ViewAllCategories = ({
                   navigation.navigate("categoryScreen", { props: cats })
                 }
                 style={{
+                  width: (screenWidth / 100) * 40,
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -95,8 +97,8 @@ const ViewAllCategories = ({
                 <Animated.Image
                   exiting={FadeInDown}
                   style={{
-                    width: 150,
-                    height: 150,
+                    width: (screenWidth / 100) * 40,
+                    height: (screenWidth / 100) * 40,
                     borderRadius: 10,
                     backgroundColor: theme.colors.background,
                   }}
