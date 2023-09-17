@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Platform, ScrollView, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
@@ -50,8 +50,8 @@ const CheckoutScreen = ({
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 40,

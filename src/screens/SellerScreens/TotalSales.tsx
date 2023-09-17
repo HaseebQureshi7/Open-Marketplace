@@ -3,7 +3,7 @@ import {
   Text,
   ScrollView,
   StatusBar,
-  TouchableOpacity,
+  Platform,
 } from "react-native";
 import React from "react";
 import BackButton from "../../components/BackButton";
@@ -60,8 +60,8 @@ const TotalSales = ({
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 30,

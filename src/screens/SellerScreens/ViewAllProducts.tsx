@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, StatusBar, Platform } from "react-native";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -16,6 +10,7 @@ import { ThemeInterface } from "../../styles/theme";
 import { baseUrl } from "../../utils/localENV";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import ProductCard from "../../components/ProductCard";
+import { screenWidth } from "../../utils/Dimensions";
 
 const ViewAllProducts = ({
   navigation,
@@ -35,7 +30,8 @@ const ViewAllProducts = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >

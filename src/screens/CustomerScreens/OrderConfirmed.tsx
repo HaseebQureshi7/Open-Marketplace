@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 import Animated, { BounceInUp } from "react-native-reanimated";
 import StyledText from "../../styles/styledComponents/StyledText";
 import { useTheme } from "react-native-paper";
@@ -22,7 +22,8 @@ const OrderConfirmed = ({ navigation, route }: any) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal: 25,
+        paddingHorizontal:
+        Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
         paddingVertical: 10,
         gap: 50,
         backgroundColor,

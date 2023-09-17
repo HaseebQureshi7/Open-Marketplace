@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, Linking } from "react-native";
+import { View, Image, Platform, TouchableOpacity, Linking } from "react-native";
 import React from "react";
 import axios from "axios";
 import { baseUrl } from "../utils/localENV";
@@ -137,6 +137,7 @@ const OrderedProduct = ({ product: order, index }: any) => {
             flexDirection: "row",
             alignItems: "flex-start",
             justifyContent: "space-between",
+            gap: Platform.OS === "web" ? 25 : 5
             // borderWidth:2,
             // borderColor: theme.colors.background
             //   backgroundColor: theme.colors.info,

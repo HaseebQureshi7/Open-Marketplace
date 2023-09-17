@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, StatusBar, Platform } from "react-native";
 import React from "react";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
@@ -17,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UserDataContext } from "../../context/UserDataContext";
 import OrderedProduct from "../../components/OrderedProduct";
 import { ActivityIndicator } from "react-native-paper";
+import { screenWidth } from "../../utils/Dimensions";
 
 const NewOrders = ({
   navigation,
@@ -50,8 +45,8 @@ const NewOrders = ({
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 30,
@@ -100,10 +95,12 @@ const NewOrders = ({
           subHeading="Track your orders here"
         />
 
-        <View style={{
-          gap:25,
-          marginBottom:25
-        }}>
+        <View
+          style={{
+            gap: 25,
+            marginBottom: 25,
+          }}
+        >
           {/* CARD */}
           {!isLoading ? (
             orders.length > 0 &&

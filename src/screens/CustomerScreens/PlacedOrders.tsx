@@ -3,7 +3,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Image,
+  Platform,
   ActivityIndicator,
 } from "react-native";
 import React from "react";
@@ -19,6 +19,7 @@ import axios from "axios";
 import { UserDataContext } from "../../context/UserDataContext";
 import StyledText from "../../styles/styledComponents/StyledText";
 import OrderedProduct from "../../components/OrderedProduct";
+import { screenWidth } from "../../utils/Dimensions";
 
 const PlacedOrders = ({
   navigation,
@@ -52,8 +53,8 @@ const PlacedOrders = ({
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 30,
@@ -97,7 +98,7 @@ const PlacedOrders = ({
                     alignItems: "flex-start",
                     justifyContent: "space-between",
                     // backgroundColor: "snow",
-                    gap: 15,
+                    gap: Platform.OS === "web" ? 25 : 15,
                   }}
                 >
                   <OrderedProduct product={order} />

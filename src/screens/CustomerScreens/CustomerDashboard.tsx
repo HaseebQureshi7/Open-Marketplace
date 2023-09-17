@@ -1,4 +1,11 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import React from "react";
 import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
@@ -25,6 +32,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 import { screenWidth } from "../../utils/Dimensions";
+import { screenSize } from "../../utils/ResponsiveUtils";
 
 const CustomerDashboard = ({
   navigation,
@@ -98,7 +106,8 @@ const CustomerDashboard = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >
@@ -434,34 +443,41 @@ const CustomerDashboard = ({
               gap: 15,
             }}
           >
-            {!isLoading ? (
-              allProducts?.slice(0, 6)?.map((prod, index) => {
-                // @ts-ignore
-                return <ProductCard prod={prod} index={index} key={prod?.id} />;
-              })
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  marginBottom: 25,
-                  gap: 15,
-                }}
-              >
-                {Array.from({ length: 4 }).map((data, index) => {
+            {!isLoading
+              ? allProducts?.slice(0, 6)?.map((prod: any, index: number) => {
+                  // @ts-ignore
+                  return (
+                    <ProductCard prod={prod} index={index} key={prod?.id} />
+                  );
+                })
+              : Array.from({
+                  length:
+                    screenSize === "ultraWide"
+                      ? 10
+                      : screenSize === "wide"
+                      ? 6
+                      : 4,
+                }).map((data, index) => {
                   return (
                     <Animated.View
                       key={index}
-                      entering={FadeIn.delay(150 * index)}
+                      entering={FadeIn.delay(250 * index)}
                       exiting={FadeOut}
                       style={{
                         justifyContent: "center",
                         alignItems: "center",
-                        width: (screenWidth / 100) * 40,
-                        height: (screenWidth / 100) * 40,
+                        width:
+                          screenSize === "ultraWide"
+                            ? (screenWidth / 100) * 15
+                            : screenSize === "wide"
+                            ? (screenWidth / 100) * 25
+                            : (screenWidth / 100) * 40,
+                        height:
+                          screenSize === "ultraWide"
+                            ? (screenWidth / 100) * 15
+                            : screenSize === "wide"
+                            ? (screenWidth / 100) * 25
+                            : (screenWidth / 100) * 40,
                         borderRadius: 10,
                         backgroundColor: theme.colors.placeholder,
                       }}
@@ -473,8 +489,6 @@ const CustomerDashboard = ({
                     </Animated.View>
                   );
                 })}
-              </View>
-            )}
           </View>
         </View>
       </View>

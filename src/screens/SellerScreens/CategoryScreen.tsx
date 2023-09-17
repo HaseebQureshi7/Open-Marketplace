@@ -1,9 +1,4 @@
-import {
-  View,
-  ScrollView,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import { View, ScrollView, ActivityIndicator, Platform } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { useTheme } from "react-native-paper";
@@ -24,6 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { MaterialIcons } from "@expo/vector-icons";
 import ProductCard from "../../components/ProductCard";
+import { screenWidth } from "../../utils/Dimensions";
 
 const CategoryScreen = ({
   navigation,
@@ -64,7 +60,8 @@ const CategoryScreen = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >

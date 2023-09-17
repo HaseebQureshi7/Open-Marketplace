@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StatusBar } from "react-native";
+import { View, Platform, ScrollView, StatusBar } from "react-native";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import BackButton from "../../components/BackButton";
@@ -7,6 +7,7 @@ import { ThemeInterface } from "../../styles/theme";
 import { GetWishlist } from "../../utils/WishlistFunction";
 import ProductCard from "../../components/ProductCard";
 import { WishlistContext } from "../../context/WishlistContext";
+import { screenWidth } from "../../utils/Dimensions";
 
 const Wishlist = () => {
   const theme = useTheme<ThemeInterface>();
@@ -20,8 +21,8 @@ const Wishlist = () => {
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 40,

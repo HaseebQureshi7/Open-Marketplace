@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
 import React from "react";
 import Animated, {
   FadeIn,
@@ -17,6 +17,11 @@ import { ThemeInterface } from "../styles/theme";
 import { useTheme } from "react-native-paper";
 import { screenWidth } from "../utils/Dimensions";
 import { WishlistContext } from "../context/WishlistContext";
+import {
+  isLandscape,
+  isLandscapeWide,
+  screenSize,
+} from "../utils/ResponsiveUtils";
 
 interface ProdCardTypes {
   prod: any;
@@ -41,7 +46,12 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
   return (
     <Animated.View
       style={{
-        width: (screenWidth / 100) * 40,
+        width:
+          screenSize === "ultraWide"
+            ? (screenWidth / 100) * 15
+            : screenSize === "wide"
+            ? (screenWidth / 100) * 25
+            : (screenWidth / 100) * 40,
         // height: (screenWidth / 100) * 33,
       }}
       key={prod.id}
@@ -78,8 +88,18 @@ const ProductCard = ({ prod, index }: ProdCardTypes) => {
         <Animated.Image
           exiting={FadeInDown}
           style={{
-            width: (screenWidth / 100) * 40,
-            height: (screenWidth / 100) * 40,
+            width:
+              screenSize === "ultraWide"
+                ? (screenWidth / 100) * 15
+                : screenSize === "wide"
+                ? (screenWidth / 100) * 25
+                : (screenWidth / 100) * 40,
+            height:
+              screenSize === "ultraWide"
+                ? (screenWidth / 100) * 15
+                : screenSize === "wide"
+                ? (screenWidth / 100) * 25
+                : (screenWidth / 100) * 40,
             borderRadius: 10,
           }}
           source={{

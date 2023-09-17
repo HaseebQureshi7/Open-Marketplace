@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React from "react";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
@@ -75,8 +81,8 @@ const DeliveryDetailsScreen = ({
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       <View
         style={{
-          width: "90%",
-          alignSelf: "center",
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           alignItems: "flex-start",
           justifyContent: "center",
           gap: 40,
@@ -190,7 +196,7 @@ const DeliveryDetailsScreen = ({
                   style={{ paddingTop: 10 }}
                   icon={() => (
                     <MaterialIcons
-                      name="drive-file-rename-outline"
+                      name="house"
                       size={24}
                       color={theme.colors.placeholder}
                     />
@@ -198,6 +204,7 @@ const DeliveryDetailsScreen = ({
                 />
               }
               label="Delivery Address"
+              placeholder="Rawalpora, Wanbval"
               value={deliveryAddress}
               mode="outlined"
               onChangeText={(text) => setdeliveryAddress(text)}
@@ -216,14 +223,15 @@ const DeliveryDetailsScreen = ({
                   style={{ paddingTop: 10 }}
                   icon={() => (
                     <MaterialIcons
-                      name="drive-file-rename-outline"
+                      name="fiber-pin"
                       size={24}
                       color={theme.colors.placeholder}
                     />
                   )}
                 />
               }
-              label="PINCODE"
+              label="Pincode"
+              placeholder="190005"
               value={pincode}
               mode="outlined"
               onChangeText={(text) => setPincode(text)}

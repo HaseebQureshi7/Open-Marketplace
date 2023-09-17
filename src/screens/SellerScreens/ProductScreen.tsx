@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Platform, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import AddProductButton from "../../components/AddProductButton";
@@ -106,7 +106,8 @@ const ProductScreen = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
           marginBottom: 25,
         }}
@@ -197,8 +198,9 @@ const ProductScreen = ({
         {/* IMAGE SECTION */}
         <Animated.Image
           style={{
-            width: screenWidth,
-            height: 400,
+            width:
+              Platform.OS === "web" ? (screenWidth / 100) * 75 : screenWidth,
+            height: Platform.OS === "web" ? (screenWidth / 100) * 40 : 400,
             alignSelf: "center",
             marginTop: 25,
           }}

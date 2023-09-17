@@ -1,4 +1,4 @@
-import { Image, Pressable } from "react-native";
+import { Image, Platform, Pressable } from "react-native";
 import React from "react";
 import StyledView from "../styles/styledComponents/StyledView";
 import { StatusBar } from "expo-status-bar";
@@ -56,7 +56,7 @@ const StartAs = ({ navigation }: any) => {
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
-            paddingVertical: 50,
+            paddingVertical: Platform.OS === "web" ? 30 : 50,
             backgroundColor: "#FFD200",
           }}
         >
@@ -103,7 +103,7 @@ const StartAs = ({ navigation }: any) => {
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
-            paddingVertical: 50,
+            paddingVertical: Platform.OS === "web" ? 30 : 50,
             backgroundColor: "#CCE3F8",
           }}
         >

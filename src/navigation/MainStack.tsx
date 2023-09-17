@@ -37,7 +37,7 @@ import OrderConfirmed from "../screens/CustomerScreens/OrderConfirmed";
 import StyledView from "../styles/styledComponents/StyledView";
 import { useTheme, Drawer as Dw } from "react-native-paper";
 import { ThemeInterface } from "../styles/theme";
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import { Image } from "react-native";
 import StyledButton from "../styles/styledComponents/StyledButton";
 import StyledText from "../styles/styledComponents/StyledText";
@@ -124,7 +124,11 @@ const MainStack = () => {
         >
           {/* LOGO HORIZONTAL */}
           <Image
-            style={{ width: 135, aspectRatio: 4 }}
+            style={{
+              width: Platform.OS === "web" ? 150 : 135,
+              height: Platform.OS === "web" ? 40 : "auto",
+              aspectRatio: Platform.OS === "web" ? 5 : 4,
+            }}
             source={require("../../assets/images/logo-horizontal.png")}
           />
         </View>

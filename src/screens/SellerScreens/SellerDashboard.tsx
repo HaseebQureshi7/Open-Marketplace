@@ -4,7 +4,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
-  Pressable,
+  Platform,
   Image,
 } from "react-native";
 import React, { useEffect } from "react";
@@ -31,6 +31,7 @@ import Animated, {
 import StyledView from "../../styles/styledComponents/StyledView";
 import AddProductButton from "../../components/AddProductButton";
 import ProductCard from "../../components/ProductCard";
+import { screenWidth } from "../../utils/Dimensions";
 
 const SellerDashboard = ({
   navigation,
@@ -104,7 +105,8 @@ const SellerDashboard = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+          Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >

@@ -1,4 +1,4 @@
-import { View, ScrollView, Image } from "react-native";
+import { View, ScrollView, Image, Platform } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { useTheme } from "react-native-paper";
@@ -17,6 +17,7 @@ import { baseUrl } from "../../utils/localENV";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserDataContext } from "../../context/UserDataContext";
 import { screenWidth } from "../../utils/Dimensions";
+import { screenSize } from "../../utils/ResponsiveUtils";
 
 const ViewAllCategories = ({
   navigation,
@@ -38,7 +39,8 @@ const ViewAllCategories = ({
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal:
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >
@@ -87,7 +89,12 @@ const ViewAllCategories = ({
                   navigation.navigate("categoryScreen", { props: cats })
                 }
                 style={{
-                  width: (screenWidth / 100) * 40,
+                  width:
+                    screenSize === "ultraWide"
+                      ? (screenWidth / 100) * 15
+                      : screenSize === "wide"
+                      ? (screenWidth / 100) * 25
+                      : (screenWidth / 100) * 40,
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -97,8 +104,18 @@ const ViewAllCategories = ({
                 <Animated.Image
                   exiting={FadeInDown}
                   style={{
-                    width: (screenWidth / 100) * 40,
-                    height: (screenWidth / 100) * 40,
+                    width:
+                    screenSize === "ultraWide"
+                      ? (screenWidth / 100) * 15
+                      : screenSize === "wide"
+                      ? (screenWidth / 100) * 25
+                      : (screenWidth / 100) * 40,
+                      height:
+                      screenSize === "ultraWide"
+                        ? (screenWidth / 100) * 15
+                        : screenSize === "wide"
+                        ? (screenWidth / 100) * 25
+                        : (screenWidth / 100) * 40,
                     borderRadius: 10,
                     backgroundColor: theme.colors.background,
                   }}
