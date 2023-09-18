@@ -1,37 +1,24 @@
-import { View, ScrollView, ActivityIndicator, Platform } from "react-native";
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { useTheme } from "react-native-paper";
-import { ThemeInterface } from "../../styles/theme";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import BackButton from "../../components/BackButton";
-import AddProductButton from "../../components/AddProductButton";
-import HeaderSection from "../../components/HeaderSection";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
 import { useQuery } from "@tanstack/react-query";
-import StyledText from "../../styles/styledComponents/StyledText";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeOut,
-  Layout,
-} from "react-native-reanimated";
-import { MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { ActivityIndicator, Platform, ScrollView, View } from "react-native";
+import { useTheme } from "react-native-paper";
+import BackButton from "../../components/BackButton";
+import HeaderSection from "../../components/HeaderSection";
 import ProductCard from "../../components/ProductCard";
+import { ThemeInterface } from "../../styles/theme";
 import { screenWidth } from "../../utils/Dimensions";
+import { baseUrl } from "../../utils/localENV";
 
 const CategoryScreen = ({
-  navigation,
   route,
 }: {
   navigation: DrawerNavigationProp<any>;
   route: any;
 }) => {
-  const theme = useTheme<ThemeInterface>();
-
   const categoryDataProp = route.params.props;
-  // console.log(categoryDataProp)
 
   const backgroundColor = "white";
 
@@ -45,8 +32,7 @@ const CategoryScreen = ({
     ["All Products In Category"],
     getAllProductsByCategory,
     {
-      onSuccess: (data: any) => {
-        // console.log(data);
+      onSuccess: () => {
       },
       select: (data: any) => {
         return data.data;

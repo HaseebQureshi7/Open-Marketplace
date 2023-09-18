@@ -1,11 +1,11 @@
-import { View, Text, StatusBar, Image } from "react-native";
 import React from "react";
-import { screenHeight, screenWidth } from "../utils/Dimensions";
-import { useTheme, IconButton } from "react-native-paper";
-import { ThemeInterface } from "../styles/theme";
+import { Image, StatusBar } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
+import TypeWriter from "react-native-typewriter";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
-import TypeWriter from "react-native-typewriter";
+import { ThemeInterface } from "../styles/theme";
+import { screenHeight, screenWidth } from "../utils/Dimensions";
 
 const Welcome2 = ({ navigation }: any) => {
   const backgroundColor = "white";

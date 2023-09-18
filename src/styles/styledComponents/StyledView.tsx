@@ -6,7 +6,11 @@ interface StyledViewProps extends ViewProps {
   children?: React.ReactNode;
 }
 
-const StyledView: React.FC<StyledViewProps> = ({ children, style, ...props }) => {
+const StyledView: React.FC<StyledViewProps> = ({
+  children,
+  style,
+  ...props
+}) => {
   const defaultStyles: ViewStyle = {
     justifyContent: "center",
     alignItems: "center",
@@ -14,7 +18,11 @@ const StyledView: React.FC<StyledViewProps> = ({ children, style, ...props }) =>
 
   const combinedStyles: ViewStyle = { ...defaultStyles, ...style };
 
-  return <View style={combinedStyles} {...props}>{children}</View>;
+  return (
+    <View style={combinedStyles} {...props}>
+      {children}
+    </View>
+  );
 };
 
 export default StyledView;

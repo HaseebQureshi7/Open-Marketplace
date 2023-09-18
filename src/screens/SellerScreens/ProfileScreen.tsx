@@ -1,27 +1,24 @@
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import React from "react";
 import {
-  View,
-  Text,
+  Image,
   ScrollView,
   StatusBar,
   TouchableOpacity,
-  Image,
+  View,
 } from "react-native";
-import React from "react";
+import { useTheme } from "react-native-paper";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import StyledView from "../../styles/styledComponents/StyledView";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { ThemeInterface } from "../../styles/theme";
-import { useTheme } from "react-native-paper";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { UserDataContext } from "../../context/UserDataContext";
-import StyledText from "../../styles/styledComponents/StyledText";
 import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
 import { baseUrl } from "../../utils/localENV";
 
 const ProfileScreen = ({
   navigation,
-  route,
 }: {
   navigation: DrawerNavigationProp<any>;
   route: any;
@@ -29,7 +26,7 @@ const ProfileScreen = ({
   const backgroundColor = "white";
   const theme = useTheme<ThemeInterface>();
 
-  const { userData, setUserData }: any = React.useContext(UserDataContext);
+  const { userData }: any = React.useContext(UserDataContext);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>

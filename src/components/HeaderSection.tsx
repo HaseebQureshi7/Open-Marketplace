@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
 import React from "react";
-import StyledText from "../styles/styledComponents/StyledText";
-import { ThemeInterface } from "../styles/theme";
+import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
+import StyledText from "../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../styles/theme";
 
 interface HeaderTypes {
   heading: string;

@@ -1,24 +1,24 @@
-import React, { useContext } from "react";
-import StyledView from "../../styles/styledComponents/StyledView";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { screenHeight, screenWidth } from "../../utils/Dimensions";
-import { StatusBar } from "expo-status-bar";
-import { ThemeInterface } from "../../styles/theme";
-import { Snackbar, TextInput, useTheme } from "react-native-paper";
-import TypeWriter from "react-native-typewriter";
-import { ScrollView } from "react-native-gesture-handler";
-import { StatusBarHeight } from "../../utils/StatusbarHeight";
-import StyledButton from "./../../styles/styledComponents/StyledButton";
-import { baseUrl } from "../../utils/localENV";
-import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
-import { GetCustomerFromLS, SaveCustomerToLS } from "../../utils/SaveUserToLS";
-import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { SnackbarContext } from "../../context/SnackbarContext";
 import { CommonActions } from "@react-navigation/native";
-import { SnackStateProps } from "../../types/SnackbarTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import { TextInput, useTheme } from "react-native-paper";
+import TypeWriter from "react-native-typewriter";
+import { SnackbarContext } from "../../context/SnackbarContext";
 import { UserDataContext } from "../../context/UserDataContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import StyledView from "../../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../../styles/theme";
+import { SnackStateProps } from "../../types/SnackbarTypes";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { screenHeight, screenWidth } from "../../utils/Dimensions";
+import { SaveCustomerToLS } from "../../utils/SaveUserToLS";
+import { StatusBarHeight } from "../../utils/StatusbarHeight";
+import { baseUrl } from "../../utils/localENV";
+import StyledButton from "./../../styles/styledComponents/StyledButton";
 
 interface loginDataTypes {
   email: string;
@@ -89,7 +89,11 @@ const CustomerLogin = ({
       };
       mutate(loginData);
     } else {
-      console.log("no");
+      setSnackData({
+        open: true,
+        severity: "Warning",
+        text: "Provide an Email and Password",
+      });
     }
   }
 

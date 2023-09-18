@@ -1,10 +1,10 @@
-import { View, Image, Platform } from "react-native";
-import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { screenHeight, screenWidth } from "../utils/Dimensions";
-import { IconButton, Text, useTheme } from "react-native-paper";
-import { ThemeInterface } from "../styles/theme";
+import React from "react";
+import { Image } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
+import { ThemeInterface } from "../styles/theme";
+import { screenHeight, screenWidth } from "../utils/Dimensions";
 
 import {
   PanGestureHandler,
@@ -18,8 +18,8 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import StyledView from "../styles/styledComponents/StyledView";
 import StyledText from "../styles/styledComponents/StyledText";
+import StyledView from "../styles/styledComponents/StyledView";
 
 const Splash = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -91,7 +91,7 @@ const Splash = ({ navigation }: any) => {
           <StyledText
             style={{
               color: theme.colors.text,
-              fontSize:15
+              fontSize: 15,
             }}
           >
             <TypeWriter

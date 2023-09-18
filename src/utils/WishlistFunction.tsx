@@ -1,13 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Define a type for your product objects if you haven't already
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  // ... other fields you have in your product object
-};
-
 export function AddToWishlist(item: any) {
   //   console.log("item -> ", item);
 

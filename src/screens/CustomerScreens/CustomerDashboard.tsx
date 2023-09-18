@@ -7,29 +7,19 @@ import {
   Platform,
 } from "react-native";
 import React from "react";
-import { isLoading } from "expo-font";
 import StyledText from "../../styles/styledComponents/StyledText";
-import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
 import { ActivityIndicator, TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { StatusBar } from "expo-status-bar";
-import { GetBusinessFromLS, GetCustomerFromLS } from "../../utils/SaveUserToLS";
+import { GetCustomerFromLS } from "../../utils/SaveUserToLS";
 import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/ProductCard";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  Layout,
-  SlideInDown,
-  SlideInLeft,
-  SlideInRight,
-  SlideInUp,
-  withSpring,
-} from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 import { screenWidth } from "../../utils/Dimensions";
 import { screenSize } from "../../utils/ResponsiveUtils";
@@ -46,6 +36,7 @@ const CustomerDashboard = ({
   const [search, setSearch] = React.useState<string>("");
   const [searchResults, setSearchResults] = React.useState<Array<any>>([]);
   const [userData, setUserData] = React.useState<any>();
+  const [currentBanner, setCurrentBanner] = React.useState<number>(0);
   const [allProducts, setAllProducts] = React.useState<String[]>();
   const [allProdCats, setAllProdCats] = React.useState<any[]>();
 
@@ -98,12 +89,21 @@ const CustomerDashboard = ({
     GetCustomerFromLS().then((dat: any) => {
       setUserData(dat);
     });
+
+    const intervalId = setInterval(() => {
+      setCurrentBanner((prevBanner) => (prevBanner + 1) % 3);
+    }, 7500);
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+    };
   }, []);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor, paddingTop: 15 }}>
       {/* BODY CONTAINER */}
-      <View
+      <Animated.View
+        layout={Layout.delay(100)}
         style={{
           flex: 1,
           paddingHorizontal:
@@ -144,9 +144,9 @@ const CustomerDashboard = ({
             />
           </TouchableOpacity>
 
-          {/* ADD PRODUCT */}
-          {/* <TouchableOpacity
-            onPress={() => navigation.closeDrawer()}
+          {/* CART */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("placedOrders")}
             style={{
               alignItems: "flex-start",
               justifyContent: "flex-start",
@@ -154,17 +154,17 @@ const CustomerDashboard = ({
               marginTop: 10,
             }}
           >
-            <Ionicons
-              name="add"
+            <MaterialIcons
+              name="shopping-cart"
               style={{
                 padding: 12.5,
                 borderRadius: 5,
                 backgroundColor: theme.colors.background,
               }}
               size={25}
-              color={theme.colors.text}
+              color={theme.colors.onSurfaceVariant}
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
 
         {/* HEADER TEXT */}
@@ -306,6 +306,154 @@ const CustomerDashboard = ({
           </Animated.View>
         </View>
 
+        {/* SALE BANNERS */}
+        {/* WINTER SALE */}
+        {/* CHRISTMAS SALE */}
+        {/* EID SALE */}
+
+        <Animated.View style={{ width: "100%" }} entering={FadeIn.delay(250)}>
+          {currentBanner === 0 ? (
+            // WINTER SALE
+            <Animated.View
+              entering={FadeIn}
+              exiting={FadeOut}
+              style={{
+                width: screenWidth,
+                alignSelf: "center",
+                flexDirection: "row",
+                backgroundColor: "#FECAC9",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 25,
+                padding: 10,
+              }}
+            >
+              <Image
+                style={{ width: 75, height: 75 }}
+                source={require("../../../assets/images/jacket.gif")}
+              />
+              {/* TEXTS */}
+              <View style={{ gap: 5 }}>
+                <StyledText style={{ color: "black", fontSize: 10 }}>
+                  50% Off on Clothing and Apperals.
+                </StyledText>
+                {/* TEXT WITH ICON */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FontAwesome name="snowflake-o" size={22.5} color={"black"} />
+                  <StyledText style={{ color: "black", fontSize: 22.5 }}>
+                    Winter Sale
+                  </StyledText>
+                </View>
+                <StyledText style={{ color: "black", fontSize: 7.5 }}>
+                  Upto 50% Off on Winter Clothing and Apperal.
+                </StyledText>
+              </View>
+            </Animated.View>
+          ) : currentBanner === 1 ? (
+            // CHRISTMAS SALE
+            <Animated.View
+              entering={FadeIn}
+              exiting={FadeOut}
+              style={{
+                width: screenWidth,
+                alignSelf: "center",
+                flexDirection: "row",
+                backgroundColor: "#FFD200",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 25,
+                padding: 10,
+              }}
+            >
+              <Image
+                style={{ width: 75, height: 75 }}
+                source={require("../../../assets/images/seller.gif")}
+              />
+              {/* TEXTS */}
+              <View style={{ gap: 5 }}>
+                <StyledText
+                  style={{ color: theme.colors.background, fontSize: 10 }}
+                >
+                  40% Off on Electronics.
+                </StyledText>
+                {/* TEXT WITH ICON */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FontAwesome
+                    name="laptop"
+                    size={22.5}
+                    color={theme.colors.background}
+                  />
+                  <StyledText
+                    style={{ color: theme.colors.background, fontSize: 22.5 }}
+                  >
+                    Christmas Sale
+                  </StyledText>
+                </View>
+                <StyledText
+                  style={{ color: theme.colors.background, fontSize: 7.5 }}
+                >
+                  Upto 40% Off on Selected Electronics.
+                </StyledText>
+              </View>
+            </Animated.View>
+          ) : (
+            // EID SALE
+            <Animated.View
+              entering={FadeIn}
+              exiting={FadeOut}
+              style={{
+                width: screenWidth,
+                alignSelf: "center",
+                flexDirection: "row",
+                // backgroundColor: theme.colors.info,
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 25,
+                padding: 10,
+              }}
+            >
+              <Image
+                style={{ width: 75, height: 75 }}
+                source={require("../../../assets/images/window.gif")}
+              />
+              {/* TEXTS */}
+              <View style={{ gap: 5 }}>
+                <StyledText style={{ color: "black", fontSize: 10 }}>
+                  60% Off on Home Decor.
+                </StyledText>
+                {/* TEXT WITH ICON */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FontAwesome name="home" size={22.5} color={"black"} />
+                  <StyledText style={{ color: "black", fontSize: 22.5 }}>
+                    Eid Day Sale
+                  </StyledText>
+                </View>
+                <StyledText style={{ color: "black", fontSize: 7.5 }}>
+                  Upto 60% Off on all Home Decor Products.
+                </StyledText>
+              </View>
+            </Animated.View>
+          )}
+        </Animated.View>
+
         {/* BODY */}
         {/* CATEGORIES */}
         <View
@@ -431,7 +579,7 @@ const CustomerDashboard = ({
             </TouchableOpacity>
           </View>
           {/* PRODUCTS LIST */}
-          <View
+          <Animated.View
             style={{
               flex: 1,
               alignItems: "flex-start",
@@ -442,9 +590,10 @@ const CustomerDashboard = ({
               marginBottom: 25,
               gap: 15,
             }}
+            layout={Layout.delay(250)}
           >
             {!isLoading
-              ? allProducts?.slice(0, 6)?.map((prod: any, index: number) => {
+              ? allProducts?.map((prod: any, index: number) => {
                   // @ts-ignore
                   return (
                     <ProductCard prod={prod} index={index} key={prod?.id} />
@@ -489,9 +638,9 @@ const CustomerDashboard = ({
                     </Animated.View>
                   );
                 })}
-          </View>
+          </Animated.View>
         </View>
-      </View>
+      </Animated.View>
     </ScrollView>
   );
 };

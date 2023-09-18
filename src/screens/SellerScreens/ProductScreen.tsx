@@ -1,31 +1,29 @@
-import { View, Platform, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import AddProductButton from "../../components/AddProductButton";
-import BackButton from "../../components/BackButton";
-import HeaderSection from "../../components/HeaderSection";
-import { ScrollView } from "react-native-gesture-handler";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { ThemeInterface } from "../../styles/theme";
-import { ActivityIndicator, Text, useTheme } from "react-native-paper";
-import Animated from "react-native-reanimated";
-import { baseUrl } from "../../utils/localENV";
-import { screenWidth } from "../../utils/Dimensions";
-import StyledText from "../../styles/styledComponents/StyledText";
-import axios from "axios";
-import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
-import StyledButton from "../../styles/styledComponents/StyledButton";
-import { UserDataContext } from "../../context/UserDataContext";
-import ReturnProdCategory from "../../components/ReturnProdCategory";
-import { StatusBar } from "expo-status-bar";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { Platform, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { ActivityIndicator, useTheme } from "react-native-paper";
+import Animated from "react-native-reanimated";
+import BackButton from "../../components/BackButton";
+import ReturnProdCategory from "../../components/ReturnProdCategory";
 import { SnackbarContext } from "../../context/SnackbarContext";
+import { UserDataContext } from "../../context/UserDataContext";
+import { WishlistContext } from "../../context/WishlistContext";
+import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
 import { SnackStateProps } from "../../types/SnackbarTypes";
+import { screenWidth } from "../../utils/Dimensions";
+import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 import {
   AddToWishlist,
   RemoveFromWishlist,
 } from "../../utils/WishlistFunction";
-import { WishlistContext } from "../../context/WishlistContext";
+import { baseUrl } from "../../utils/localENV";
 
 const ProductScreen = ({
   navigation,

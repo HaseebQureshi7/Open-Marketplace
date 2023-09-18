@@ -1,12 +1,12 @@
-import { View, Platform, ScrollView, StatusBar } from "react-native";
 import React from "react";
+import { Platform, ScrollView, StatusBar, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import { ThemeInterface } from "../../styles/theme";
-import { GetWishlist } from "../../utils/WishlistFunction";
 import ProductCard from "../../components/ProductCard";
 import { WishlistContext } from "../../context/WishlistContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
 import { screenWidth } from "../../utils/Dimensions";
 
 const Wishlist = () => {
@@ -63,9 +63,30 @@ const Wishlist = () => {
             gap: 15,
           }}
         >
-          {wishlistItems?.slice(0, 6)?.map((prod: any, index: number) => {
-            return <ProductCard prod={prod} index={index} key={prod.id} />;
-          })}
+          {wishlistItems.length > 0 ? (
+            wishlistItems?.map((prod: any, index: number) => {
+              return <ProductCard prod={prod} index={index} key={prod.id} />;
+            })
+          ) : (
+            <View
+              style={{
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 15,
+                marginTop: "50%",
+              }}
+            >
+              <StyledText style={{ fontSize: 20 }}>
+                Wishlist looks empty 🤔
+              </StyledText>
+              <StyledText
+                style={{ fontSize: 12.5, color: theme.colors.placeholder }}
+              >
+                Looks like you have'nt wishlisted anything yet!
+              </StyledText>
+            </View>
+          )}
         </View>
       </View>
     </ScrollView>

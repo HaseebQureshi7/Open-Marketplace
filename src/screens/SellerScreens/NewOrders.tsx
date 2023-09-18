@@ -1,17 +1,15 @@
-import { View, Text, ScrollView, StatusBar, Platform } from "react-native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import React from "react";
+import { Platform, ScrollView, StatusBar, View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import { theme } from "../../styles/theme";
-import { AntDesign } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
-import { useQuery } from "@tanstack/react-query";
-import { UserDataContext } from "../../context/UserDataContext";
 import OrderedProduct from "../../components/OrderedProduct";
-import { ActivityIndicator } from "react-native-paper";
+import { UserDataContext } from "../../context/UserDataContext";
 import { screenWidth } from "../../utils/Dimensions";
+import { baseUrl } from "../../utils/localENV";
 
 const NewOrders = ({
   navigation,
@@ -35,7 +33,6 @@ const NewOrders = ({
   const { isLoading } = useQuery(["New Orders"], getAllProducts, {
     onSuccess: (data) => {
       setOrders(data.data);
-      // console.log(data.data);
     },
     refetchInterval: 5000,
     // refetchInterval: 10000,

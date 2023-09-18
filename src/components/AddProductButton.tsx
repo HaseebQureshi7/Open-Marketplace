@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import { useTheme } from "react-native-paper";
 import { ThemeInterface } from "../styles/theme";
-import { Ionicons } from "@expo/vector-icons";
 
 const AddProductButton = () => {
   const theme = useTheme<ThemeInterface>();
@@ -17,7 +17,6 @@ const AddProductButton = () => {
       style={{
         alignItems: "flex-start",
         justifyContent: "flex-start",
-        // paddingLeft: 20,
         marginTop: 10,
       }}
     >

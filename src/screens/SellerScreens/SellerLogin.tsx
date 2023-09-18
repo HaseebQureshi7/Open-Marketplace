@@ -1,24 +1,23 @@
-import React, { useContext } from "react";
-import StyledView from "../../styles/styledComponents/StyledView";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { screenHeight, screenWidth } from "../../utils/Dimensions";
-import { StatusBar } from "expo-status-bar";
-import { ThemeInterface } from "../../styles/theme";
-import { Button, TextInput, useTheme } from "react-native-paper";
-import TypeWriter from "react-native-typewriter";
-import { ScrollView } from "react-native-gesture-handler";
-import { StatusBarHeight } from "../../utils/StatusbarHeight";
-import StyledButton from "./../../styles/styledComponents/StyledButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { NavigationProp } from "@react-navigation/native";
-import { SnackbarContext } from "../../context/SnackbarContext";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
 import { useMutation } from "@tanstack/react-query";
-import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
-import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import { TextInput, useTheme } from "react-native-paper";
+import TypeWriter from "react-native-typewriter";
 import { SnackStateProps } from "../../../src/types/SnackbarTypes";
+import { SnackbarContext } from "../../context/SnackbarContext";
 import { UserDataContext } from "../../context/UserDataContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import StyledView from "../../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../../styles/theme";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { screenHeight, screenWidth } from "../../utils/Dimensions";
+import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
+import { StatusBarHeight } from "../../utils/StatusbarHeight";
+import { baseUrl } from "../../utils/localENV";
+import StyledButton from "./../../styles/styledComponents/StyledButton";
 
 interface loginDataTypes {
   email: string;
@@ -41,10 +40,9 @@ const SellerLogin = ({
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { snackData, setSnackData }: SnackStateProps =
-    useContext(SnackbarContext);
+  const { setSnackData }: SnackStateProps = useContext(SnackbarContext);
 
-  const { userData, setUserData }: any = useContext(UserDataContext);
+  const { setUserData }: any = useContext(UserDataContext);
 
   const loginQuery = (loginData: loginDataTypes) => {
     return axios.post(baseUrl + "/business/login", loginData);
@@ -70,7 +68,7 @@ const SellerLogin = ({
       //   console.log(dat);
       // })
     },
-    onError: (e) => {
+    onError: () => {
       setSnackData({
         open: true,
         severity: "Error",

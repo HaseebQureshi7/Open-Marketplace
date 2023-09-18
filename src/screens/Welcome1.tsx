@@ -1,12 +1,12 @@
-import { View, Image, Platform } from "react-native";
-import React from "react";
-import { screenHeight, screenWidth } from "../utils/Dimensions";
 import { StatusBar } from "expo-status-bar";
-import { IconButton, Text, useTheme } from "react-native-paper";
-import { ThemeInterface } from "../styles/theme";
+import React from "react";
+import { Image } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
+import TypeWriter from "react-native-typewriter";
 import StyledText from "../styles/styledComponents/StyledText";
 import StyledView from "../styles/styledComponents/StyledView";
-import TypeWriter from "react-native-typewriter";
+import { ThemeInterface } from "../styles/theme";
+import { screenHeight, screenWidth } from "../utils/Dimensions";
 
 const Welcome1 = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -40,8 +40,7 @@ const Welcome1 = ({ navigation }: any) => {
             fontSize: 30,
           }}
         >
-
-            New Phone ?
+          New Phone ?
         </StyledText>
         <Image
           style={{ width: imageSize, height: imageSize }}
@@ -64,7 +63,7 @@ const Welcome1 = ({ navigation }: any) => {
           size={35}
         />
         <StyledText style={{ fontSize: 15 }}>
-        <TypeWriter
+          <TypeWriter
             typing={1}
             maxDelay={50}
             numberOfLines={1}
@@ -74,9 +73,9 @@ const Welcome1 = ({ navigation }: any) => {
               paddingLeft: 2.5,
             }}
           >
-          Touch this
+            Touch this
           </TypeWriter>
-          </StyledText>
+        </StyledText>
       </StyledView>
     </StyledView>
   );

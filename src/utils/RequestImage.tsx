@@ -1,5 +1,5 @@
-import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 import compressImage from "../utils/ImageResizer";
 
 export const RequestImage = async () => {
@@ -21,7 +21,7 @@ export const RequestImage = async () => {
       return compressImage(base64Data)
         .then((res: any) => {
           result = res;
-          return res
+          return res;
         })
         .catch((err) => console.log(err));
     }

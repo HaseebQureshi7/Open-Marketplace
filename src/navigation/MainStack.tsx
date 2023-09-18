@@ -1,52 +1,55 @@
-import "react-native-gesture-handler";
+import {
+  AntDesign,
+  Ionicons,
+  MaterialIcons,
+  SimpleLineIcons,
+} from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import {
-  createStackNavigator,
   TransitionPresets,
+  createStackNavigator,
 } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import React from "react";
+import { Image, Platform, Pressable, View } from "react-native";
+import "react-native-gesture-handler";
+import { Drawer as Dw, useTheme } from "react-native-paper";
+import { SnackbarContext } from "../context/SnackbarContext";
+import { UserDataContext } from "../context/UserDataContext";
+import CheckoutScreen from "../screens/CustomerScreens/CheckoutScreen";
+import CustomerDashboard from "../screens/CustomerScreens/CustomerDashboard";
 import CustomerLogin from "../screens/CustomerScreens/CustomerLogin";
+import CustomerProfile from "../screens/CustomerScreens/CustomerProfile";
 import CustomerSignup from "../screens/CustomerScreens/CustomerSignup";
+import DeliveryDetailsScreen from "../screens/CustomerScreens/DeliveryDetailsScreen";
+import OrderConfirmed from "../screens/CustomerScreens/OrderConfirmed";
+import PlacedOrders from "../screens/CustomerScreens/PlacedOrders";
 import SkipLogin from "../screens/CustomerScreens/SkipLogin";
+import Wishlist from "../screens/CustomerScreens/Wishlist";
+import AddProducts from "../screens/SellerScreens/AddProducts";
+import CategoryScreen from "../screens/SellerScreens/CategoryScreen";
+import EditProduct from "../screens/SellerScreens/EditProduct";
+import NewOrders from "../screens/SellerScreens/NewOrders";
+import ProductScreen from "../screens/SellerScreens/ProductScreen";
+import ProfileScreen from "../screens/SellerScreens/ProfileScreen";
+import SellerDashboard from "../screens/SellerScreens/SellerDashboard";
 import SellerLogin from "../screens/SellerScreens/SellerLogin";
 import SellerSignup from "../screens/SellerScreens/SellerSignup";
+import TotalSales from "../screens/SellerScreens/TotalSales";
+import ViewAllCategories from "../screens/SellerScreens/ViewAllCategories";
+import ViewAllProducts from "../screens/SellerScreens/ViewAllProducts";
 import Splash from "../screens/Splash";
 import StartAs from "../screens/StartAs";
 import Welcome1 from "../screens/Welcome1";
 import Welcome2 from "../screens/Welcome2";
 import Welcome3 from "../screens/Welcome3";
-import SellerDashboard from "../screens/SellerScreens/SellerDashboard";
-import CustomerDashboard from "../screens/CustomerScreens/CustomerDashboard";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
-import { GetUserType } from "../utils/GetUserType";
-import AddProducts from "../screens/SellerScreens/AddProducts";
-import ViewAllCategories from "../screens/SellerScreens/ViewAllCategories";
-import CategoryScreen from "../screens/SellerScreens/CategoryScreen";
-import ViewAllProducts from "../screens/SellerScreens/ViewAllProducts";
-import ProductScreen from "../screens/SellerScreens/ProductScreen";
-import ProfileScreen from "../screens/SellerScreens/ProfileScreen";
-import NewOrders from "../screens/SellerScreens/NewOrders";
-import TotalSales from "../screens/SellerScreens/TotalSales";
-import EditProduct from "../screens/SellerScreens/EditProduct";
-import CustomerProfile from "../screens/CustomerScreens/CustomerProfile";
-import PlacedOrders from "../screens/CustomerScreens/PlacedOrders";
-import DeliveryDetailsScreen from "../screens/CustomerScreens/DeliveryDetailsScreen";
-import CheckoutScreen from "../screens/CustomerScreens/CheckoutScreen";
-import OrderConfirmed from "../screens/CustomerScreens/OrderConfirmed";
-import StyledView from "../styles/styledComponents/StyledView";
-import { useTheme, Drawer as Dw } from "react-native-paper";
-import { ThemeInterface } from "../styles/theme";
-import { Platform, Pressable, View } from "react-native";
-import { Image } from "react-native";
 import StyledButton from "../styles/styledComponents/StyledButton";
 import StyledText from "../styles/styledComponents/StyledText";
+import StyledView from "../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../styles/theme";
 import { SnackStateProps } from "../types/SnackbarTypes";
-import { SnackbarContext } from "../context/SnackbarContext";
-import { UserDataContext } from "../context/UserDataContext";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialIcons, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import Wishlist from "../screens/CustomerScreens/Wishlist";
+import { GetUserType } from "../utils/GetUserType";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -81,26 +84,29 @@ const MainStack = () => {
   const NavDrawer = ({ navigation }: any) => {
     const theme = useTheme<ThemeInterface>();
 
-    const { snackData, setSnackData }: SnackStateProps =
-      React.useContext(SnackbarContext);
+    const { setSnackData }: SnackStateProps = React.useContext(SnackbarContext);
 
     const { userData, setUserData }: any = React.useContext(UserDataContext);
 
     async function Logout() {
-      AsyncStorage.clear().then(() => {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "splash" }],
-          })
-        );
-        setSnackData({
-          open: true,
-          severity: "Info",
-          text: "Logged out!",
+      try {
+        AsyncStorage.clear().then(() => {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "splash" }],
+            })
+          );
+          setSnackData({
+            open: true,
+            severity: "Info",
+            text: "Logged out!",
+          });
+          setUserData({});
         });
-        setUserData({});
-      });
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     return (
@@ -215,6 +221,28 @@ const MainStack = () => {
             showDivider={false}
             style={{ width: "100%", gap: 5, paddingLeft: 30 }}
           >
+            {/* HOME */}
+            <Dw.Item
+              style={{
+                width: "75%",
+                borderRadius: 5,
+                transform: [{ scale: 1.25 }],
+              }}
+              icon={() => (
+                <MaterialIcons
+                  name="dashboard"
+                  style={{
+                    padding: 7.5,
+                    backgroundColor: theme.colors.background,
+                    borderRadius: 5,
+                  }}
+                  size={12.5}
+                  color={theme.colors.placeholder}
+                />
+              )}
+              label="Home"
+              onPress={() => navigation.navigate("dashboard")}
+            />
             {/* ORDERS */}
             <Dw.Item
               style={{
@@ -284,11 +312,6 @@ const MainStack = () => {
           </Dw.Section>
         )}
 
-        {/* ACTIONS HEADER */}
-        {/* <StyledText style={{ fontSize: 17.5, marginLeft:40, color: theme.colors.placeholder }}>
-          ACTION MENU
-        </StyledText> */}
-
         {/* SELLER TABS */}
         {userData?.name && (
           <Dw.Section
@@ -323,6 +346,37 @@ const MainStack = () => {
                 }}
               >
                 Profile
+              </StyledText>
+            </Pressable>
+
+            {/* HOME */}
+            <Pressable
+              onPress={() => navigation.navigate("dashboard")}
+              style={{
+                width: "75%",
+                borderRadius: 5,
+                flexDirection: "row",
+                gap: 15,
+              }}
+            >
+              <MaterialIcons
+                name="dashboard"
+                style={{
+                  padding: 5,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 2.5,
+                }}
+                size={17.5}
+                color={theme.colors.placeholder}
+              />
+              <StyledText
+                style={{
+                  fontFamily: theme.fonts.medium,
+                  fontSize: 17.5,
+                  color: theme.colors.placeholder,
+                }}
+              >
+                Dashboard
               </StyledText>
             </Pressable>
 

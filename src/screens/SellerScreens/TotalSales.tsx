@@ -1,46 +1,28 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  Platform,
-} from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import React from "react";
+import { Platform, ScrollView, StatusBar, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import { ThemeInterface, theme } from "../../styles/theme";
-import { AntDesign } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
-import { useTheme } from "react-native-paper";
-import StyledButton from "../../styles/styledComponents/StyledButton";
-import { screenWidth } from "../../utils/Dimensions";
-import { CalculatePercentage } from "../../utils/CalculatePercentage";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { baseUrl } from "../../utils/localENV";
 import { UserDataContext } from "../../context/UserDataContext";
+import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
+import { CalculatePercentage } from "../../utils/CalculatePercentage";
+import { screenWidth } from "../../utils/Dimensions";
+import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
+import { baseUrl } from "../../utils/localENV";
 
-const TotalSales = ({
-  navigation,
-  route,
-}: {
-  navigation: DrawerNavigationProp<any>;
-  route: any;
-}) => {
+const TotalSales = () => {
   const backgroundColor = "white";
-
-  // const { mSale } = route.params;
-  // console.log("msale -> ", mSale);
 
   const theme = useTheme<ThemeInterface>();
 
-  const { userData, setUserData }: any = React.useContext(UserDataContext);
+  const { userData }: any = React.useContext(UserDataContext);
   const [mSale, setMSale] = React.useState<any>();
 
   const getMonthlySale = () => {
-    // console.log(baseUrl + `/product/getProduct/${order?.productId}`);
     return axios.get(baseUrl + `/monthSales/getMonthSales/${userData?.id}`);
   };
 
@@ -50,7 +32,6 @@ const TotalSales = ({
     {
       onSuccess: (data) => {
         setMSale(data.data);
-        // console.log("MS Details -> ", data.data);
       },
       refetchInterval: 1000,
     }

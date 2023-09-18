@@ -1,12 +1,12 @@
-import { Image, Platform, Pressable } from "react-native";
-import React from "react";
-import StyledView from "../styles/styledComponents/StyledView";
 import { StatusBar } from "expo-status-bar";
-import { screenHeight, screenWidth } from "../utils/Dimensions";
+import React from "react";
+import { Image, Platform, Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
-import { ThemeInterface } from "../styles/theme";
-import StyledText from "../styles/styledComponents/StyledText";
 import TypeWriter from "react-native-typewriter";
+import StyledText from "../styles/styledComponents/StyledText";
+import StyledView from "../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../styles/theme";
+import { screenHeight, screenWidth } from "../utils/Dimensions";
 
 const StartAs = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -25,23 +25,6 @@ const StartAs = ({ navigation }: any) => {
       }}
     >
       <StatusBar animated={true} backgroundColor={backgroundColor} />
-      {/* <StyledView style={{ position: "absolute", top: 50 }}>
-        <StyledText style={{ fontSize: 20 }}>
-          {" "}
-          <TypeWriter
-            typing={1}
-            maxDelay={50}
-            numberOfLines={1}
-            style={{
-              textAlign: "right",
-              width: "100%",
-              paddingLeft: 2.5,
-            }}
-          >
-            Choose your domain
-          </TypeWriter>
-        </StyledText>
-      </StyledView> */}
       <StyledView
         style={{
           width: "100%",

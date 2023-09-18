@@ -4,12 +4,15 @@ import { Button, ButtonProps } from "react-native-paper";
 
 interface StyledButtonProps extends ButtonProps {
   style?: ViewStyle;
-  labelStyle?: TextStyle
+  labelStyle?: TextStyle;
   children: React.ReactNode;
 }
 
 const StyledButton: React.FC<StyledButtonProps> = ({
-  children, style, ...props}) => {
+  children,
+  style,
+  ...props
+}) => {
   return (
     <Button
       style={{

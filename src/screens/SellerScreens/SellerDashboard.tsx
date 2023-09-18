@@ -1,37 +1,27 @@
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
   TouchableOpacity,
   Platform,
-  Image,
 } from "react-native";
-import React, { useEffect } from "react";
-import { isLoading } from "expo-font";
+import React from "react";
 import StyledText from "../../styles/styledComponents/StyledText";
-import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ThemeInterface } from "../../styles/theme";
 import { ActivityIndicator, TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
 import { StatusBar } from "expo-status-bar";
-import { GetBusinessFromLS } from "../../utils/SaveUserToLS";
 import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { UserDataContext } from "../../context/UserDataContext";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeOut,
-  Layout,
-  SlideInUp,
-} from "react-native-reanimated";
-import StyledView from "../../styles/styledComponents/StyledView";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import AddProductButton from "../../components/AddProductButton";
 import ProductCard from "../../components/ProductCard";
 import { screenWidth } from "../../utils/Dimensions";
+import { screenSize } from "../../utils/ResponsiveUtils";
 
 const SellerDashboard = ({
   navigation,
@@ -106,7 +96,7 @@ const SellerDashboard = ({
         style={{
           flex: 1,
           paddingHorizontal:
-          Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
+            Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
           gap: 25,
         }}
       >
@@ -357,13 +347,51 @@ const SellerDashboard = ({
               gap: 15,
             }}
           >
-            {!isLoading ? (
-              businessProducts?.slice(0, 6)?.map((prod, index) => {
-                return <ProductCard prod={prod} index={index} key={prod.id} />;
-              })
-            ) : (
-              <ActivityIndicator size={75} />
-            )}
+            {!isLoading
+              ? businessProducts?.slice(0, 6)?.map((prod, index) => {
+                  return (
+                    <ProductCard prod={prod} index={index} key={prod.id} />
+                  );
+                })
+              : Array.from({
+                  length:
+                    screenSize === "ultraWide"
+                      ? 10
+                      : screenSize === "wide"
+                      ? 6
+                      : 4,
+                }).map((data, index) => {
+                  return (
+                    <Animated.View
+                      key={index}
+                      entering={FadeIn.delay(250 * index)}
+                      exiting={FadeOut}
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width:
+                          screenSize === "ultraWide"
+                            ? (screenWidth / 100) * 15
+                            : screenSize === "wide"
+                            ? (screenWidth / 100) * 25
+                            : (screenWidth / 100) * 40,
+                        height:
+                          screenSize === "ultraWide"
+                            ? (screenWidth / 100) * 15
+                            : screenSize === "wide"
+                            ? (screenWidth / 100) * 25
+                            : (screenWidth / 100) * 40,
+                        borderRadius: 10,
+                        backgroundColor: theme.colors.placeholder,
+                      }}
+                    >
+                      <ActivityIndicator
+                        size={75}
+                        color={theme.colors.background}
+                      />
+                    </Animated.View>
+                  );
+                })}
           </View>
         </View>
       </View>

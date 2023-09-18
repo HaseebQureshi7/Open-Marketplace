@@ -1,34 +1,30 @@
-import { View, Image, Pressable } from "react-native";
+import { Entypo, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { Ionicons, MaterialIcons, Entypo, Feather } from "@expo/vector-icons";
-import { ThemeInterface } from "../../styles/theme";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { Image, Pressable, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
   Switch,
   TextInput,
   useTheme,
 } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
-import { ScrollView } from "react-native-gesture-handler";
-import StyledView from "../../styles/styledComponents/StyledView";
 import BackButton from "../../components/BackButton";
-import StyledText from "../../styles/styledComponents/StyledText";
-import TypeWriter from "react-native-typewriter";
 import HeaderSection from "../../components/HeaderSection";
-import React, { useContext } from "react";
+import { SnackbarContext } from "../../context/SnackbarContext";
+import { UserDataContext } from "../../context/UserDataContext";
+import { UserTokenContext } from "../../context/UserTokenContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import StyledView from "../../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../../styles/theme";
+import { SnackStateProps } from "../../types/SnackbarTypes";
 import { screenWidth } from "../../utils/Dimensions";
 import { RequestImage } from "../../utils/RequestImage";
 import { baseUrl } from "../../utils/localENV";
-import axios from "axios";
-import { SnackStateProps } from "../../types/SnackbarTypes";
-import { SnackbarContext } from "../../context/SnackbarContext";
-import { UserDataContext } from "../../context/UserDataContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GetTokenFromLS } from "../../utils/AuthTokenHandler";
-import { UserTokenContext } from "../../context/UserTokenContext";
-import { AuthToken } from "../../utils/AuthToken";
-import { Picker } from "@react-native-picker/picker";
-import { Districts } from "../../utils/Districts";
 
 const EditProduct = ({
   navigation,
@@ -66,12 +62,11 @@ const EditProduct = ({
     product?.isReturnable
   );
 
-  const { snackData, setSnackData }: SnackStateProps =
-    useContext(SnackbarContext);
+  const { setSnackData }: SnackStateProps = useContext(SnackbarContext);
 
   const queryClient = useQueryClient();
 
-  const { userData, setUserData }: any = useContext(UserDataContext);
+  const { userData }: any = useContext(UserDataContext);
   const { userToken, setUserToken }: any = useContext(UserTokenContext);
 
   const UpdateImage = () => {
@@ -80,13 +75,12 @@ const EditProduct = ({
     });
   };
 
-  const getAllCategories = (addProdData: any) => {
+  const getAllCategories = () => {
     return axios.get(baseUrl + "/category/getAllCategories");
   };
 
   const {} = useQuery(["All Categories"], getAllCategories, {
     onSuccess: (data) => {
-      // console.log(data.data.length);
       setAllCategories(data.data);
     },
   });
@@ -110,7 +104,7 @@ const EditProduct = ({
         .then(() => navigation.navigate("dashboard"))
         .catch((e) => console.log(e));
     },
-    onError: (e) => {
+    onError: () => {
       setSnackData({
         open: true,
         severity: "Error",

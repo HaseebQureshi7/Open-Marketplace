@@ -1,19 +1,12 @@
-import { useState, useEffect, useContext } from "react";
-import { View, Text, Pressable } from "react-native";
-import { Ionicons, Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
-import { SnackbarTypes } from "../types/SnackbarTypes";
-import StyledText from "../styles/styledComponents/StyledText";
-import Animation, {
-  FadeInDown,
-  FadeInUp,
-  FadeOutDown,
-  Layout,
-  SlideInDown,
-  SlideInUp,
-} from "react-native-reanimated";
-import { SnackbarContext } from "../context/SnackbarContext";
-import { ThemeInterface } from "../styles/theme";
+import { Entypo, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useContext, useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import Animation, { FadeInUp, FadeOutDown } from "react-native-reanimated";
+import { SnackbarContext } from "../context/SnackbarContext";
+import StyledText from "../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../styles/theme";
+import { SnackbarTypes } from "../types/SnackbarTypes";
 
 interface SnackProps {
   snackData: SnackbarTypes;

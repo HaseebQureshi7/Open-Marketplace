@@ -1,27 +1,22 @@
-import { View, Text, TouchableOpacity, Platform } from "react-native";
-import React from "react";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  Layout,
-  FadeInDown,
-} from "react-native-reanimated";
-import StyledText from "../styles/styledComponents/StyledText";
-import { baseUrl } from "../utils/localENV";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { FormatPriceWithCommas } from "../utils/PriceFormatter";
-import ReturnProdCategory from "./ReturnProdCategory";
-import { ThemeInterface } from "../styles/theme";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { screenWidth } from "../utils/Dimensions";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeOut,
+  Layout,
+} from "react-native-reanimated";
 import { WishlistContext } from "../context/WishlistContext";
-import {
-  isLandscape,
-  isLandscapeWide,
-  screenSize,
-} from "../utils/ResponsiveUtils";
+import StyledText from "../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../styles/theme";
+import { screenWidth } from "../utils/Dimensions";
+import { FormatPriceWithCommas } from "../utils/PriceFormatter";
+import { screenSize } from "../utils/ResponsiveUtils";
+import { baseUrl } from "../utils/localENV";
 
 interface ProdCardTypes {
   prod: any;

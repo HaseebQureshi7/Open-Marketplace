@@ -1,25 +1,16 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  ActivityIndicator,
-} from "react-native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { ActivityIndicator, Platform, ScrollView, View } from "react-native";
+import TypeWriter from "react-native-typewriter";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import { theme } from "../../styles/theme";
-import { AntDesign } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { StatusBar } from "expo-status-bar";
-import { useQuery } from "@tanstack/react-query";
-import { baseUrl } from "../../utils/localENV";
-import axios from "axios";
-import { UserDataContext } from "../../context/UserDataContext";
-import StyledText from "../../styles/styledComponents/StyledText";
 import OrderedProduct from "../../components/OrderedProduct";
+import { UserDataContext } from "../../context/UserDataContext";
 import { screenWidth } from "../../utils/Dimensions";
+import { baseUrl } from "../../utils/localENV";
 
 const PlacedOrders = ({
   navigation,
@@ -43,7 +34,6 @@ const PlacedOrders = ({
   const { isLoading } = useQuery(["All Ordered Product"], getAllProducts, {
     onSuccess: (data) => {
       setOrders(data.data);
-      // console.log(data.data);
     },
     refetchInterval: 5000,
     // refetchInterval: 10000,
@@ -106,7 +96,31 @@ const PlacedOrders = ({
               );
             })
           ) : (
-            <ActivityIndicator size={50} />
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                backgroundColor: "rgb(31,30,30)",
+                borderRadius: 2.5,
+                padding: 10,
+              }}
+            >
+              <TypeWriter
+                // initialDelay={1000}
+                typing={1}
+                maxDelay={0}
+                numberOfLines={1}
+                style={{
+                  color: "white",
+                  fontFamily: "InterBold",
+                }}
+              >
+                Fetching your orders ...
+              </TypeWriter>
+              <ActivityIndicator color={"white"} size={50} />
+            </View>
           )}
         </View>
       </View>

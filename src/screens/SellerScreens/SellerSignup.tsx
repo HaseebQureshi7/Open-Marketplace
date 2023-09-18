@@ -1,32 +1,31 @@
-import React, { useContext } from "react";
-import StyledView from "../../styles/styledComponents/StyledView";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { screenHeight, screenWidth } from "../../utils/Dimensions";
-import { StatusBar } from "expo-status-bar";
-import { ThemeInterface } from "../../styles/theme";
-import { TextInput, useTheme } from "react-native-paper";
-import { Image } from "react-native";
-import TypeWriter from "react-native-typewriter";
-import { ScrollView } from "react-native-gesture-handler";
-import StyledButton from "../../styles/styledComponents/StyledButton";
-import { Picker } from "@react-native-picker/picker";
-import { Districts } from "../../utils/Districts";
 import {
-  Ionicons,
   Entypo,
+  Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
+import { Picker } from "@react-native-picker/picker";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { Image, Pressable } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { TextInput, useTheme } from "react-native-paper";
+import TypeWriter from "react-native-typewriter";
 import { SnackbarContext } from "../../context/SnackbarContext";
-import { SnackStateProps } from "../../types/SnackbarTypes";
-import { Pressable } from "react-native";
-import { RequestImage } from "../../utils/RequestImage";
-import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
-import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
 import { UserDataContext } from "../../context/UserDataContext";
+import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import StyledView from "../../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../../styles/theme";
+import { SnackStateProps } from "../../types/SnackbarTypes";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { screenHeight, screenWidth } from "../../utils/Dimensions";
+import { Districts } from "../../utils/Districts";
+import { RequestImage } from "../../utils/RequestImage";
+import { SaveBusinessToLS } from "../../utils/SaveUserToLS";
+import { baseUrl } from "../../utils/localENV";
 
 const SellerSignup = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -58,10 +57,9 @@ const SellerSignup = ({ navigation }: any) => {
   const [password, setPassword] = React.useState<string>("");
   const [confirmPass, setConfirmPass] = React.useState<string>("");
 
-  const { snackData, setSnackData }: SnackStateProps =
-    useContext(SnackbarContext);
+  const { setSnackData }: SnackStateProps = useContext(SnackbarContext);
 
-  const {userData, setUserData}: any = useContext(UserDataContext)
+  const { setUserData }: any = useContext(UserDataContext);
 
   const UpdateImage = () => {
     RequestImage().then((res: any) => {
@@ -77,7 +75,7 @@ const SellerSignup = ({ navigation }: any) => {
     onSuccess: (data: any) => {
       SaveTokenToLS(data.data.token).then(() =>
         SaveBusinessToLS(data.data.business).then(() => {
-          setUserData(data.data.business)
+          setUserData(data.data.business);
           setSnackData({
             open: true,
             severity: "Success",
@@ -90,7 +88,7 @@ const SellerSignup = ({ navigation }: any) => {
         })
       );
     },
-    onError: (e) => {
+    onError: () => {
       setSnackData({
         open: true,
         severity: "Error",

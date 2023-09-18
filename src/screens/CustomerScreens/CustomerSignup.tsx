@@ -1,22 +1,22 @@
-import React, { useContext } from "react";
-import StyledView from "../../styles/styledComponents/StyledView";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { screenHeight, screenWidth } from "../../utils/Dimensions";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { StatusBar } from "expo-status-bar";
-import { ThemeInterface } from "../../styles/theme";
+import React, { useContext } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 import { TextInput, useTheme } from "react-native-paper";
 import TypeWriter from "react-native-typewriter";
-import { ScrollView } from "react-native-gesture-handler";
-import StyledButton from "../../styles/styledComponents/StyledButton";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import axios from "axios";
-import { baseUrl } from "../../utils/localENV";
-import { useMutation } from "@tanstack/react-query";
-import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
-import { SaveCustomerToLS } from "../../utils/SaveUserToLS";
-import { UserDataContext } from "../../context/UserDataContext";
 import { SnackbarContext } from "../../context/SnackbarContext";
+import { UserDataContext } from "../../context/UserDataContext";
+import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import StyledView from "../../styles/styledComponents/StyledView";
+import { ThemeInterface } from "../../styles/theme";
 import { SnackStateProps } from "../../types/SnackbarTypes";
+import { SaveTokenToLS } from "../../utils/AuthTokenHandler";
+import { screenHeight, screenWidth } from "../../utils/Dimensions";
+import { SaveCustomerToLS } from "../../utils/SaveUserToLS";
+import { baseUrl } from "../../utils/localENV";
 
 const CustomerSignup = ({ navigation }: any) => {
   const backgroundColor = "white";
@@ -42,16 +42,15 @@ const CustomerSignup = ({ navigation }: any) => {
   const [password, setPassword] = React.useState<string>("");
   const [confirmPass, setConfirmPass] = React.useState<string>("");
 
-  const { snackData, setSnackData }: SnackStateProps =
-    useContext(SnackbarContext);
+  const { setSnackData }: SnackStateProps = useContext(SnackbarContext);
 
-  const { userData, setUserData }: any = useContext(UserDataContext);
+  const { setUserData }: any = useContext(UserDataContext);
 
   const signupQuery = (signupData: signupDataTypes) => {
     return axios.post(baseUrl + "/customer/signup", signupData);
   };
 
-  const { mutate, isLoading } = useMutation(signupQuery, {
+  const { mutate } = useMutation(signupQuery, {
     onSuccess: (data: any) => {
       SaveTokenToLS(data.data.token).then(() =>
         SaveCustomerToLS(data.data.customer).then(() => {
@@ -68,7 +67,7 @@ const CustomerSignup = ({ navigation }: any) => {
         })
       );
     },
-    onError: (e) => {
+    onError: () => {
       setSnackData({
         open: true,
         severity: "Error",
@@ -90,7 +89,6 @@ const CustomerSignup = ({ navigation }: any) => {
               password,
             };
             mutate(signupData);
-            console.log(signupData);
           } else {
             setSnackData({
               open: true,

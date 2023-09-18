@@ -1,24 +1,15 @@
-import {
-  View,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import StyledView from "../../styles/styledComponents/StyledView";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { ThemeInterface } from "../../styles/theme";
-import { useTheme } from "react-native-paper";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { UserDataContext } from "../../context/UserDataContext";
 import StyledText from "../../styles/styledComponents/StyledText";
-import StyledButton from "../../styles/styledComponents/StyledButton";
-import { baseUrl } from "../../utils/localENV";
+import { ThemeInterface } from "../../styles/theme";
 import { FormatUserFriendlyTime } from "../../utils/DateFormatter";
-import { StatusBar } from "expo-status-bar";
 import { screenWidth } from "../../utils/Dimensions";
 
 const CustomerProfile = ({

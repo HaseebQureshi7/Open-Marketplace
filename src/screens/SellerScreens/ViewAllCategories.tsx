@@ -1,23 +1,19 @@
-import { View, ScrollView, Image, Platform } from "react-native";
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { useTheme } from "react-native-paper";
-import { ThemeInterface } from "../../styles/theme";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import TypeWriter from "react-native-typewriter";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import BackButton from "../../components/BackButton";
-import AddProductButton from "../../components/AddProductButton";
-import HeaderSection from "../../components/HeaderSection";
-import { StackRouterOptions } from "@react-navigation/native";
-import Animated, { FadeInDown } from "react-native-reanimated";
-import { baseUrl } from "../../utils/localENV";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { Platform, ScrollView, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useTheme } from "react-native-paper";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import AddProductButton from "../../components/AddProductButton";
+import BackButton from "../../components/BackButton";
+import HeaderSection from "../../components/HeaderSection";
 import { UserDataContext } from "../../context/UserDataContext";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
 import { screenWidth } from "../../utils/Dimensions";
 import { screenSize } from "../../utils/ResponsiveUtils";
+import { baseUrl } from "../../utils/localENV";
 
 const ViewAllCategories = ({
   navigation,
@@ -105,12 +101,12 @@ const ViewAllCategories = ({
                   exiting={FadeInDown}
                   style={{
                     width:
-                    screenSize === "ultraWide"
-                      ? (screenWidth / 100) * 15
-                      : screenSize === "wide"
-                      ? (screenWidth / 100) * 25
-                      : (screenWidth / 100) * 40,
-                      height:
+                      screenSize === "ultraWide"
+                        ? (screenWidth / 100) * 15
+                        : screenSize === "wide"
+                        ? (screenWidth / 100) * 25
+                        : (screenWidth / 100) * 40,
+                    height:
                       screenSize === "ultraWide"
                         ? (screenWidth / 100) * 15
                         : screenSize === "wide"

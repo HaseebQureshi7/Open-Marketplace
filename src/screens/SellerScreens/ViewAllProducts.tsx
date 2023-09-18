@@ -1,26 +1,18 @@
-import { View, Text, ScrollView, StatusBar, Platform } from "react-native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { useTheme } from "react-native-paper";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import { Platform, ScrollView, StatusBar, View } from "react-native";
 import AddProductButton from "../../components/AddProductButton";
 import BackButton from "../../components/BackButton";
 import HeaderSection from "../../components/HeaderSection";
-import StyledText from "../../styles/styledComponents/StyledText";
-import { ThemeInterface } from "../../styles/theme";
-import { baseUrl } from "../../utils/localENV";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import ProductCard from "../../components/ProductCard";
 import { screenWidth } from "../../utils/Dimensions";
 
 const ViewAllProducts = ({
-  navigation,
   route,
 }: {
   navigation: DrawerNavigationProp<any>;
   route: any;
 }) => {
-  const theme = useTheme<ThemeInterface>();
-
   const allProducts = route.params.props;
 
   const backgroundColor = "white";

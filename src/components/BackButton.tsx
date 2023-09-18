@@ -1,10 +1,10 @@
-import { View, Text, Pressable } from "react-native";
-import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemeInterface } from "../styles/theme";
-import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
+import { Pressable } from "react-native";
+import { useTheme } from "react-native-paper";
+import { ThemeInterface } from "../styles/theme";
 
 const BackButton = () => {
   const theme = useTheme<ThemeInterface>();

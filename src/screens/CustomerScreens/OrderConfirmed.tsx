@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
-import Animated, { BounceInUp } from "react-native-reanimated";
-import StyledText from "../../styles/styledComponents/StyledText";
+import { Platform, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { ThemeInterface } from "../../styles/theme";
+import Animated, { BounceInUp } from "react-native-reanimated";
 import StyledButton from "../../styles/styledComponents/StyledButton";
+import StyledText from "../../styles/styledComponents/StyledText";
+import { ThemeInterface } from "../../styles/theme";
 import { screenWidth } from "../../utils/Dimensions";
 
 const OrderConfirmed = ({ navigation, route }: any) => {
@@ -13,7 +13,6 @@ const OrderConfirmed = ({ navigation, route }: any) => {
   const backgroundColor = "white";
 
   const { orderInfo } = route.params;
-  console.log(orderInfo);
 
   return (
     // CONTAINER BODY
@@ -22,10 +21,9 @@ const OrderConfirmed = ({ navigation, route }: any) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal:
-        Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
+        paddingHorizontal: Platform.OS === "web" ? (screenWidth / 100) * 5 : 25,
         paddingVertical: 10,
-        gap: 50,
+        gap: 40,
         backgroundColor,
       }}
     >
@@ -58,10 +56,10 @@ const OrderConfirmed = ({ navigation, route }: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 12.5,
             textAlign: "center",
             fontFamily: "InterBold",
-            color: "blueviolet",
+            color: theme.colors.info,
           }}
         >
           {orderInfo?.id}
@@ -72,20 +70,36 @@ const OrderConfirmed = ({ navigation, route }: any) => {
         </StyledText>
       </View>
 
-      <StyledButton
-        onPress={() => navigation.navigate("dashboard")}
-        textColor={backgroundColor}
-        style={{
-          backgroundColor: theme.colors.accent,
-          width: screenWidth,
-          alignSelf: "center",
-          borderRadius: 0,
-          marginBottom: 25,
-        }}
-        contentStyle={{ padding: 10 }}
-      >
-        Continue Shopping
-      </StyledButton>
+      <View>
+        <StyledButton
+          onPress={() => navigation.navigate("placedOrders")}
+          textColor={backgroundColor}
+          style={{
+            backgroundColor: theme.colors.info,
+            width: screenWidth,
+            alignSelf: "center",
+            borderRadius: 0,
+            marginBottom: 5,
+          }}
+          contentStyle={{ padding: 10 }}
+        >
+          Go to Orders
+        </StyledButton>
+        <StyledButton
+          onPress={() => navigation.navigate("dashboard")}
+          textColor={backgroundColor}
+          style={{
+            backgroundColor: theme.colors.accent,
+            width: screenWidth,
+            alignSelf: "center",
+            borderRadius: 0,
+            marginBottom: 25,
+          }}
+          contentStyle={{ padding: 10 }}
+        >
+          Continue Shopping
+        </StyledButton>
+      </View>
     </View>
   );
 };
