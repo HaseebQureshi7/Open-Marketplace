@@ -4,6 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  Image,
 } from "react-native";
 import React from "react";
 import StyledText from "../../styles/styledComponents/StyledText";
@@ -17,11 +18,12 @@ import axios from "axios";
 import { baseUrl } from "../../utils/localENV";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { UserDataContext } from "../../context/UserDataContext";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import AddProductButton from "../../components/AddProductButton";
 import ProductCard from "../../components/ProductCard";
 import { screenWidth } from "../../utils/Dimensions";
 import { screenSize } from "../../utils/ResponsiveUtils";
+import { FormatPriceWithCommas } from "../../utils/PriceFormatter";
 
 const SellerDashboard = ({
   navigation,
@@ -33,6 +35,7 @@ const SellerDashboard = ({
   const backgroundColor = "white";
 
   const [search, setSearch] = React.useState<string>("");
+  const [searchResults, setSearchResults] = React.useState<Array<any>>([]);
   const [businessProducts, setBusinessProducts] = React.useState<Array<any>>(
     []
   );
@@ -48,6 +51,22 @@ const SellerDashboard = ({
     return axios.get(
       baseUrl + `/product/getAllProductsOfBusiness/${userData?.id}`
     );
+  };
+
+  // SEARCH PRODS BY FILTERING THE ALREADY FETCHED ONES
+  const SearchProducts = () => {
+    if (search.length < 3) {
+      // console.log("before -> ", searchResults);
+      setSearchResults([]);
+      // console.log("after -> ", searchResults);
+    } else {
+      setSearchResults(
+        // @ts-ignore
+        businessProducts?.filter((prod: any) =>
+          prod.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   };
 
   const { isLoading } = useQuery(["All Business Products"], getAllProducts, {
@@ -176,7 +195,7 @@ const SellerDashboard = ({
         <View
           style={{
             width: "100%",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "center",
           }}
@@ -205,8 +224,77 @@ const SellerDashboard = ({
             label="Search Products"
             value={search}
             mode="outlined"
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={(text) => {
+              setSearch(text);
+              SearchProducts();
+            }}
           />
+          <Animated.View
+            entering={FadeIn}
+            exiting={FadeOut}
+            layout={Layout.delay(100)}
+            style={{ width: "100%" }}
+          >
+            {searchResults?.length > 0 && (
+              <Text
+                style={{
+                  color: theme.colors.placeholder,
+                  padding: 5,
+                  marginTop: 5,
+                }}
+              >
+                Results ({searchResults?.length})
+              </Text>
+            )}
+            {searchResults?.map((prod: any) => {
+              return (
+                <TouchableOpacity
+                  key={prod.id}
+                  onPress={() =>
+                    navigation.navigate("productScreen", { props: prod })
+                  }
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    // backgroundColor: theme.colors.info,
+                    borderWidth: 2.5,
+                    borderColor: theme.colors.info,
+                    marginVertical: 5,
+                    padding: 2.5,
+                    gap: 10,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 2.5 }}
+                    source={{
+                      uri: baseUrl + prod.productImage,
+                    }}
+                  />
+                  <StyledText
+                    style={{
+                      fontSize: 15,
+                      width: "60%",
+                      color: theme.colors.text,
+                    }}
+                  >
+                    {prod.name}
+                  </StyledText>
+                  <StyledText
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: 5,
+                      color: theme.colors.primary,
+                    }}
+                  >
+                    ₹ {FormatPriceWithCommas(prod.price)}
+                  </StyledText>
+                </TouchableOpacity>
+              );
+            })}
+          </Animated.View>
         </View>
 
         {/* BODY */}

@@ -30,10 +30,10 @@ const OrderConfirmed = ({ navigation, route }: any) => {
       <StatusBar animated={true} backgroundColor={backgroundColor} />
 
       {/* IMAGE */}
-      <View style={{ marginTop: 100 }}>
+      <View style={{ marginTop: 75 }}>
         <Animated.Image
           entering={BounceInUp}
-          style={{ width: 250, height: 350 }}
+          style={{ width: 225, height: 300 }}
           source={require("../../../assets/images/orderComplete.png")}
         />
       </View>
@@ -47,25 +47,16 @@ const OrderConfirmed = ({ navigation, route }: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 12.5,
-            textAlign: "center",
-            fontFamily: "InterBold",
-          }}
-        >
-          Order Id
-        </Text>
-        <Text
-          style={{
-            fontSize: 12.5,
+            fontSize: 10,
             textAlign: "center",
             fontFamily: "InterBold",
             color: theme.colors.info,
           }}
         >
-          {orderInfo?.id}
+          Order Id: {orderInfo?.id}
         </Text>
         <StyledText style={{ fontSize: 12.5, textAlign: "center" }}>
-          Your order has been confirmed, we will send you confirmation email
+          Your order has been confirmed 🎉 we will send you confirmation email
           shortly.
         </StyledText>
       </View>

@@ -50,6 +50,7 @@ import StyledView from "../styles/styledComponents/StyledView";
 import { ThemeInterface } from "../styles/theme";
 import { SnackStateProps } from "../types/SnackbarTypes";
 import { GetUserType } from "../utils/GetUserType";
+import { WishlistContext } from "../context/WishlistContext";
 
 const MainStack = () => {
   const Stack = createStackNavigator();
@@ -85,6 +86,8 @@ const MainStack = () => {
     const theme = useTheme<ThemeInterface>();
 
     const { setSnackData }: SnackStateProps = React.useContext(SnackbarContext);
+    const { setWishlistItems }: any =
+      React.useContext(WishlistContext);
 
     const { userData, setUserData }: any = React.useContext(UserDataContext);
 
@@ -103,6 +106,7 @@ const MainStack = () => {
             text: "Logged out!",
           });
           setUserData({});
+          setWishlistItems([]);
         });
       } catch (err) {
         console.log(err);

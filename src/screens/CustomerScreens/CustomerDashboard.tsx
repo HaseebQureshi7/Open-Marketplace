@@ -269,9 +269,11 @@ const CustomerDashboard = ({
                     flexDirection: "row",
                     justifyContent: "flex-start",
                     alignItems: "center",
-                    backgroundColor: theme.colors.info,
+                    // backgroundColor: theme.colors.info,
+                    borderWidth: 2.5,
+                    borderColor: theme.colors.info,
                     marginVertical: 5,
-                    padding: 5,
+                    padding: 2.5,
                     gap: 10,
                     borderRadius: 5,
                   }}
@@ -286,7 +288,7 @@ const CustomerDashboard = ({
                     style={{
                       fontSize: 15,
                       width: "60%",
-                      color: theme.colors.background,
+                      color: theme.colors.text,
                     }}
                   >
                     {prod.name}
@@ -295,7 +297,7 @@ const CustomerDashboard = ({
                     style={{
                       marginLeft: "auto",
                       marginRight: 5,
-                      color: theme.colors.background,
+                      color: theme.colors.primary,
                     }}
                   >
                     ₹ {FormatPriceWithCommas(prod.price)}
@@ -335,7 +337,7 @@ const CustomerDashboard = ({
               {/* TEXTS */}
               <View style={{ gap: 5 }}>
                 <StyledText style={{ color: "black", fontSize: 10 }}>
-                  50% Off on Clothing and Apperals.
+                  50% Off on Clothing and Apparels.
                 </StyledText>
                 {/* TEXT WITH ICON */}
                 <View
