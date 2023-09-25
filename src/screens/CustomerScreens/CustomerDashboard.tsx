@@ -257,54 +257,81 @@ const CustomerDashboard = ({
                 Results ({searchResults?.length})
               </Text>
             )}
-            {searchResults?.map((prod: any) => {
-              return (
-                <TouchableOpacity
-                  key={prod.id}
-                  onPress={() =>
-                    navigation.navigate("productScreen", { props: prod })
-                  }
-                  style={{
-                    width: "100%",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    // backgroundColor: theme.colors.info,
-                    borderWidth: 2.5,
-                    borderColor: theme.colors.info,
-                    marginVertical: 5,
-                    padding: 2.5,
-                    gap: 10,
-                    borderRadius: 5,
-                  }}
-                >
-                  <Image
-                    style={{ width: 50, height: 50, borderRadius: 2.5 }}
-                    source={{
-                      uri: baseUrl + prod.productImage,
-                    }}
-                  />
-                  <StyledText
+            {searchResults.length > 0
+              ? searchResults?.map((prod: any) => {
+                  return (
+                    <TouchableOpacity
+                      key={prod.id}
+                      onPress={() =>
+                        navigation.navigate("productScreen", { props: prod })
+                      }
+                      style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        // backgroundColor: theme.colors.info,
+                        borderWidth: 2.5,
+                        borderColor: theme.colors.info,
+                        marginVertical: 5,
+                        padding: 2.5,
+                        gap: 10,
+                        borderRadius: 5,
+                      }}
+                    >
+                      <Image
+                        style={{ width: 50, height: 50, borderRadius: 2.5 }}
+                        source={{
+                          uri: baseUrl + prod.productImage,
+                        }}
+                      />
+                      <StyledText
+                        style={{
+                          fontSize: 15,
+                          width: "60%",
+                          color: theme.colors.text,
+                        }}
+                      >
+                        {prod.name}
+                      </StyledText>
+                      <StyledText
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: 5,
+                          color: theme.colors.primary,
+                        }}
+                      >
+                        ₹ {FormatPriceWithCommas(prod.price)}
+                      </StyledText>
+                    </TouchableOpacity>
+                  );
+                })
+              : search.length > 3 && (
+                  <View
                     style={{
-                      fontSize: 15,
-                      width: "60%",
-                      color: theme.colors.text,
+                      width: "100%",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      // backgroundColor: theme.colors.info,
+                      borderWidth: 2.5,
+                      borderColor: theme.colors.placeholder,
+                      marginVertical: 7.5,
+                      padding: 5,
+                      gap: 10,
+                      borderRadius: 5,
                     }}
                   >
-                    {prod.name}
-                  </StyledText>
-                  <StyledText
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: 5,
-                      color: theme.colors.primary,
-                    }}
-                  >
-                    ₹ {FormatPriceWithCommas(prod.price)}
-                  </StyledText>
-                </TouchableOpacity>
-              );
-            })}
+                    <StyledText
+                      style={{
+                        fontSize: 15,
+                        color: theme.colors.placeholder,
+                      }}
+                    >
+                      No Results Found !
+                    </StyledText>
+                  </View>
+                )}
           </Animated.View>
         </View>
 

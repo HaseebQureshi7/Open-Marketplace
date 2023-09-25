@@ -71,7 +71,7 @@ const ProductScreen = ({
 
   const queryClient = useQueryClient();
 
-  const { snackData, setSnackData }: SnackStateProps =
+  const { setSnackData }: SnackStateProps =
     useContext(SnackbarContext);
 
   const deleteProdQuery = () => {
